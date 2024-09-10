@@ -1,0 +1,137 @@
+:root {
+  --header-height: 20%;
+  --commertial-width: 25%;
+  --footer-height: 20%;
+  --side-width: 30%;
+}
+
+text-vert-cont {
+  display: flex;
+  
+  width: 100%;
+  height: 100%;
+
+  align-items: center;
+}
+
+text-vert-impl {
+  display: block;
+  
+  flex: 1;
+
+  padding-left: 0.5em;
+}
+
+text-vert-impl-right {
+  display: block;
+  
+  flex: 1;
+  
+  text-align: right;
+
+  padding-right: 0.5em;
+}
+
+text-vert-impl-center {
+  display: block;
+  
+  flex: 1;
+  
+  text-align: center;
+}
+
+container {
+  display: flex;
+  
+  width: 300px;
+  height: 300px;;
+  
+  flex-direction: column;
+}
+
+header {
+  display: block;
+
+  background-color: #3cf;
+
+  width: 100%;
+  height: var(--header-height);
+}
+
+other {
+  display: flex;
+
+  flex: 1;
+}
+
+main {
+  display: flex;
+  
+  background-color: red;
+  
+  flex: 1;
+  flex-direction: column;
+}
+
+text {
+  display: block;
+
+  background-color: white;
+  
+  flex: 1;
+}
+
+article {
+  display: flex;
+  
+  background-color: purple;
+
+  flex: 1;
+  flex-grow: row;
+}
+
+side {
+  display: flex;
+  
+  background-color: red;
+  
+  width: var(--side-width);
+  height: 100%;
+  
+  flex-direction: column;
+}
+
+footer {
+  display: block;
+  
+  background-color: #3cf;
+
+  width: 100%;
+  height: var(--footer-height);
+}
+
+babe {
+  display: block;
+  
+  background-color: #fdb;
+
+  height: 50%;
+}
+
+cafe {
+  display: block;
+
+  background-color: #cfb;
+  
+  height: 50%;
+}
+
+commercial {
+  display: block;
+
+  background-color: #fdb;
+
+  height: 100%;
+  width: var(--commertial-width);
+}
+	  
