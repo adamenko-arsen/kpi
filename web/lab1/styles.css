@@ -5,6 +5,24 @@
   --side-width: 30%;
 }
 
+body {
+  font-size: 2vw;
+}
+
+fly-a {
+  position: absolute;
+  
+  top: 50%;
+  right: 10%;
+}
+
+fly-b {
+  position: absolute;
+  
+  top: 60%;
+  left: 5%;
+}
+
 text-vert-cont {
   display: flex;
   
@@ -20,6 +38,7 @@ text-vert-impl {
   flex: 1;
 
   padding-left: 0.5em;
+  padding-left: 0.5em;
 }
 
 text-vert-impl-right {
@@ -30,6 +49,7 @@ text-vert-impl-right {
   text-align: right;
 
   padding-right: 0.5em;
+  padding-left: 0.5em;
 }
 
 text-vert-impl-center {
@@ -43,19 +63,23 @@ text-vert-impl-center {
 container {
   display: flex;
   
-  width: 300px;
-  height: 300px;;
+  width: 100vw;
+  height: 100vw;
   
   flex-direction: column;
 }
 
 header {
   display: block;
+  
+  position: relative;
 
   background-color: #3cf;
 
   width: 100%;
   height: var(--header-height);
+  
+  box-shadow: inset 0 0 0 2px black;
 }
 
 other {
@@ -79,6 +103,8 @@ text {
   background-color: white;
   
   flex: 1;
+  
+  box-shadow: inset 0 0 0 2px black;
 }
 
 article {
@@ -104,10 +130,14 @@ side {
 footer {
   display: block;
   
+  position: relative;
+  
   background-color: #3cf;
 
   width: 100%;
   height: var(--footer-height);
+  
+  box-shadow: inset 0 0 0 2px black;
 }
 
 babe {
@@ -116,6 +146,8 @@ babe {
   background-color: #fdb;
 
   height: 50%;
+  
+  box-shadow: inset 0 0 0 2px black;
 }
 
 cafe {
@@ -124,6 +156,8 @@ cafe {
   background-color: #cfb;
   
   height: 50%;
+  
+  box-shadow: inset 0 0 0 2px black;
 }
 
 commercial {
@@ -133,5 +167,7 @@ commercial {
 
   height: 100%;
   width: var(--commertial-width);
+  
+  box-shadow: inset 0 0 0 2px black;
 }
 	  
