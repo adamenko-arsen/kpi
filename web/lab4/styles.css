@@ -4,6 +4,26 @@
 
 /* Base things */
 
+@keyframes rainbow {
+    0%    { background-color: red;     }
+    6.25% { background-color: orange;  }
+   12.5%  { background-color: yellow;  }
+   18.75% { background-color: green;   }
+   25%    { background-color: cyan;    }
+   31.25% { background-color: blue;    }
+   37.5%  { background-color: violet;  }
+   43.75% { background-color: purple;  }
+   50%    { background-color: magenta; }
+   56.25% { background-color: pink;    }
+   62.5%  { background-color: lime;    }
+   68.75% { background-color: teal;    }
+   75%    { background-color: coral;   }
+   81.25% { background-color: gold;    }
+   87.5%  { background-color: brown;   }
+   93.75% { background-color: silver;  }
+  100%    { background-color: red;     }
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -21,7 +41,7 @@ body {
     justify-content: space-between;
     align-items: center;
 
-    background-image: url('https://wallpaperaccess.com/full/2406405.jpg');
+    background-image: url('img/background.png');
 
     background-size: cover;
     background-repeat: no-repeat;
@@ -51,8 +71,8 @@ body {
 }
 
 .logo, .menu {
-    width: min(8rem, 20vw);
-    height: min(8rem, 20vw);
+    width: min(4rem, 20vw);
+    height: min(4rem, 20vw);
 }
 
 header {
@@ -79,8 +99,8 @@ footer {
 
     background: rgba(0, 0, 0, 0.7);
 
-    padding-top:    4rem;
-    padding-bottom: 4rem;
+    padding-top:    2rem;
+    padding-bottom: 2rem;
 
     width: 100%;
 }
@@ -89,7 +109,7 @@ footer {
     padding-left: 1rem;
     padding-right: 1rem;
 
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     text-align: center;
 }
 
@@ -99,27 +119,20 @@ main {
     display: flex;
     flex-direction: column;
 
-    padding-top:    5rem;
-    padding-bottom: 8rem;
+    padding-top:    4rem;
+    padding-bottom: 6rem;
 
     padding-left: 5rem;
     padding-right: 5rem;
 }
 
-.main-wrapper {
-    display: flex;
-    justify-content: stretch;
-
-    width: 100%;
-}
-
 .main-header, .main-desc {
-    max-width: 1400px;
+    max-width: 1100px;
     color: aliceblue;
 }
 
 .main-header {
-    font-size: 2.8rem;
+    font-size: 1.6rem;
 }
 
 .main-desc {
@@ -127,28 +140,8 @@ main {
 
     text-align: justify;
 
-    font-size: 1.8rem;
+    font-size: 1rem;
     font-style: italic;
-}
-
-@keyframes rainbow {
-      0%    { background-color: red;     }
-      6.25% { background-color: orange;  }
-     12.5%  { background-color: yellow;  }
-     18.75% { background-color: green;   }
-     25%    { background-color: cyan;    }
-     31.25% { background-color: blue;    }
-     37.5%  { background-color: violet;  }
-     43.75% { background-color: purple;  }
-     50%    { background-color: magenta; }
-     56.25% { background-color: pink;    }
-     62.5%  { background-color: lime;    }
-     68.75% { background-color: teal;    }
-     75%    { background-color: coral;   }
-     81.25% { background-color: gold;    }
-     87.5%  { background-color: brown;   }
-     93.75% { background-color: silver;  }
-    100%    { background-color: red;     }
 }
 
 .link-prod:hover {
@@ -186,17 +179,27 @@ main {
     justify-content: center;
     align-items: center;
 
-    gap: 40px;
+    gap: 30px;
 }
 
 .card {
-    width: 270px;
-    height: 370px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+
+    width: calc(280px - 30px * 2);
+    height: calc(360px - 30px * 2);
+
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 1rem;
+
+    padding: 30px;
 }
 
 .third-card {
-    width: 300px;
-    height: 400px;
+    width: 250px;
+    height: 350px;
 }
 
 .card, .third-card {
@@ -211,20 +214,8 @@ main {
     transform: scale(1.1);
 }
 
-.card {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 1rem;
-
-    padding: 30px;
-}
-
 .card-img {
-    width: 280px;
+    width: calc(250px - 2rem);
     border-radius: 1rem;
 
     box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.1);
@@ -239,16 +230,16 @@ main {
 }
 
 .card-text {
-    margin-top: 2rem;
+    margin-top: 1rem;
 
-    font-size: 1.7rem;
+    font-size: 1rem;
     text-align: center;
 }
 
 .card-more {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
 
-    font-size: 2rem;
+    font-size: 1.2rem;
 }
 
 .third-card {
@@ -258,8 +249,8 @@ main {
 }
 
 .third-card-img {
-    width: 500px;
-    height: 500px;
+    width: 360px;
+    height: 360px;
 
     transform: scaleX(-1);
 
@@ -283,26 +274,28 @@ main {
     }
 
     .cards {
-        margin-top: 3rem;
+        margin-top: 6rem;
         flex-direction: column;
     }
 
     .card {
         width: 70vw;
         height: auto;
+
+        padding: 5vw;
     }
 
     .card-img {
-        width: 70vw;
+        width: calc(70vw);
     }
 
     .third-card-img {
-        width: min(500px, 70vw);
-        height: min(500px, 70vw);
+        width: min(640px, 70vw);
+        height: min(640px, 70vw);
     }
 
     .third-card {
-        height: min(500px, 70vw);
+        height: min(500px, 50vw);
 
         order: 1;
     }
