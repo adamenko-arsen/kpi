@@ -148,11 +148,7 @@ main {
     animation: rainbow 8s linear infinite;
 }
 
-.link-prod:not(:visited) {
-    color: red;
-}
-
-.link-prod:visited {
+.link-prod {
     color: white;
 }
 
