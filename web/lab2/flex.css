@@ -1,0 +1,119 @@
+body {
+  margin: 0;
+}
+
+container {
+  display: flex;
+  flex-direction: column;
+
+  width: 100vw;
+  
+  box-shadow: inset 0 0 0 1px black;
+}
+
+header, content, commertial, side-1, side-2, footer {
+  padding: 0.5rem;
+}
+
+img.commertial-image {
+  width: 20em;
+}
+
+menu {
+  padding: 0.5rem;
+  margin: 0.5rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: #3cf;
+  
+  box-shadow: inset 0 0 0 1px black;
+}
+
+under-header {
+  display: flex;
+  flex-direction: row;
+}
+
+lefter-than-adv {
+  display: flex;
+  flex-direction: column;
+}
+
+lefter-than-content {
+  display: flex;
+  flex-direction: column;
+}
+
+upper-footer {
+  display: flex;
+  flex-direction: row;
+}
+
+content {
+  background-color: lightgray;
+  
+  box-shadow: inset 0 0 0 1px black;
+}
+
+.side-1 {
+  flex: 1;
+
+  background-color: #fdb;
+  
+  box-shadow: inset 0 0 0 1px black;
+
+  margin: 0;
+}
+
+.side-2 {
+  flex: 1;
+
+  background-color: #cfb;
+  
+  box-shadow: inset 0 0 0 1px black;
+
+  margin: 0;
+}
+
+commertial {
+  background-color: #cfb;
+
+  width: 100%;
+
+  box-shadow: inset 0 0 0 1px black;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: #3cf;
+  
+  box-shadow: inset 0 0 0 1px black;
+}
+
+contact {
+  margin: 0.5rem;
+
+  width: 50rem;
+}
+
+gaslo-a {
+  margin: 0.5rem;
+
+  animation: rainbow 2.718281828459045s infinite;
+  border: 1px solid black;
+}
+
+gaslo-b {
+  margin: 0.5rem;
+
+  animation: rainbow calc(42s / 3.141592653 / 1.618033988749895 / 4.669201609102990) infinite;
+  border: 1px solid black;
+}

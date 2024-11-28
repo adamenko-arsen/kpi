@@ -1,0 +1,149 @@
+html {
+  font-size: 1rem;
+}
+
+body {
+  margin: 0;
+}
+
+content {
+  display: block;
+  position: relative;
+
+  width: 100vw;
+  height: 100vw;
+}
+
+header, content, commertial, side-1, side-2, footer {
+  position: absolute;
+
+  overflow-y: scroll;
+}
+
+img.commertial-image {
+  width: 20em;
+}
+
+menu {
+  margin: 0.5rem;
+
+  margin-top: 3.5rem;
+
+  text-align: left;
+}
+
+header {
+  display: block;
+
+  background-color: #3cf;
+  
+  box-shadow: inset 0 0 0 1px black;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 15%;
+}
+
+content {
+  display: block;
+
+  background-color: lightgray;
+  
+  box-shadow: inset 0 0 0 1px black;
+
+  top: 15%;
+  left: 25%;
+
+  width: 55%;
+  height: 70%;
+}
+
+side-1 {
+  display: block;
+
+  background-color: #fdb;
+  
+  box-shadow: inset 0 0 0 1px black;
+
+  top: 15%;
+  left: 0;
+
+  width: 25%;
+  height: 35%;
+}
+
+side-2 {
+  display: block;
+
+  background-color: #cfb;
+  
+  box-shadow: inset 0 0 0 1px black;
+
+  top: 50%;
+  left: 0;
+
+  width: 25%;
+  height: 35%;
+}
+
+commertial {
+  display: block;
+
+  background-color: #cfb;
+
+  box-shadow: inset 0 0 0 1px black;
+
+  right: 0;
+  top: 15%;
+
+  height: 85%;
+  width: 20%;
+}
+
+footer {
+  display: block;
+
+  background-color: #3cf;
+  
+  box-shadow: inset 0 0 0 1px black;
+
+  bottom: 0;
+  left: 0;
+
+  height: 15%;
+  width: 80%;
+}
+
+contact {
+  margin-top: 1.3em;
+
+  display: block;
+
+  width: 50rem;
+}
+
+gaslo-a {
+  display: block;
+
+  position: absolute;
+
+  right: 3rem;
+  top: 0.8rem;
+
+  animation: rainbow 2.718281828459045s infinite;
+  border: 1px solid black;
+}
+
+gaslo-b {
+  display: block;
+
+  position: absolute;
+
+  right: 3rem;
+  top: 0.8rem;
+
+  animation: rainbow calc(42s / 3.141592653 / 1.618033988749895 / 4.669201609102990) infinite;
+  border: 1px solid black;
+}

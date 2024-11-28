@@ -1,0 +1,501 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/115.0" version="24.7.16">
+  <diagram id="if1rMS5PziXXQYh_C22N" name="Страница — 1">
+    <mxGraphModel dx="3825" dy="2545" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-2" value="Військова частина округу" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-685" y="-688" width="196" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-223" value="ID" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-2">
+          <mxGeometry y="30" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-3" value="Назва" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-2">
+          <mxGeometry y="60" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-4" value="Роти" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-2">
+          <mxGeometry y="90" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-5" value="Військовий округ" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-2">
+          <mxGeometry y="120" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-218" value="Командир" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-2">
+          <mxGeometry y="150" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-6" value="Дислокація" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1005" y="-927" width="196" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-7" value="Область" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-6">
+          <mxGeometry y="30" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-8" value="Місто" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-6">
+          <mxGeometry y="60" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-9" value="Район" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-6">
+          <mxGeometry y="90" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-30" value="GPS координати" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-6">
+          <mxGeometry y="120" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-10" value="Військовий округ" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-685" y="-1005" width="196" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-222" value="ID" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-10">
+          <mxGeometry y="30" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-11" value="Назва" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-10">
+          <mxGeometry y="60" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-12" value="Військова частина" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-10">
+          <mxGeometry y="90" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-13" value="Офіцерський склад" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-10">
+          <mxGeometry y="120" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-31" value="Рядовий склад" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-10">
+          <mxGeometry y="150" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-32" value="Сержантський склад" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-10">
+          <mxGeometry y="180" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-41" value="Об&#39;єднання" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-10">
+          <mxGeometry y="210" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-219" value="Командир" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-10">
+          <mxGeometry y="240" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-14" value="Рота" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-692" y="-433" width="196" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-224" value="ID" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-14">
+          <mxGeometry y="30" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-15" value="Назва" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-14">
+          <mxGeometry y="60" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-16" value="Взводи" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-14">
+          <mxGeometry y="90" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-17" value="Військова частина округу" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-14">
+          <mxGeometry y="120" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-217" value="Командир" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-14">
+          <mxGeometry y="150" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-18" value="Взвід" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-698" y="-232" width="196" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-225" value="ID" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-18">
+          <mxGeometry y="30" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-19" value="Назва" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-18">
+          <mxGeometry y="60" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-20" value="Рота" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-18">
+          <mxGeometry y="90" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-21" value="Відділення" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-18">
+          <mxGeometry y="120" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-216" value="Командир" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-18">
+          <mxGeometry y="150" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-22" value="Відділення" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-702" y="-37" width="196" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-226" value="ID" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-22">
+          <mxGeometry y="30" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-23" value="Назва" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-22">
+          <mxGeometry y="60" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-24" value="Взвід" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-22">
+          <mxGeometry y="90" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-215" value="Командир" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-22">
+          <mxGeometry y="120" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-26" value="Об&#39;єднання військових частин" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-402" y="-1005" width="196" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-227" value="ID" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-26">
+          <mxGeometry y="30" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-27" value="Назва" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-26">
+          <mxGeometry y="60" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-28" value="Армія" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-26">
+          <mxGeometry y="90" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-29" value="Військові округи" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-26">
+          <mxGeometry y="120" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-220" value="Командир" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-26">
+          <mxGeometry y="150" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-47" value="Армія" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-124" y="-992" width="196" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-228" value="ID" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-47">
+          <mxGeometry y="30" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-48" value="Назва" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-47">
+          <mxGeometry y="60" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-49" value="Об&#39;єднання військових частин" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-47">
+          <mxGeometry y="90" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-221" value="Командир" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-47">
+          <mxGeometry y="120" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-52" value="Військовослужбовець" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-402" y="-538" width="196" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-53" value="ПІБ" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-52">
+          <mxGeometry y="30" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-54" value="Дата народження" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-52">
+          <mxGeometry y="60" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-55" value="Звання" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-52">
+          <mxGeometry y="90" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-56" value="Спеціальності" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-52">
+          <mxGeometry y="120" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-57" value="Специфічні дані про звання" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-52">
+          <mxGeometry y="150" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-58" value="Належність військовослужбовся" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-402" y="-721" width="196" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-59" value="Військовослужбовець" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-58">
+          <mxGeometry y="30" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-60" value="Підрозділ" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-58">
+          <mxGeometry y="60" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-233" value="&lt;div&gt;Чи є командиром підрозділу&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-58">
+          <mxGeometry y="90" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-64" value="Спеціальність" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-414" y="-333" width="196" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-65" value="Назва" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-64">
+          <mxGeometry y="30" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-66" value="Опис" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-64">
+          <mxGeometry y="60" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-67" value="Дані про спеціальність" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-64">
+          <mxGeometry y="90" width="196" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-76" value="Діна про звання" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-451" y="-178" width="220" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-69" value="Дата закінчення морської академії" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-76">
+          <mxGeometry y="30" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-70" value="Дата присвоєння звання" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-76">
+          <mxGeometry y="60" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-77" value="Дата закінчення академії" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-76">
+          <mxGeometry y="90" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-78" value="Дата присвоєння звання" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-76">
+          <mxGeometry y="120" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-74" value="Дані про відсрочку" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-76">
+          <mxGeometry y="150" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-81" value="Назва корпусу підготовки до військової служби" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-76">
+          <mxGeometry y="180" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-80" value="Дата закінчення військової служби" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-76">
+          <mxGeometry y="210" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-79" value="Дата проходження військової служби" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-76">
+          <mxGeometry y="240" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-75" value="Бойові поранення" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-76">
+          <mxGeometry y="270" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-83" value="Належність бойових ресурів" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1070" y="-632" width="231" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-84" value="Ресурс" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-83">
+          <mxGeometry y="30" width="231" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-85" value="Військова частина" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-83">
+          <mxGeometry y="60" width="231" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-89" value="Техніка" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-966" y="-190" width="211" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-90" value="ID" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-89">
+          <mxGeometry y="30" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-91" value="Назва" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-89">
+          <mxGeometry y="60" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-92" value="Тип" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-89">
+          <mxGeometry y="90" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-93" value="Специфічні дані про техніку" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-89">
+          <mxGeometry y="120" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-94" value="Озброєння" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1047" y="-498" width="211" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-95" value="ID" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-94">
+          <mxGeometry y="30" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-96" value="Назва" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-94">
+          <mxGeometry y="60" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-97" value="Тип" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-94">
+          <mxGeometry y="90" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-98" value="Специфічні дані про озброєння" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-94">
+          <mxGeometry y="120" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-99" value="БМП" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1212" y="-27" width="211" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-100" value="Склад екіпажу" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-99">
+          <mxGeometry y="30" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-101" value="Дата ТО" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-99">
+          <mxGeometry y="60" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-104" value="Тягач" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1232" y="-175" width="211" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-105" value="Вид" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-104">
+          <mxGeometry y="30" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-107" value="Склад екіпажу" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-104">
+          <mxGeometry y="60" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-106" value="Дата ТО" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-104">
+          <mxGeometry y="90" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-108" value="Автотранспорт" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-966" y="1" width="211" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-109" value="Вид" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-108">
+          <mxGeometry y="30" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-111" value="Дата ТО" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-108">
+          <mxGeometry y="60" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-112" value="Карабін" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-966" y="-311" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-113" value="Вид" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-112">
+          <mxGeometry y="30" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-115" value="Дата ТО" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-112">
+          <mxGeometry y="60" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-116" value="Автоматична зброя" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1307" y="-324" width="211" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-117" value="Вид" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-116">
+          <mxGeometry y="30" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-119" value="Практична скорострільність" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-116">
+          <mxGeometry y="60" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-118" value="Дата ТО" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-116">
+          <mxGeometry y="90" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-121" value="Артилерія" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1320" y="-481" width="211" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-122" value="Вид" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-121">
+          <mxGeometry y="30" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-123" value="Практична дальність пострілів" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-121">
+          <mxGeometry y="60" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-124" value="Дата ТО" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-121">
+          <mxGeometry y="90" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-127" value="Ракетне озброєння" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1328" y="-661" width="211" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-128" value="Вид" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-127">
+          <mxGeometry y="30" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-129" value="Практична потужність пострілів" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-127">
+          <mxGeometry y="60" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-130" value="Дата ТО" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="RpFmLWtO-A4xuDm9PwId-127">
+          <mxGeometry y="90" width="211" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-145" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERoneToMany;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-18" target="RpFmLWtO-A4xuDm9PwId-22">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-754" y="64" as="sourcePoint" />
+            <mxPoint x="-307" y="184" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-477" y="27" />
+              <mxPoint x="-467" y="79" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-146" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERoneToMany;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;entryX=1;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="RpFmLWtO-A4xuDm9PwId-18">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-495" y="-353" as="sourcePoint" />
+            <mxPoint x="-358.9999999999998" y="-300" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-548" y="-334" />
+              <mxPoint x="-288" y="-306" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-147" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERoneToMany;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-2" target="RpFmLWtO-A4xuDm9PwId-14">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-340" y="-172" as="sourcePoint" />
+            <mxPoint x="-350" y="-595" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-148" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERoneToMany;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;entryX=1;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-10" target="RpFmLWtO-A4xuDm9PwId-2">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-331" y="-729" as="sourcePoint" />
+            <mxPoint x="-402" y="-506" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-155" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToMany;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-52" target="RpFmLWtO-A4xuDm9PwId-64">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-54" y="-395" as="sourcePoint" />
+            <mxPoint x="46" y="-495" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-163" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERoneToMany;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-26" target="RpFmLWtO-A4xuDm9PwId-11">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-479" y="-875" as="sourcePoint" />
+            <mxPoint x="-317" y="-706" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-165" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToMany;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-6" target="RpFmLWtO-A4xuDm9PwId-2">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-851" y="-647" as="sourcePoint" />
+            <mxPoint x="-751" y="-747" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-166" value="Специфіка сутності" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="-1169" y="-521" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-169" value="Може бути або не бути ВЧО (0..N)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="-786" y="-880" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-171" value="Має десь знаходитися (1)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="-783" y="-626" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-172" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERoneToMany;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-47" target="RpFmLWtO-A4xuDm9PwId-26">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-341" y="-917" as="sourcePoint" />
+            <mxPoint x="-479" y="-950" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-173" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToOne;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-94" target="RpFmLWtO-A4xuDm9PwId-116">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-1256" y="-276" as="sourcePoint" />
+            <mxPoint x="-1189" y="-428" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-174" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToOne;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-94" target="RpFmLWtO-A4xuDm9PwId-112">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-1039" y="-402" as="sourcePoint" />
+            <mxPoint x="-1280" y="-392" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-1216" y="-293" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-175" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToOne;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-94" target="RpFmLWtO-A4xuDm9PwId-121">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-940" y="-511" as="sourcePoint" />
+            <mxPoint x="-937" y="-301" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-1206" y="-283" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-176" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToOne;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-94" target="RpFmLWtO-A4xuDm9PwId-127">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-1151" y="-511" as="sourcePoint" />
+            <mxPoint x="-1312" y="-404" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-1196" y="-273" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-177" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToOne;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-89" target="RpFmLWtO-A4xuDm9PwId-99">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-810" y="151" as="sourcePoint" />
+            <mxPoint x="-710" y="51" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-178" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToOne;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-89" target="RpFmLWtO-A4xuDm9PwId-108">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-810" y="151" as="sourcePoint" />
+            <mxPoint x="-710" y="51" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-179" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToOne;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-89" target="RpFmLWtO-A4xuDm9PwId-104">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-810" y="151" as="sourcePoint" />
+            <mxPoint x="-710" y="51" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-180" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERmandOne;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-52" target="RpFmLWtO-A4xuDm9PwId-58">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-151" y="-502" as="sourcePoint" />
+            <mxPoint x="-51" y="-602" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-182" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToOne;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-32" target="RpFmLWtO-A4xuDm9PwId-58">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-145" y="-932" as="sourcePoint" />
+            <mxPoint x="-41" y="-631" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-200" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToMany;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;entryX=1;entryY=0.25;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-5" target="RpFmLWtO-A4xuDm9PwId-89">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-579" y="-486" as="sourcePoint" />
+            <mxPoint x="-844" y="-454" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-202" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToOne;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;exitX=1;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-83" target="RpFmLWtO-A4xuDm9PwId-94">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-906" y="-568" as="sourcePoint" />
+            <mxPoint x="-806" y="-668" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-203" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToOne;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;entryX=0.931;entryY=-0.012;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-83" target="RpFmLWtO-A4xuDm9PwId-89">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-836" y="-694" as="sourcePoint" />
+            <mxPoint x="-940" y="-511" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-204" value="Один з видів ресурсів" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="-802" y="-551" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-235" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERzeroToMany;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;exitX=0.006;exitY=0.113;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-2" target="RpFmLWtO-A4xuDm9PwId-83">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-833" y="-735" as="sourcePoint" />
+            <mxPoint x="-733" y="-835" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="RpFmLWtO-A4xuDm9PwId-237" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERmandOne;startArrow=ERmandOne;rounded=0;startSize=8;endSize=8;curved=1;" edge="1" parent="1" source="RpFmLWtO-A4xuDm9PwId-74" target="RpFmLWtO-A4xuDm9PwId-52">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="-190" y="-216" as="sourcePoint" />
+            <mxPoint x="-90" y="-316" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

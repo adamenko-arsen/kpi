@@ -1,0 +1,85 @@
+.struct-a,
+.struct-b,
+.struct-c,
+.struct-d,
+.struct-e {
+    border: solid 0.5px black;
+
+    padding: 0.0em;
+}
+
+.struct-a {
+    background-color: greenyellow;
+}
+
+.struct-b {
+    background-color: yellow;
+}
+
+.struct-c {
+    background-color: red;
+}
+
+.struct-d {
+    background-color: purple;
+}
+
+.struct-e {
+    background-color: lightblue;
+}
+
+.hidden-link {
+    color: initial;
+    text-decoration: none;
+    cursor: default;
+}
+
+@keyframes rainbow {
+    0% { background-color: red; }
+    14% { background-color: orange; }
+    28% { background-color: yellow; }
+    42% { background-color: rgb(0, 255, 0); }
+    57% { background-color: rgb(95, 95, 255); }
+    71% { background-color: hsl(275, 100%, 50%); }
+    85% { background-color: violet; }
+    100% { background-color: red; }
+}
+
+.fishing-link-1,
+.fishing-link-2,
+.fishing-link-3,
+.fishing-link-4,
+.fishing-link-5,
+.fishing-link-6 {
+    display: block;
+}
+
+.fishing-link-1 {
+    animation: rainbow 2.71s infinite;
+    border: 1px black solid;
+}
+
+.fishing-link-2 {
+    animation: rainbow 3.14s infinite;
+    border: 1px black solid;
+}
+
+.fishing-link-3 {
+    animation: rainbow 1.618s infinite;
+    border: 1px black solid;
+}
+
+.fishing-link-4 {
+    animation: rainbow 4.2s infinite;
+    border: 1px black solid;
+}
+
+.fishing-link-5 {
+    animation: rainbow 2.13s infinite;
+    border: 1px black solid;
+}
+
+.fishing-link-6 {
+    animation: rainbow 3.33s infinite;
+    border: 1px black solid;
+}

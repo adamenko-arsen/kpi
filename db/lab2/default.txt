@@ -1,0 +1,89 @@
+default-user: postgres
+passwd:       12345678
+
+
+-----------------------------------------------------
+
+
+
+grant all privilegies on table serviceman to flagman_role;
+
+grant select, insert, update on military_unit				to commander_role;
+grant select, insert, update on distinct_military_unit		to commander_role;
+grant select, insert, update on resource_militaty_unit		to commander_role;
+grant select, insert, update on company					to commander_role;
+grant select, insert, update on platoon					to commander_role;
+grant select, insert, update on department					to commander_role;
+grant select, insert, update on serviceman_affiliation		to commander_role;
+grant select, insert, update on serviceman					to commander_role;
+
+grant all privilegies on table military_units_union	to general_role;
+grant all privilegies on table military_unit 			to general_role;
+grant all privilegies on table serviceman				to general_role;
+grant all privilegies on table rank_data				to general_role;
+grant all privilegies on table speciality				to general_role;
+
+
+--------------------------------------------------
+
+
+
+ALTER TABLE table_name
+ADD CONSTRAINT constraint_name UNIQUE (column_name);
+
+ALTER TABLE table_name
+ADD CONSTRAINT constraint_name FOREIGN KEY (column_name)
+REFERENCES referenced_table_name (referenced_column_name);
+
+ALTER TABLE table_name
+ADD CONSTRAINT constraint_name PRIMARY KEY (column_name);
+
+ALTER TABLE employees ADD COLUMN date_of_birth DATE;
+
+ALTER TABLE employees DROP COLUMN date_of_birth;
+
+ALTER TABLE employees ALTER COLUMN salary SET DATA TYPE DECIMAL(10, 2);
+
+ALTER TABLE employees RENAME COLUMN salary TO annual_salary;
+
+ALTER TABLE employees RENAME TO staff;
+
+ALTER TABLE employees DROP CONSTRAINT pk_employee_id;
+
+ALTER TABLE employees ALTER COLUMN department_id SET DEFAULT 1;
+
+ALTER TABLE employees ALTER COLUMN department_id DROP DEFAULT;
+
+ALTER TABLE employees ADD CONSTRAINT check_salary CHECK (salary >= 0);
+
+CREATE INDEX idx_employee_name ON employees (employee_name);
+
+DROP INDEX idx_employee_name;
+
+ALTER TABLE employees ADD COLUMN status VARCHAR(10) DEFAULT 'active';
+
+ALTER TABLE employees RENAME COLUMN employee_name TO full_name;
+
+ALTER TABLE employees ALTER COLUMN email SET NOT NULL;
+
+ALTER TABLE employees ALTER COLUMN email DROP NOT NULL;
+
+-------------------------
+
+CREATE SEQUENCE employee_id_seq;
+ALTER TABLE employees ALTER COLUMN employee_id SET DEFAULT nextval('employee_id_seq');
+
+ALTER TABLE employees ADD COLUMN full_name VARCHAR GENERATED ALWAYS AS (first_name || ' ' || last_name) STORED;
+
+ALTER TABLE employees OWNER TO new_owner;
+
+ALTER TABLE employees DISABLE TRIGGER ALL;
+
+ALTER TABLE employees ENABLE TRIGGER ALL;
+
+
+
+
+
+
+

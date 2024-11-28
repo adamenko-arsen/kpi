@@ -1,0 +1,169 @@
+html {
+  font-size: 1rem;
+}
+
+body {
+  margin: 0;
+}
+
+container {
+  display: block;
+
+  width: 100%;
+}
+
+header, content, commertial, side-1, side-2, footer {
+  margin: 0;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+ol, ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+img.commertial-image {
+  width: 15vw;
+}
+
+menu {
+  margin: 0;
+
+  text-align: left;
+}
+
+header {
+  display: block;
+
+  background-color: #3cf;
+  
+  box-shadow: inset 0 0 0 1px black;
+}
+
+content {
+  display: block;
+
+  background-color: lightgray;
+  
+  box-shadow: inset 0 0 0 1px black;
+}
+
+side-1 {
+  display: block;
+
+  background-color: #fdb;
+  
+  box-shadow: inset 0 0 0 1px black;
+}
+
+side-2 {
+  display: block;
+
+  background-color: #cfb;
+  
+  box-shadow: inset 0 0 0 1px black;
+}
+
+commertial {
+  display: block;
+
+  background-color: #cfb;
+
+  box-shadow: inset 0 0 0 1px black;
+}
+
+footer {
+  display: block;
+
+  background-color: #3cf;
+  
+  box-shadow: inset 0 0 0 1px black;
+}
+
+contact {
+  display: block;
+}
+
+gaslo-a {
+  display: block;
+
+  animation: rainbow 2.718281828459045s infinite;
+  border: 1px solid black;
+}
+
+gaslo-b {
+  display: block;
+
+  animation: rainbow calc(42s / 3.141592653 / 1.618033988749895 / 4.669201609102990) infinite;
+  border: 1px solid black;
+}
+
+@media screen and (max-width: 1400px) {
+  img.commertial-image {
+    width: 12rem;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  container {
+    position: relative;
+    height: 100vw;
+  }
+
+  header, content, commertial, side-1, side-2, footer {
+    position: absolute;
+
+    overflow-y: auto;
+  }
+
+  header {
+    top: 0;
+    left: 0;
+  
+    width: 100%;
+    height: 15%;
+  }
+  
+  content {
+    top: 15%;
+    left: 25%;
+  
+    width: 55%;
+    height: 70%;
+  }
+  
+  side-1 {
+    top: 15%;
+    left: 0;
+  
+    width: 25%;
+    height: 35%;
+  }
+  
+  side-2 {
+    top: 50%;
+    left: 0;
+  
+    width: 25%;
+    height: 35%;
+  }
+  
+  commertial {
+    right: 0;
+    top: 15%;
+  
+    height: 85%;
+    width: 20%;
+  }
+  
+  footer {
+    bottom: 0;
+    left: 0;
+  
+    height: 15%;
+    width: 80%;
+  }
+}
