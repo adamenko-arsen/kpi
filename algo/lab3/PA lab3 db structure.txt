@@ -1,0 +1,36 @@
+[Software Requirements]
+MaxIndexesCount:          100000
+MaxRecordsCount:          100000
+BlockSize:                1024 byte
+KeySize:                  12 byte
+IdSize:                   4 byte
+ContentSize:              128 byte
+ContentAdditionTactic:    AutoIncrement
+IndexRecordSize           16 = KeySize + IdSize
+IndexesPerBlock:          64 = BlockSize/IndexRecordSize
+IndexBlocksCount:         1563 = ceil(MaxIndexesCount/IndexesPerBlock)
+RecordBlocksCount:        12500 = MaxRecordsCount/(BlockSize/ContentSize)
+IndexBlockFreePercentage: 50%
+IndexValueSizeMark:       No
+EmptyIndexDataRangeMark:  Zero-terminated first character
+
+[Record File Facts]
+On adding new record we just add a new heap of data to the end of file
+On deleting just nullify the record data
+On getting just perform simplest operations
+
+[Index File Facts]
+
+[Graphical Screen Form]
+E+L:   DB path
+E+L:   Index
+E+L:   Value
+Btn:   Set database [db path]
+Btn:   Clear database
+Btn:   Populate database (10^5)
+Btn:   Add record [index + value]
+Btn:   Change record [index + value]
+Btn:   Remove record [index]
+Dlb:   Acquired value
+Btn:   Output all data
+Mllbl: List with pairs of indexes and values
