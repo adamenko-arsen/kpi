@@ -152,11 +152,13 @@ main {
     color: white;
 }
 
-.card-more > a:not(:visited) {
-    color: red;
-}
+.card-more > a {
+    color: white;
 
-.card-more > a:visited {
+    transition: background-color 0.3s ease;
+}
+.card-more > a:hover {
+    background: rgba(255, 255, 255, 0.2);
     color: white;
 }
 
@@ -308,10 +310,14 @@ main {
 
     .main-header {
         font-size: 2.0rem;
+
+    	text-align: center;
     }
 
     .main-desc {
         font-size: 1.2rem;
+        
+        text-align: center;
     }
 
     .card-text {
