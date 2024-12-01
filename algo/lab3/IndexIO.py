@@ -25,10 +25,11 @@ class IndexIO:
     idSize = 4
     recordSize = 16
 
-    def __init__(self, filename, blockSize):
-        # TODO
-        self.fm = FileMapper.FileMapper(filename, cache_size=1)
+    def __init__(self, filename, *, blockSize=1024, loadFactor=0.75):
+        self.fm = FileMapper.FileMapper(filename, cache_size=1024)
         self.rpb = blockSize // self.recordSize
+        self.blockSize = blockSize
+        self.loadFactor = loadFactor
 
     def Get(self, key):
         index = self._get_index_by_key(key)
@@ -57,8 +58,189 @@ class IndexIO:
 
         self._redistribute_after_remove(block_index)
 
-    def Add(self, index, id_):
-        pass
+    def Add(self, key, id_):
+        if not (self._get_index_by_key(key) == None):
+            return
+
+        if self._add_append_impl_and_return_status(key, id_):
+            return
+
+        self._add_insert_into_block(key, id_)
+
+    def _add_insert_into_block(self, key, id_):
+        #------------------------------------------
+        #------------------------------------------
+
+        blocks_range = self._get_all_blocks_index_range()
+
+        l = 0
+
+        # in a case for next mvr var validness
+        h = blocks_range['end'] - 1
+
+        for _ in range(10):
+            m = (l + h) // 2
+
+            mvr = self._get_block_value_range(m)
+            nmvr = self._get_block_value_range(m + 1)
+
+            if key < mvr['min']:
+                h = m
+            elif nmvr['max'] < key:
+                l = m
+            else:
+                break
+
+        if nmvr['min'] <= key and key <= nmvr['max']:
+            m += 1
+
+        block_index = m
+
+        #------------------------------------------
+        #------------------------------------------
+
+        if self._is_block_filled_out(block_index):
+            self._copy_blocks_to('temp.bin')
+
+            self.fm.WipeData()
+
+            self._copy_back_and_insert('temp.bin', key, id_)
+
+        #------------------------------------------
+        #------------------------------------------
+
+        blocks_range = self._get_all_blocks_index_range()
+
+        l = 0
+
+        # in a case for next mvr var validness
+        h = blocks_range['end'] - 1
+
+        for _ in range(10):
+            m = (l + h) // 2
+
+            mvr = self._get_block_value_range(m)
+            nmvr = self._get_block_value_range(m + 1)
+
+            if key < mvr['min']:
+                h = m
+            elif nmvr['max'] < key:
+                l = m
+            else:
+                break
+
+        if nmvr['min'] <= key and key <= nmvr['max']:
+            m += 1
+
+        block_index = m
+
+        #------------------------------------------
+        #------------------------------------------
+
+        block_records_count = self._get_block_records_count(block_index)
+
+        # there is off by 1 trick!
+        self._set_record(self._get_record_index_by_block(block_index) + block_records_count, key, id_)
+
+        # including a new record
+        # in this order exactly
+        block_index_range = self._get_block_index_range(block_index)
+
+        # there is off by 1 trick!
+        for i in range(block_index_range['end'] - 1, block_index_range['start'] - 1, -1):
+            key_1 = self._get_record(i)['key']
+            key_2 = self._get_record(i + 1)['key']
+
+            if not (key_1 > key_2):
+                break
+
+            self._swap_records(i, i + 1)
+
+    def _copy_back_and_insert(self, filename, key, id_):
+        tmp_record_id = 0
+
+        tmp_fm = FileMapper.FileMapper(filename, cache_size=1024)
+
+        records_count = tmp_fm.Size() // self.recordSize
+
+        block_id = 0
+        record_id = 0
+
+        records_in_block = 0
+
+        while tmp_record_id < records_count:                
+            tmp_record = tmp_fm.ReadMany(tmp_record_id * self.recordSize, self.recordSize)
+
+            self._set_record_raw(self._get_record_index_by_block(block_id) + record_id, tmp_record)
+
+            tmp_record_id += 1
+            record_id += 1
+            records_in_block += 1
+
+            if records_in_block / self.rpb >= self.loadFactor and tmp_record_id != records_count - 1:
+                records_in_block = 0
+                record_id = 0
+
+                block_id += 1
+
+                for i in range(self.rpb):
+                    self._set_record(self._get_record_index_by_block(block_id) + i, bytes([]), bytes([]))
+
+    def _copy_blocks_to(self, filename):
+        with open(filename, 'w'):
+            pass
+
+        tmp_fm = FileMapper.FileMapper(filename, cache_size=1024)
+
+        count = 0
+
+        # there is off by 1 trick!
+        for block_i in range(self._get_all_blocks_index_range()['end'] + 1):
+            for record_i in range(self._get_block_index_range(block_i)['end'] + 1):
+                record = self._get_record_raw(record_i)
+                tmp_fm.WriteMany(record_i * self.recordSize, record)
+
+                count += 1
+
+    def _swap_records(self, index_1, index_2):
+        record_1 = self.fm.ReadMany(index_1 * self.recordSize, self.recordSize)
+        record_2 = self.fm.ReadMany(index_2 * self.recordSize, self.recordSize)
+
+        self.fm.WriteMany(index_1 * self.recordSize, record_2)
+        self.fm.WriteMany(index_2 * self.recordSize, record_1)
+
+    def _move_record_src_dst(self, src, dst):
+        record = self.fm.ReadMany(src * self.recordSize, self.recordSize)
+
+        self.fm.WriteMany(dst * self.recordSize, record)
+
+    def _add_append_impl_and_return_status(self, key, id_):
+        blocks_range = self._get_all_blocks_index_range()
+
+        last_block_index = blocks_range['end']
+
+        max_value = self._get_block_value_range(last_block_index)['max']
+
+        if key > max_value:
+            block_fillness = self._get_block_fillness(last_block_index)
+
+            if block_fillness < self.loadFactor:
+                last_block_end_index = self._get_block_index_range(last_block_index)['end']
+                self._set_record(last_block_end_index + 1, key, id_)
+            else:
+                next_last_block_first_record_index = self._get_record_index_by_block(last_block_index + 1)
+
+                self._fill_block(last_block_index + 1)
+
+                self._set_record(next_last_block_first_record_index, key, id_)
+
+            return True
+
+        return False
+
+    def _fill_block(self, index):
+        for i in range(self.rpb):
+            self._set_record(self._get_record_index_by_block(index) + i, bytes([]), bytes([]))
 
     # get record index by key
 
@@ -117,6 +299,12 @@ class IndexIO:
             FitTo(key, self.indexSize) + FitTo(id_, self.idSize)
         )
 
+    def _get_record_raw(self, index):
+        return self.fm.ReadMany(index * self.recordSize, self.recordSize)
+
+    def _set_record_raw(self, index, record):
+        self.fm.WriteMany(index * self.recordSize, record)
+
     # is record/block used
 
     def _is_record_used(self, index):
@@ -130,6 +318,9 @@ class IndexIO:
         )['key']
 
         return key != bytes()
+
+    def _is_block_filled_out(self, index):
+        return self._get_block_records_count(index) == self.rpb
 
     # block records/all blocks ranges
 
@@ -203,6 +394,11 @@ class IndexIO:
 
         return end_index + 1
 
+    def _get_block_fillness(self, index):
+        block_records_count = self._get_block_records_count(index)
+
+        return block_records_count / self.rpb
+
     # advanced operations
 
     def _redistribute_after_remove(self, index):
@@ -230,7 +426,7 @@ class IndexIO:
                 id_ = record['id']
 
                 next_block_records += [{'key': key, 'id': id_}]
-            
+
             two_blocks_records_count = DistributeTwoBlocksCounts(len(next_block_records))
 
             block_new_length = two_blocks_records_count['first']
@@ -257,6 +453,3 @@ class IndexIO:
 
             next_block_index += 1
             index += 1
-
-    def _balance_blocks(self, block_1, block_2):
-        pass

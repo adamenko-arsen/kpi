@@ -77,6 +77,13 @@ class FileMapper:
 
         return data
 
+    def WipeData(self):
+        self.cache_valid = False
+        self.length = 0
+
+        self.file.seek(0, os.SEEK_SET)
+        self.file.truncate()
+
     def Size(self):
         return self.length
 

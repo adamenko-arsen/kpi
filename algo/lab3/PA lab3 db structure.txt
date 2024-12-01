@@ -22,6 +22,7 @@ On getting just perform simplest operations
 [Index File Facts]
 
 [Graphical Screen Form]
+Lbl:   Status
 E+L:   DB path
 E+L:   Index
 E+L:   Value
@@ -31,6 +32,6 @@ Btn:   Populate database (10^5)
 Btn:   Add record [index + value]
 Btn:   Change record [index + value]
 Btn:   Remove record [index]
-Dlb:   Acquired value
+L+L:   Acquired value
 Btn:   Output all data
 Mllbl: List with pairs of indexes and values
