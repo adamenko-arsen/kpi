@@ -15,8 +15,13 @@ IndexValueSizeMark:       No
 EmptyIndexDataRangeMark:  Zero-terminated first character
 
 [Record File Facts]
-On adding new record we just add a new heap of data to the end of file
-On deleting just nullify the record data
+On adding:
+    Add to end block or create new on failing of load factor
+    Add to block if it is not full
+    
+On deleting just nullify the record data:
+    Redistribute data between empty and non empty blocks in order
+      to guarantee avoiding of gap blocks between blocks
 On getting just perform simplest operations
 
 [Index File Facts]

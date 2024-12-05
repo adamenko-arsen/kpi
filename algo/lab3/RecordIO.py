@@ -23,7 +23,7 @@ class RecordIO:
 
         self.file.seek(self.recordSize * id_, os.SEEK_SET)
 
-        return GetFromBytesZT(self.file.read(128)).decode('ascii')
+        return ZTStrUtils.GetFromBytesZT(self.file.read(128)).decode('ascii')
 
     def Set(self, id_, data):
         if not (id_ <= self.getFileSize() // self.recordSize):
@@ -39,9 +39,9 @@ class RecordIO:
         self.file.seek(0, os.SEEK_SET)
         self.file.truncate()
 
+    def Sync(self):
+        pass
+
     def getFileSize(self):
         self.file.seek(0, os.SEEK_END)
         return self.file.tell()
-
-class IndexIO:
-    pass

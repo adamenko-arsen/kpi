@@ -11,14 +11,18 @@ def FitTo(bytes_, size):
 
     return bytes_ + bytes([0]) * (size - ln)
 
-def MaxRecordsWhenAppending(recordsCount, loadFactor):
-    return math.ceil(recordsCount / loadFactor)
+def MaxRecordsWhenAppending(rpb, loadFactor):
+    return min(math.ceil(rpb * loadFactor), rpb - 1)
 
 def DistributeTwoBlocksCounts(recordsCount):
     first = math.ceil(recordsCount / 2)
     second = recordsCount - first
 
     return {'first': first, 'second': second}
+
+# NO ONE EVEN SATAN should not see this OVERJUNKED and OVERROTTEN
+# and FIFTHLY TIME DIGESTED PIECE OF SHIT
+# ****** **********, YOU ARE A PIECE OF SHIT SHATTEN BY MUHA IRYNA PAVLIVNA
 
 class IndexIO:
     indexSize = 12
@@ -32,9 +36,11 @@ class IndexIO:
         self.loadFactor = loadFactor
 
     def Get(self, key):
-        index = self._get_index_by_key(key)
+        iters = [0]
 
-        return self._get_record(index)['id'] if index != None else None
+        index = self._get_index_by_key(key, iters)
+
+        return {'id': self._get_record(index)['id'], 'iters': iters[0]} if index != None else None
 
     def Remove(self, key):
         index = self._get_index_by_key(key)
@@ -106,6 +112,8 @@ class IndexIO:
 
             self._copy_back_and_insert('temp.bin', key, id_)
 
+        # OH SHIT, HERE WE GO AGAIN! I HATE MY ALGORITHMS DESIGNING TEACHER
+
         #------------------------------------------
         #------------------------------------------
 
@@ -156,6 +164,12 @@ class IndexIO:
 
             self._swap_records(i, i + 1)
 
+    def Wipe(self):
+        self.fm.WipeData()
+
+    def Sync(self):
+        self.fm._write_cache()
+
     def _copy_back_and_insert(self, filename, key, id_):
         tmp_record_id = 0
 
@@ -177,7 +191,7 @@ class IndexIO:
             record_id += 1
             records_in_block += 1
 
-            if records_in_block / self.rpb >= self.loadFactor and tmp_record_id != records_count - 1:
+            if MaxRecordsWhenAppending(self.rpb, self.loadFactor) <= records_in_block and tmp_record_id != records_count - 1:
                 records_in_block = 0
                 record_id = 0
 
@@ -219,6 +233,12 @@ class IndexIO:
 
         last_block_index = blocks_range['end']
 
+        if last_block_index == -1:
+            for i in range(self.rpb):
+                self._set_record(i, bytes([]), bytes([]))
+            
+            last_block_index = 0
+
         max_value = self._get_block_value_range(last_block_index)['max']
 
         if key > max_value:
@@ -244,11 +264,17 @@ class IndexIO:
 
     # get record index by key
 
-    def _get_index_by_key(self, key):
+    def _get_index_by_key(self, key, iters=None):
+        if self.fm.Size() == 0:
+            return None
+
         l = 0
         h = self._get_all_blocks_index_range()['end']
 
-        for _ in range(10):
+        for _ in range(30):
+            if iters != None:
+                iters[0] += 1
+
             m = (l + h) // 2
 
             mvr = self._get_block_value_range(m)
@@ -268,7 +294,7 @@ class IndexIO:
         l = block_range['start']
         h = block_range['end']
 
-        for _ in range(6):
+        for _ in range(20):
             m = (l + h) // 2
 
             mv = self._get_record(m)['key']
@@ -286,6 +312,12 @@ class IndexIO:
     # basic record input/output
 
     def _get_record(self, index):
+        if not (0 <= index and index * self.recordSize + self.recordSize <= self.fm.Size()):
+            return {
+                'key': bytes([]),
+                'id':  bytes([])
+            }
+
         record = self.fm.ReadMany(index * self.recordSize, self.recordSize)
 
         return {
@@ -333,6 +365,12 @@ class IndexIO:
     def _get_block_value_range(self, index):
         range_ = self._get_block_index_range(index)
 
+        if self._get_block_records_count(index) == 0:
+            return {
+                'min': bytes([]),
+                'max': bytes([])
+            }
+
         return {
             'min': self._get_record(range_['start'])['key'],
             'max': self._get_record(range_['end'  ])['key']
@@ -343,9 +381,6 @@ class IndexIO:
 
         l = start
         h = start + self.rpb - 1
-
-        if h == -1:
-            return {'start': 0, 'end': -1}
 
         while True:
             if l in (h - 1, h):
@@ -363,6 +398,9 @@ class IndexIO:
         return {'start': start, 'end': end}
 
     def _get_block_records_count(self, index):
+        if index < 0:
+            return 0
+
         range_ = self._get_block_index_range(index)
 
         return range_['end'] - range_['start'] + 1
@@ -405,17 +443,13 @@ class IndexIO:
         all_blocks_range = self._get_all_blocks_index_range()
 
         if not (index < all_blocks_range['end']):
-            print('It is end')
             return
 
         if not (self._get_block_records_count(index) == 0):
-            print('More zero')
             return
 
         next_block_index = index + 1
         while next_block_index <= all_blocks_range['end']:
-            print('Iter')
-
             next_block_range = self._get_block_index_range(next_block_index)
             next_block_records = []
 
