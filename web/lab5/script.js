@@ -238,6 +238,8 @@ function task_5_edit(clazz)
 
             <textarea id='${task_5_editor(clazz)}' rows='8' cols='40'>${html}</textarea>
 
+            <br/>
+
             <button onclick='task_5_change("${clazz}")'>Change!</button>
 
             <button onclick='task_5_reset("${clazz}")'>Reset!</button>
@@ -256,6 +258,14 @@ function task_5_change(clazz)
     store_set(task_5_local_storage(clazz), new_html);
 
     document.getElementsByClassName(clazz)[0].setHTMLUnsafe(new_html);
+
+    let randomNumber = Math.floor(Math.random() * 16777215);
+
+    let blockStyle = document.querySelector(`.${clazz}`);
+
+    let rgb = `#${randomNumber.toString(16).padStart(6, '0')}`;
+
+    blockStyle.style.backgroundColor = rgb;
 }
 
 function task_5_reset(clazz)
