@@ -40,6 +40,11 @@ function store_set(key, value)
     localStorage.setItem(key, value);
 }
 
+function store_remove(key)
+{
+    localStorage.removeItem(key);
+}
+
 function strictParseFloat(input)
 {
     const floatRegex = /^[+-]?[0-9]+(\.[0-9]*)?$/;
@@ -186,7 +191,115 @@ function task_4_startup()
     task_4_set_bg(mayRgb);
 }
 
+/* Task 5 */
+
+const TASK_5_BLOCK_NAMES =
+[
+    'header',
+    'r-side',
+    'l-side-1',
+    'l-side-2',
+    'main',
+    'footer'
+];
+
+const original_blocks_content = {};
+
+function task_5_local_storage(clazz)
+{
+    return `task_5/${clazz}`;
+}
+
+function task_5_editor(clazz)
+{
+    return `task-5-editor-${clazz}`
+}
+
+function task_5_edit(clazz)
+{
+    let block = document.getElementsByClassName(clazz)[0];
+
+    let html = '<no html!>';
+
+    let html_from_store = store_get(task_5_local_storage(clazz));
+
+    if (html_from_store != null)
+    {
+        html = html_from_store;
+    }
+    else
+    {
+        html = original_blocks_content[clazz];
+    }
+
+    let editor = `
+        <div style='width: auto; height: auto;'>
+            <p>HTML editor is here:</p>
+
+            <textarea id='${task_5_editor(clazz)}' rows='8' cols='40'>${html}</textarea>
+
+            <button onclick='task_5_change("${clazz}")'>Change!</button>
+
+            <button onclick='task_5_reset("${clazz}")'>Reset!</button>
+        </div>
+    `;
+
+    block.setHTMLUnsafe(editor);
+}
+
+function task_5_change(clazz)
+{
+    let editor = document.getElementById(task_5_editor(clazz));
+
+    let new_html = editor.value;
+
+    store_set(task_5_local_storage(clazz), new_html);
+
+    document.getElementsByClassName(clazz)[0].setHTMLUnsafe(new_html);
+}
+
+function task_5_reset(clazz)
+{
+    store_remove(task_5_local_storage(clazz));
+
+    let original_html = original_blocks_content[clazz];
+
+    document.getElementsByClassName(clazz)[0].setHTMLUnsafe(original_html);
+}
+
+function task_5_startup()
+{
+    for (
+        let clazz
+        of TASK_5_BLOCK_NAMES
+    )
+    {
+        // get original HTML content
+
+        let block = document.getElementsByClassName(clazz)[0];
+
+        original_blocks_content[clazz] = block
+            .getHTML();
+
+        // populate root blocks with on double click editors
+
+        block.setAttribute('ondblclick', `task_5_edit("${clazz}")`);
+
+        // override if it is changed
+        
+        let override_html = store_get(task_5_local_storage(clazz));
+
+        if (override_html == null)
+        {
+            continue;
+        }
+
+        block.setHTMLUnsafe(override_html);
+    }
+}
+
 /* Initialization */
 
 task_3_startup();
 task_4_startup();
+task_5_startup();
