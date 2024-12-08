@@ -1,36 +1,18 @@
 import tkinter as tk
 import IndexIO
 import RecordIO
+import IntBytesConvert
 
-load_factor = 0.7
+if __name__ == '__main__':
+    load_factor = 0.7
 
-db_path = 'db'
+    db_path = 'db'
 
-idx_filename = 'index.bin'
-rec_filename = 'record.bin'
+    idx_filename = 'index.bin'
+    rec_filename = 'record.bin'
 
-idx_io = None
-rec_io = None
-
-def IntToBytes(i: int, size: int):
-    return i.to_bytes(size, byteorder='little', signed=False)
-
-def BytesToInt(b: bytes):
-    return int.from_bytes(b, byteorder='little', signed=False)
-
-if 0:
-    #idx_io = IndexIO.IndexIO(db_path + '/' + idx_filename)
-    #rec_io = RecordIO.RecordIO(db_path + '/' + rec_filename)
-
-    #idx_io.Add('0000'.encode('ascii'), '000'.encode('ascii'))
-
-    #for i in range(1, 81):
-    #    idx_io.Add(f'{i * 100:0>5}'.encode('ascii'), f'{hex(i)[2:]:0>2}'.encode('ascii'))
-
-    #for i in range(10000):
-    #    idx_io.Add(f'{i:0>5}'.encode('ascii'), f'{hex(i)[2:]:0>3}'.encode('ascii'))
-
-    exit(1)
+    idx_io = None
+    rec_io = None
 
 def clrmsg_btn_handler():
     global messages_console
@@ -104,7 +86,7 @@ def get_btn_handler():
         return
 
     iters = raw_id_info['iters']
-    id_ = BytesToInt(raw_id_info['id'])
+    id_ = IntBytesConvert.BytesToUint(raw_id_info['id'])
 
     messages_add_line(f'По ключу <{key}> було отримано значення <{rec_io.Get(id_)}> за <{iters}> ітерацій')
 
@@ -132,7 +114,7 @@ def add_btn_handler():
 
     id_ = rec_io.Add(data)
 
-    raw_id = IntToBytes(id_, 4)
+    raw_id = IntBytesConvert.UintToBytes(id_, 4)
 
     idx_io.Add(raw_key, raw_id)
 
@@ -176,7 +158,7 @@ def add_10000_btn_handler():
 
     for i in range(10000):
         key  = f'{i:0>6}'.encode('ascii')
-        id_  = IntToBytes(i, 4)
+        id_  = IntBytesConvert.UintToBytes(i, 4)
         data = str(i) + '=' + hex(i)
 
         idx_io.Add(key, id_)
@@ -184,136 +166,137 @@ def add_10000_btn_handler():
 
     messages_add_line('Було зараховано 10000 абітурієнтів')
 
-win = tk.Tk()
-win.title('Лабораторна робота №3')
+if __name__ == '__main__':
+    win = tk.Tk()
+    win.title('Лабораторна робота №3')
 
-win_padding = tk.Frame(win, padx=8, pady=8)
-win_padding.grid(row=0, column=0, sticky='nsew')
+    win_padding = tk.Frame(win, padx=8, pady=8)
+    win_padding.grid(row=0, column=0, sticky='nsew')
 
-win.protocol("WM_DELETE_WINDOW", win_on_exit)
+    win.protocol("WM_DELETE_WINDOW", win_on_exit)
 
-title_label = tk.Label(
-    win_padding,
-    text='ДИСКЛЕЙМЕР, ЦЯ дисципліна створена, щоб студенти страдали. Ця дисципліна це негуманний експеримент'.upper(),
-    justify='center'
-)
-title_label.grid(row=0, column=0, columnspan=3, sticky='nsew')
+    title_label = tk.Label(
+        win_padding,
+        text='Система управління базами даних',
+        justify='center'
+    )
+    title_label.grid(row=0, column=0, columnspan=3, sticky='nsew')
 
-load_db_btn = tk.Button(
-    win_padding,
-    text='Зайти до ВУЗ',
-    justify='center',
-    command=load_db_btn_handler
-)
-load_db_btn.grid(row=1, column=0, sticky='nsew')
+    load_db_btn = tk.Button(
+        win_padding,
+        text='Обрати БД',
+        justify='center',
+        command=load_db_btn_handler
+    )
+    load_db_btn.grid(row=1, column=0, sticky='nsew')
 
-db_name_entry = tk.Entry(
-    win_padding,
-    justify='center'
-)
-db_name_entry.grid(row=1, column=1, sticky='nsew')
+    db_name_entry = tk.Entry(
+        win_padding,
+        justify='center'
+    )
+    db_name_entry.grid(row=1, column=1, sticky='nsew')
 
-db_in_use_desc = tk.Label(
-    win_padding,
-    text='Обраний ВУЗ:',
-    justify='center'
-)
-db_in_use_desc.grid(row=2, column=0, sticky='nsew')
+    db_in_use_desc = tk.Label(
+        win_padding,
+        text='Шляюх до БД:',
+        justify='center'
+    )
+    db_in_use_desc.grid(row=2, column=0, sticky='nsew')
 
-db_in_use_value = tk.Label(
-    win_padding,
-    text='<БД не відкрита>',
-    justify='center'
-)
-db_in_use_value.grid(row=2, column=1, sticky='nsew')
+    db_in_use_value = tk.Label(
+        win_padding,
+        text='<БД не відкрита>',
+        justify='center'
+    )
+    db_in_use_value.grid(row=2, column=1, sticky='nsew')
 
-# Massive operations
+    # Massive operations
 
-wipe_db_btn = tk.Button(
-    win_padding,
-    text='ЗНИЩИТИ ВСІ ДИПЛОМИ',
-    justify='center',
-    command=wipe_db_btn_handler
-)
-wipe_db_btn.grid(row=3, column=0, sticky='nsew')
+    wipe_db_btn = tk.Button(
+        win_padding,
+        text='Стерти всю БД',
+        justify='center',
+        command=wipe_db_btn_handler
+    )
+    wipe_db_btn.grid(row=3, column=0, sticky='nsew')
 
-add_10000_btn = tk.Button(
-    win_padding,
-    text='Зарахувати 10000 абітурів',
-    justify='center',
-    command=add_10000_btn_handler
-)
-add_10000_btn.grid(row=4, column=0, sticky='nsew')
+    add_10000_btn = tk.Button(
+        win_padding,
+        text='Зарахувати 10000 абітурів',
+        justify='center',
+        command=add_10000_btn_handler
+    )
+    add_10000_btn.grid(row=4, column=0, sticky='nsew')
 
-# Inputs
+    # Inputs
 
-key_value_desc = tk.Label(
-    win_padding,
-    text='Студент:',
-    justify='center'
-)
-key_value_desc.grid(row=5, column=0, sticky='nsew')
+    key_value_desc = tk.Label(
+        win_padding,
+        text='Ключ:',
+        justify='center'
+    )
+    key_value_desc.grid(row=5, column=0, sticky='nsew')
 
-key_value_entry = tk.Entry(
-    win_padding,
-    justify='center'
-)
-key_value_entry.grid(row=5, column=1, sticky='nsew')
+    key_value_entry = tk.Entry(
+        win_padding,
+        justify='center'
+    )
+    key_value_entry.grid(row=5, column=1, sticky='nsew')
 
-# ---
+    # ---
 
-content_value_desc = tk.Label(
-    win_padding,
-    text='Успішсть:',
-    justify='center'
-)
-content_value_desc.grid(row=6, column=0, sticky='nsew')
+    content_value_desc = tk.Label(
+        win_padding,
+        text='Дані:',
+        justify='center'
+    )
+    content_value_desc.grid(row=6, column=0, sticky='nsew')
 
-content_value_value = tk.Entry(
-    win_padding,
-    justify='center'
-)
-content_value_value.grid(row=6, column=1, sticky='nsew')
+    content_value_value = tk.Entry(
+        win_padding,
+        justify='center'
+    )
+    content_value_value.grid(row=6, column=1, sticky='nsew')
 
-# Manipluate DB
+    # Manipluate DB
 
-get_btn = tk.Button(
-    win_padding,
-    text='Стеження 24/7',
-    justify='center',
-    command=get_btn_handler
-)
-get_btn.grid(row=7, column=0, sticky='nsew')
+    get_btn = tk.Button(
+        win_padding,
+        text='Отримати',
+        justify='center',
+        command=get_btn_handler
+    )
+    get_btn.grid(row=7, column=0, sticky='nsew')
 
-add_btn = tk.Button(
-    win_padding,
-    text='Зарахувати',
-    justify='center',
-    command=add_btn_handler
-)
-add_btn.grid(row=8, column=0, sticky='nsew')
+    add_btn = tk.Button(
+        win_padding,
+        text='Додати',
+        justify='center',
+        command=add_btn_handler
+    )
+    add_btn.grid(row=8, column=0, sticky='nsew')
 
-remove_btn = tk.Button(
-    win_padding,
-    text='ВІДРАХУВАТИ',
-    justify='center',
-    command=remove_btn_handler
-)
-remove_btn.grid(row=9, column=0, sticky='nsew')
+    remove_btn = tk.Button(
+        win_padding,
+        text='Видалити',
+        justify='center',
+        command=remove_btn_handler
+    )
+    remove_btn.grid(row=9, column=0, sticky='nsew')
 
-clrmsg_btn = tk.Button(
-    win_padding,
-    text='ЗНИЩИТИ ВСЮ ПАЛЬ',
-    justify='center',
-    command=clrmsg_btn_handler
-)
-clrmsg_btn.grid(row=10, column=0, sticky='nsew')
+    clrmsg_btn = tk.Button(
+        win_padding,
+        text='Очистити повідомлення',
+        justify='center',
+        command=clrmsg_btn_handler
+    )
+    clrmsg_btn.grid(row=10, column=0, sticky='nsew')
 
-# Messages
+    # Messages
 
-messages_console = tk.Text(
-    win_padding
-)
-messages_console.grid(row=1, column=2, rowspan=10, sticky='nsew')
+    messages_console = tk.Text(
+        win_padding
+    )
+    messages_console.grid(row=1, column=2, rowspan=10, sticky='nsew')
 
-tk.mainloop()
+    tk.mainloop()
