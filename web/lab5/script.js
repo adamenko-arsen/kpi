@@ -96,6 +96,12 @@ function task_2()
 
     let radius = mayParsedRadius;
 
+    if (radius < 0)
+    {
+        output.textContent = "Radius has to be a positive number";
+        return;
+    }
+
     let square = Math.PI * Math.pow(radius, 2);
 
     output.textContent = `Square: ${square.toString()}`;
@@ -127,13 +133,21 @@ function task_3_input()
 
     numbers.sort((x, y) => { return x - y; });
 
-    min10nums = numbers.slice(0, 10);
+    max = numbers[numbers.length - 1];
 
-    status.textContent = ! (min10nums.length >= 10) ? 'Warning: less than 10 numbers' : "It's ok!";
+    maxCount = 0;
 
-    let lessThan10 = ! (min10nums.length >= 10) ? '. Also there is less than 10 numbers!' : '';
+    for (let num of numbers)
+    {
+        if (num == max)
+        {
+            maxCount++;
+        }
+    }
 
-    alert('Top 10 min numbers: ' + numbers.join(' ') + lessThan10);
+    status.textContent = "It's ok!";;
+
+    alert('Count of numbers of max value: ' + maxCount);
 
     cookie_set(TASK_3_COOKIE_NAME, numbers.join(' '));
 }
