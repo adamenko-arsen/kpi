@@ -149,7 +149,7 @@ function task_3_input()
 
     alert('Count of numbers of max value: ' + maxCount);
 
-    cookie_set(TASK_3_COOKIE_NAME, numbers.join(' '));
+    cookie_set(TASK_3_COOKIE_NAME, maxCount);
 }
 
 function task_3_startup()
@@ -161,7 +161,7 @@ function task_3_startup()
         return;
     }
 
-    let result = window.confirm('Hello, my homies! Top 10 min numbers: ' + min10numsCookie + '. Do you want to clean?');
+    let result = window.confirm('Hello, my homies! Count of maxes: ' + min10numsCookie + '. Do you want to clean?');
 
     if (! result)
     {
