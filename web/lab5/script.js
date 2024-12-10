@@ -19,7 +19,7 @@ function cookie_get(key)
 function cookie_set(key, value)
 {
     const date = new Date();
-    date.setTime(date.getTime() + 10 * 1000);
+    date.setTime(date.getTime() + 60 * 1000);
     const expires = "expires=" + date.toUTCString();
 
     document.cookie = `${key}=${value}; ${expires}; path=/`;
@@ -208,7 +208,7 @@ const original_blocks_background = {};
 
 function task_5_local_storage(clazz)
 {
-    return `task_5${clazz}`;
+    return `task_5_content_${clazz}`;
 }
 
 function task_5_background(clazz)
