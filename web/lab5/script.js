@@ -131,6 +131,12 @@ function task_3_input()
         numbers.push(mayNumber);
     }
 
+    if (numbers.length != 10)
+    {
+        status.textContent = 'Count of numbers has to be 10';
+        return;
+    }
+
     numbers.sort((x, y) => { return x - y; });
 
     max = numbers[numbers.length - 1];
