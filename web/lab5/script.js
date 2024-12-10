@@ -131,7 +131,9 @@ function task_3_input()
 
     status.textContent = ! (min10nums.length >= 10) ? 'Warning: less than 10 numbers' : "It's ok!";
 
-    alert('Top 10 min numbers: ' + numbers.join(' '));
+    let lessThan10 = ! (min10nums.length >= 10) ? '. Also there is less than 10 numbers!' : '';
+
+    alert('Top 10 min numbers: ' + numbers.join(' ') + lessThan10);
 
     cookie_set(TASK_3_COOKIE_NAME, numbers.join(' '));
 }
