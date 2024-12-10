@@ -204,10 +204,16 @@ const TASK_5_BLOCK_NAMES =
 ];
 
 const original_blocks_content = {};
+const original_blocks_background = {};
 
 function task_5_local_storage(clazz)
 {
-    return `task_5/${clazz}`;
+    return `task_5${clazz}`;
+}
+
+function task_5_background(clazz)
+{
+    return `task_5_bg_${clazz}`;
 }
 
 function task_5_editor(clazz)
@@ -241,8 +247,6 @@ function task_5_edit(clazz)
             <br/>
 
             <button onclick='task_5_change("${clazz}")'>Change!</button>
-
-            <button onclick='task_5_reset("${clazz}")'>Reset!</button>
         </div>
     `;
 
@@ -253,7 +257,7 @@ function task_5_change(clazz)
 {
     let editor = document.getElementById(task_5_editor(clazz));
 
-    let new_html = editor.value;
+    let new_html = editor.value + `<button onclick='task_5_reset("${clazz}")'>Reset!</button>`;
 
     store_set(task_5_local_storage(clazz), new_html);
 
@@ -266,15 +270,21 @@ function task_5_change(clazz)
     let rgb = `#${randomNumber.toString(16).padStart(6, '0')}`;
 
     blockStyle.style.backgroundColor = rgb;
+
+    store_set(task_5_background(clazz), rgb);
 }
 
 function task_5_reset(clazz)
 {
     store_remove(task_5_local_storage(clazz));
+    store_remove(task_5_background(clazz));
 
     let original_html = original_blocks_content[clazz];
 
     document.getElementsByClassName(clazz)[0].setHTMLUnsafe(original_html);
+
+    document.querySelector(`.${clazz}`).style.backgroundColor
+        = original_blocks_background[clazz];
 }
 
 function task_5_startup()
@@ -290,6 +300,9 @@ function task_5_startup()
 
         original_blocks_content[clazz] = block
             .getHTML();
+        
+        original_blocks_background[clazz] =
+            document.querySelector(`.${clazz}`).style.backgroundColor;
 
         // populate root blocks with on double click editors
 
@@ -304,6 +317,7 @@ function task_5_startup()
             continue;
         }
 
+        document.querySelector(`.${clazz}`).style.backgroundColor = store_get(task_5_background(clazz));
         block.setHTMLUnsafe(override_html);
     }
 }
