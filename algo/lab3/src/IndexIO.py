@@ -3,166 +3,183 @@ import ZTStrUtils
 
 import math
 
-def FitTo(bytes_, size):
-    ln = len(bytes_)
-
-    if not (ln < size):
-        return bytes_[:size]
-
-    return bytes_ + bytes([0]) * (size - ln)
-
-def MaxRecordsWhenAppending(rpb, loadFactor):
-    return min(math.ceil(rpb * loadFactor), rpb - 1)
-
-def DistributeTwoBlocksCounts(recordsCount):
-    first = math.ceil(recordsCount / 2)
-    second = recordsCount - first
-
-    return {'first': first, 'second': second}
-
-# NO ONE EVEN SATAN should not see this OVERJUNKED and OVERROTTEN
-# and FIFTHLY TIME DIGESTED PIECE OF SHIT
-# ****** **********, YOU ARE A PIECE OF SHIT SHATTEN BY MUHA IRYNA PAVLIVNA
+_get_iters_count = 0
 
 class IndexIO:
-    indexSize = 12
-    idSize = 4
+    keySize = 12
+    pkeySize = 4
     recordSize = 16
+    recsPerBlock = 64
+    blockSize = 1024
 
-    def __init__(self, filename, *, blockSize=1024, loadFactor=0.75):
+    def __init__(self, filename, load_factor=0.75):
         self.fm = FileMapper.FileMapper(filename, cache_size=1024)
-        self.rpb = blockSize // self.recordSize
-        self.blockSize = blockSize
-        self.loadFactor = loadFactor
 
-    def Get(self, key):
-        iters = [0]
+        self.filename = filename
+        self.load_factor = load_factor
 
-        index = self._get_index_by_key(key, iters)
+    def Get(self, key) -> bytes | None:
+        global _get_iters_count
+        _get_iters_count = 0
 
-        return {'id': self._get_record(index)['id'], 'iters': iters[0]} if index != None else None
+        search_data = self._get_info_by_key(key)
+
+        if search_data == None:
+            return None
+
+        records = search_data['records']
+        index = search_data['record_index']
+
+        return records[index]['pkey']
+
+    def Add(self, key, pkey):
+        pkey = ZTStrUtils.GetToStrZTPadded(pkey, self.pkeySize)
+
+        if self._get_info_by_key(key) != None:
+            return
+
+        if self._blocks_count() == 0:
+            new_block = [{'key': key, 'pkey': pkey}]
+            self._set_block(0, new_block)
+
+            return
+
+        low = 0
+        high = self._blocks_count() - 1
+
+        for _ in range(64):
+            med = (low + high) // 2
+
+            if med < 0:
+                med = 0
+                break
+
+            if med >= self._blocks_count():
+                med = self._blocks_count() - 1
+                break
+
+            block = self._get_block(med)
+            bmm = self._get_block_minmax(block)
+
+            if key < bmm['min']:
+                high = med - 1
+            elif     bmm['max'] < key:
+                low  = med + 1
+            else:
+                break
+
+        if med != self._blocks_count() - 1:
+            if len(block) + 1 <= self.recsPerBlock:
+                block += [{'key': key, 'pkey': pkey}]
+                block.sort(key = lambda x: x['key'])
+
+                self._set_block(med, block)
+
+                return
+
+            block += [{'key': key, 'pkey': pkey}]
+            block.sort(key = lambda x: x['key'])
+
+            tmp_filename = self.filename + '.tmp'
+
+            with open(tmp_filename, 'wb') as tmp_file:
+                for bi in range(self._blocks_count()):
+                    if bi == med:
+                        iter_recs = block
+                    else:
+                        iter_recs = self._get_block(bi)
+
+                    for r in iter_recs:
+                        key = ZTStrUtils.GetToStrZTPadded(r['key'], self.keySize)
+                        pkey = r['pkey']
+
+                        pair = key + pkey
+
+                        tmp_file.write(pair)
+
+                self.fm.WipeData()
+
+            with open(tmp_filename, 'rb') as tmp_file:
+                bid = 0
+                records = []
+
+                while (raw_record := tmp_file.read(self.recordSize)):
+                    key = ZTStrUtils.GetFromBytesZT(raw_record[:self.keySize])
+                    pkey = raw_record[self.keySize:]
+
+                    if not self._is_load_factor_keep(len(records) + 1):
+                        self._set_block(bid, records)
+
+                        records = []
+                        bid += 1
+
+                    records += [{'key': key, 'pkey': pkey}]
+
+                if records:
+                    self._set_block(bid, records)
+            
+            with open(tmp_filename, 'wb'): pass
+
+            return
+
+        if med == self._blocks_count() - 1:
+            if self._is_load_factor_keep(len(block) + 1):
+                block += [{'key': key, 'pkey': pkey}]
+                block.sort(key = lambda x: x['key'])
+
+                self._set_block(med, block)
+
+                return
+
+            new_block = [{'key': key, 'pkey': pkey}]
+            self._set_block(med + 1, new_block)
+
+            return
 
     def Remove(self, key):
-        index = self._get_index_by_key(key)
+        search_data = self._get_info_by_key(key)
 
-        if not (index != None):
+        if search_data == None:
             return
 
-        block_index = self._get_block_index_by_record_index(index)
-        block_index_range = self._get_block_index_range(block_index)
+        records = search_data['records']
+        block = search_data['block_index']
 
-        for i in range(index, block_index_range['end']):
-            new_record = self._get_record(i + 1)
+        new_records = []
 
-            key = new_record['key']
-            id_ = new_record['id']
+        for r in records:
+            if r['key'] == key:
+                continue
 
-            self._set_record(i, key, id_)
+            new_records += [r]
 
-        # since it is moved lefter, remove an existance mark
-        self._set_record(block_index_range['end'], bytes([]), bytes([]))
-
-        self._redistribute_after_remove(block_index)
-
-    def Add(self, key, id_):
-        if not (self._get_index_by_key(key) == None):
+        if len(new_records) != 0:
             return
 
-        if self._add_append_impl_and_return_status(key, id_):
+        if block == self._blocks_count() - 1:
+            self._pop_block()
             return
 
-        self._add_insert_into_block(key, id_)
+        next_block = block + 1
+        while next_block < self._blocks_count():
+            next_records = self._get_block(next_block)
 
-    def _add_insert_into_block(self, key, id_):
-        #------------------------------------------
-        #------------------------------------------
+            first_part_len = math.ceil(len(next_records) / 2)
 
-        blocks_range = self._get_all_blocks_index_range()
+            first_part = next_records[:first_part_len]
+            second_part = next_records[first_part_len:]
 
-        l = 0
+            self._set_block(block, first_part)
+            self._set_block(next_block, second_part)
 
-        # in a case for next mvr var validness
-        h = blocks_range['end'] - 1
+            next_block += 1
+            block += 1
 
-        for _ in range(10):
-            m = (l + h) // 2
-
-            mvr = self._get_block_value_range(m)
-            nmvr = self._get_block_value_range(m + 1)
-
-            if key < mvr['min']:
-                h = m
-            elif nmvr['max'] < key:
-                l = m
-            else:
+            if len(second_part) != 0:
                 break
 
-        if nmvr['min'] <= key and key <= nmvr['max']:
-            m += 1
-
-        block_index = m
-
-        #------------------------------------------
-        #------------------------------------------
-
-        if self._is_block_filled_out(block_index):
-            self._copy_blocks_to('temp.bin')
-
-            self.fm.WipeData()
-
-            self._copy_back_and_insert('temp.bin', key, id_)
-
-        # OH SHIT, HERE WE GO AGAIN! I HATE MY ALGORITHMS DESIGNING TEACHER
-
-        #------------------------------------------
-        #------------------------------------------
-
-        blocks_range = self._get_all_blocks_index_range()
-
-        l = 0
-
-        # in a case for next mvr var validness
-        h = blocks_range['end'] - 1
-
-        for _ in range(10):
-            m = (l + h) // 2
-
-            mvr = self._get_block_value_range(m)
-            nmvr = self._get_block_value_range(m + 1)
-
-            if key < mvr['min']:
-                h = m
-            elif nmvr['max'] < key:
-                l = m
-            else:
-                break
-
-        if nmvr['min'] <= key and key <= nmvr['max']:
-            m += 1
-
-        block_index = m
-
-        #------------------------------------------
-        #------------------------------------------
-
-        block_records_count = self._get_block_records_count(block_index)
-
-        # there is off by 1 trick!
-        self._set_record(self._get_record_index_by_block(block_index) + block_records_count, key, id_)
-
-        # including a new record
-        # in this order exactly
-        block_index_range = self._get_block_index_range(block_index)
-
-        # there is off by 1 trick!
-        for i in range(block_index_range['end'] - 1, block_index_range['start'] - 1, -1):
-            key_1 = self._get_record(i)['key']
-            key_2 = self._get_record(i + 1)['key']
-
-            if not (key_1 > key_2):
-                break
-
-            self._swap_records(i, i + 1)
+        if len(second_part) == 0:
+            self._pop_block()
 
     def Wipe(self):
         self.fm.WipeData()
@@ -170,320 +187,162 @@ class IndexIO:
     def Sync(self):
         self.fm._write_cache()
 
-    def _copy_back_and_insert(self, filename, key, id_):
-        tmp_record_id = 0
+    def _is_load_factor_keep(self, new_count):
+        return new_count / self.recsPerBlock < self.load_factor
 
-        tmp_fm = FileMapper.FileMapper(filename, cache_size=1024)
+    def _get_info_by_key(self, key):
+        global _get_iters_count
 
-        records_count = tmp_fm.Size() // self.recordSize
-
-        block_id = 0
-        record_id = 0
-
-        records_in_block = 0
-
-        while tmp_record_id < records_count:                
-            tmp_record = tmp_fm.ReadMany(tmp_record_id * self.recordSize, self.recordSize)
-
-            self._set_record_raw(self._get_record_index_by_block(block_id) + record_id, tmp_record)
-
-            tmp_record_id += 1
-            record_id += 1
-            records_in_block += 1
-
-            if MaxRecordsWhenAppending(self.rpb, self.loadFactor) <= records_in_block and tmp_record_id != records_count - 1:
-                records_in_block = 0
-                record_id = 0
-
-                block_id += 1
-
-                for i in range(self.rpb):
-                    self._set_record(self._get_record_index_by_block(block_id) + i, bytes([]), bytes([]))
-
-    def _copy_blocks_to(self, filename):
-        with open(filename, 'w'):
-            pass
-
-        tmp_fm = FileMapper.FileMapper(filename, cache_size=1024)
-
-        count = 0
-
-        # there is off by 1 trick!
-        for block_i in range(self._get_all_blocks_index_range()['end'] + 1):
-            for record_i in range(self._get_block_index_range(block_i)['end'] + 1):
-                record = self._get_record_raw(record_i)
-                tmp_fm.WriteMany(record_i * self.recordSize, record)
-
-                count += 1
-
-    def _swap_records(self, index_1, index_2):
-        record_1 = self.fm.ReadMany(index_1 * self.recordSize, self.recordSize)
-        record_2 = self.fm.ReadMany(index_2 * self.recordSize, self.recordSize)
-
-        self.fm.WriteMany(index_1 * self.recordSize, record_2)
-        self.fm.WriteMany(index_2 * self.recordSize, record_1)
-
-    def _move_record_src_dst(self, src, dst):
-        record = self.fm.ReadMany(src * self.recordSize, self.recordSize)
-
-        self.fm.WriteMany(dst * self.recordSize, record)
-
-    def _add_append_impl_and_return_status(self, key, id_):
-        blocks_range = self._get_all_blocks_index_range()
-
-        last_block_index = blocks_range['end']
-
-        if last_block_index == -1:
-            for i in range(self.rpb):
-                self._set_record(i, bytes([]), bytes([]))
-            
-            last_block_index = 0
-
-        max_value = self._get_block_value_range(last_block_index)['max']
-
-        if key > max_value:
-            block_fillness = self._get_block_fillness(last_block_index)
-
-            if block_fillness < self.loadFactor:
-                last_block_end_index = self._get_block_index_range(last_block_index)['end']
-                self._set_record(last_block_end_index + 1, key, id_)
-            else:
-                next_last_block_first_record_index = self._get_record_index_by_block(last_block_index + 1)
-
-                self._fill_block(last_block_index + 1)
-
-                self._set_record(next_last_block_first_record_index, key, id_)
-
-            return True
-
-        return False
-
-    def _fill_block(self, index):
-        for i in range(self.rpb):
-            self._set_record(self._get_record_index_by_block(index) + i, bytes([]), bytes([]))
-
-    # get record index by key
-
-    def _get_index_by_key(self, key, iters=None):
-        if self.fm.Size() == 0:
+        if self._blocks_count() == 0:
             return None
 
-        l = 0
-        h = self._get_all_blocks_index_range()['end']
+        low = 0
+        high = self._blocks_count() - 1
 
-        for _ in range(30):
-            if iters != None:
-                iters[0] += 1
+        for _ in range(64):
+            _get_iters_count += 1
 
-            m = (l + h) // 2
+            med = (low + high) // 2
 
-            mvr = self._get_block_value_range(m)
+            if not (0 <= med < self._blocks_count()):
+                return None
 
-            if key < mvr['min']:
-                h = m - 1
-            elif     mvr['max'] < key:
-                l = m + 1
+            block = self._get_block(med)
+            bmm = self._get_block_minmax(block)
+
+            if key < bmm['min']:
+                high = med - 1
+            elif     bmm['max'] < key:
+                low  = med + 1
             else:
-                if mvr['min'] <= key <= mvr['max']:
-                    break
-                else:
-                    return None
-
-        block_range = self._get_block_index_range(m)
-
-        l = block_range['start']
-        h = block_range['end']
-
-        for _ in range(20):
-            m = (l + h) // 2
-
-            mv = self._get_record(m)['key']
-
-            if key < mv:
-                h = m - 1
-            elif     mv < key:
-                l = m + 1
-            else:
-                if mv == key:
-                    return m
-                else:
-                    return None
-
-    # basic record input/output
-
-    def _get_record(self, index):
-        if not (0 <= index and index * self.recordSize + self.recordSize <= self.fm.Size()):
-            return {
-                'key': bytes([]),
-                'id':  bytes([])
-            }
-
-        record = self.fm.ReadMany(index * self.recordSize, self.recordSize)
-
-        return {
-            'key': ZTStrUtils.GetFromBytesZT(record[:self.indexSize]),
-            'id':  record[self.indexSize:]
-        }
-
-    def _set_record(self, index, key, id_):
-        self.fm.WriteMany(
-            index * self.recordSize,
-            FitTo(key, self.indexSize) + FitTo(id_, self.idSize)
-        )
-
-    def _get_record_raw(self, index):
-        return self.fm.ReadMany(index * self.recordSize, self.recordSize)
-
-    def _set_record_raw(self, index, record):
-        self.fm.WriteMany(index * self.recordSize, record)
-
-    # is record/block used
-
-    def _is_record_used(self, index):
-        key = self._get_record(index)['key']
-
-        return key != bytes()
-
-    def _is_block_used(self, index):
-        key = self._get_record(
-            self._get_block_index_range(index)['start']
-        )['key']
-
-        return key != bytes()
-
-    def _is_block_filled_out(self, index):
-        return self._get_block_records_count(index) == self.rpb
-
-    # block records/all blocks ranges
-
-    def _get_block_index_by_record_index(self, index):
-        return index // self.rpb * self.rpb
-
-    def _get_record_index_by_block(self, index):
-        return index * self.rpb
-
-    def _get_block_value_range(self, index):
-        range_ = self._get_block_index_range(index)
-
-        if self._get_block_records_count(index) == 0:
-            return {
-                'min': bytes([]),
-                'max': bytes([])
-            }
-
-        return {
-            'min': self._get_record(range_['start'])['key'],
-            'max': self._get_record(range_['end'  ])['key']
-        }
-
-    def _get_block_index_range(self, index):
-        start = index * self.rpb
-
-        l = start
-        h = start + self.rpb - 1
-
-        while True:
-            if l in (h - 1, h):
                 break
 
-            m = (l + h) // 2
+        index = self._get_key_index_in_block(block, key)
 
-            if not self._is_record_used(m):
-                h = m - 1
-            else:
-                l = m
+        if index == None:
+            return None
+        
+        return {
+            'records': block,
+            'block_index': med,
+            'record_index': index
+        }
 
-        end = h if self._is_record_used(h) else (l if self._is_record_used(l) else -1)
+    def _get_block_minmax(self, records):
+        keys = [r['key'] for r in records]
 
-        return {'start': start, 'end': end}
+        return {'min': min(keys), 'max': max(keys)}
 
-    def _get_block_records_count(self, index):
-        if index < 0:
-            return 0
+    def _get_key_index_in_block(self, records, key):
+        for i, v in enumerate(records):
+            if v['key'] == key:
+                return i
 
-        range_ = self._get_block_index_range(index)
+        return None
 
-        return range_['end'] - range_['start'] + 1
+    # return only non null keys and their pkeys
+    def _get_block(self, index):
+        if not (0 <= index < self._blocks_count()):
+            return None
 
-    def _get_all_blocks_index_range(self):
-        l = 0
-        h = self.fm.Size() // (self.recordSize * self.rpb) - 1
+        data = self.fm.ReadMany(self.blockSize * index, self.blockSize)
 
-        if h == -1:
-            return {'start': 0, 'end': -1}
+        records = []
 
-        while True:
-            if l in (h - 1, h):
-                break
+        for i in range(self.recsPerBlock):
+            key = ZTStrUtils.GetFromBytesZT(data[i * self.recordSize:i * self.recordSize + self.keySize])
+            pkey = data[i * self.recordSize + self.keySize:i * self.recordSize + self.keySize + self.pkeySize]
 
-            m = (l + h) // 2
+            if key == bytes():
+                continue
 
-            if not self._is_block_used(m):
-                h = m - 1
-            else:
-                l = m
+            records += [{'key': key, 'pkey': pkey}]
 
-        end = h if self._is_block_used(h) else l
+        return records
 
-        return {'start': 0, 'end': end}
+    def _set_block(self, index, records):
+        for i, v in enumerate(records):
+            key = ZTStrUtils.GetToStrZTPadded(v['key'], self.keySize)
+            pkey = v['pkey']
+
+            pair = key + pkey
+
+            self.fm.WriteMany(index * self.blockSize + i * self.recordSize, pair)
+
+        for i in range(len(records), self.recsPerBlock):
+            self.fm.WriteMany(index * self.blockSize + i * self.recordSize, bytes(16))
+
+    def _pop_block(self):
+        count = self._blocks_count()
+
+        if not (count >= 1):
+            return
+
+        self.fm.Shrink((count - 1) * self.blockSize)
 
     def _blocks_count(self):
-        end_index = self._get_all_blocks_index_range['end']
+        return self.fm.Size() // self.blockSize
 
-        return end_index + 1
+# idx_io = IndexIO('db/index.bin', load_factor=0.7)
 
-    def _get_block_fillness(self, index):
-        block_records_count = self._get_block_records_count(index)
 
-        return block_records_count / self.rpb
 
-    # advanced operations
+# idx_io._set_block(0, [
+#     {'key': '001'.encode('ascii'), 'pkey': 'aaa'.encode('ascii')},
+#     {'key': '002'.encode('ascii'), 'pkey': 'bbb'.encode('ascii')},
+#     {'key': '003'.encode('ascii'), 'pkey': 'ccc'.encode('ascii')},
+#     {'key': '004'.encode('ascii'), 'pkey': 'ddd'.encode('ascii')},
+# ])
 
-    def _redistribute_after_remove(self, index):
-        all_blocks_range = self._get_all_blocks_index_range()
+# idx_io._set_block(1, [
+#     {'key': '011'.encode('ascii'), 'pkey': 'eee'.encode('ascii')},
+#     {'key': '012'.encode('ascii'), 'pkey': 'fff'.encode('ascii')},
+#     {'key': '013'.encode('ascii'), 'pkey': 'ggg'.encode('ascii')},
+#     {'key': '014'.encode('ascii'), 'pkey': 'hhh'.encode('ascii')},
+# ])
 
-        if not (index < all_blocks_range['end']):
-            return
+# idx_io._set_block(2, [
+#     {'key': '021'.encode('ascii'), 'pkey': 'iii'.encode('ascii')},
+#     {'key': '022'.encode('ascii'), 'pkey': 'jjj'.encode('ascii')},
+#     {'key': '023'.encode('ascii'), 'pkey': 'kkk'.encode('ascii')},
+#     {'key': '024'.encode('ascii'), 'pkey': 'lll'.encode('ascii')},
+# ])
 
-        if not (self._get_block_records_count(index) == 0):
-            return
+# idx_io._set_block(3, [
+#     {'key': '031'.encode('ascii'), 'pkey': 'mmm'.encode('ascii')},
+#     {'key': '032'.encode('ascii'), 'pkey': 'nnn'.encode('ascii')},
+#     {'key': '033'.encode('ascii'), 'pkey': 'ooo'.encode('ascii')},
+#     {'key': '034'.encode('ascii'), 'pkey': 'ppp'.encode('ascii')},
+# ])
 
-        next_block_index = index + 1
-        while next_block_index <= all_blocks_range['end']:
-            next_block_range = self._get_block_index_range(next_block_index)
-            next_block_records = []
+# idx_io._set_block(4, [
+#     {'key': '041'.encode('ascii'), 'pkey': 'qqq'.encode('ascii')},
+#     {'key': '042'.encode('ascii'), 'pkey': 'rrr'.encode('ascii')},
+#     {'key': '043'.encode('ascii'), 'pkey': 'sss'.encode('ascii')},
+#     {'key': '044'.encode('ascii'), 'pkey': 'ttt'.encode('ascii')},
+# ])
 
-            for i in range(next_block_range['start'], next_block_range['end'] + 1):
-                record = self._get_record(i)
+# idx_io.Add('000'.encode('ascii'), 'xxx'.encode('ascii'))
+# idx_io.Add('002'.encode('ascii'), 'xxx'.encode('ascii'))
+# idx_io.Add('007'.encode('ascii'), 'xxx'.encode('ascii'))
 
-                key = record['key']
-                id_ = record['id']
+# idx_io.Add('012'.encode('ascii'), 'xxx'.encode('ascii'))
+# idx_io.Add('018'.encode('ascii'), 'xxx'.encode('ascii'))
 
-                next_block_records += [{'key': key, 'id': id_}]
+# idx_io.Add('021'.encode('ascii'), 'xxx'.encode('ascii'))
+# idx_io.Add('027'.encode('ascii'), 'xxx'.encode('ascii'))
 
-            two_blocks_records_count = DistributeTwoBlocksCounts(len(next_block_records))
 
-            block_new_length = two_blocks_records_count['first']
-            next_block_new_length = two_blocks_records_count['second']
 
-            block_record_index = self._get_record_index_by_block(index)
-            next_block_record_index = self._get_record_index_by_block(next_block_index)
+# records = []
 
-            for i in range(64):
-                self._set_record(next_block_record_index + i, bytes([]), bytes([]))
+# for i in range(64):
+#     records += [{'key': f'{i:0>3}'.encode('ascii'), 'pkey': f'{i:0>2}'.encode('ascii')}]
 
-            i = 0
-            for j in range(block_new_length):
-                record = next_block_records[i]
-                self._set_record(block_record_index + j, record['key'], record['id'])
+# idx_io._set_block(0, records)
 
-                i += 1
+# idx_io._set_block(1, [{'key': f'099'.encode('ascii'), 'pkey': f'99'.encode('ascii')}])
 
-            for j in range(next_block_new_length):
-                record = next_block_records[i]
-                self._set_record(next_block_record_index + j, record['key'], record['id'])
+# idx_io.Add(f'077'.encode('ascii'), f'aa'.encode('ascii'))
 
-                i += 1
-
-            next_block_index += 1
-            index += 1
+# idx_io.Sync()

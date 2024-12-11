@@ -13,7 +13,7 @@ class FileMapper:
         self.file.seek(0, os.SEEK_END)
         self.length = self.file.tell()
 
-    def _load_cache(self, index):
+    def _load_cache(self, index: int):
         self._write_cache()
 
         cache_size = self.cache_size
@@ -44,10 +44,10 @@ class FileMapper:
             self.cache_data[:min(self.cache_end, self.length) - self.cache_start]
         )
 
-    def _aligned_index(self, index):
+    def _aligned_index(self, index: int):
         return index // self.cache_size * self.cache_size
 
-    def WriteByte(self, index, value):
+    def WriteByte(self, index: int, value):
         self.length = max(self.length, index + 1)
 
         if not (self.cache_valid and self.cache_start <= index < self.cache_end):
@@ -55,7 +55,7 @@ class FileMapper:
 
         self.cache_data[index - self._aligned_index(index)] = value
 
-    def ReadByte(self, index):
+    def ReadByte(self, index: int):
         if not (
                     self.cache_valid
                 and self.cache_start <= index
@@ -65,17 +65,24 @@ class FileMapper:
 
         return self.cache_data[index - self._aligned_index(index)]
 
-    def WriteMany(self, index, data):
+    def WriteMany(self, index: int, data: bytearray | bytes):
         for offset, char in enumerate(data):
             self.WriteByte(index + offset, char)
     
-    def ReadMany(self, index, size):
+    def ReadMany(self, index: int, size: int):
         data = bytearray(size)
 
         for data_index in range(size):
             data[data_index] = self.ReadByte(index + data_index)
 
         return data
+
+    def Shrink(self, size: int):
+        self.cache_valid = False
+        self.length = size
+
+        self.file.seek(size, os.SEEK_SET)
+        self.file.truncate()
 
     def WipeData(self):
         self.cache_valid = False

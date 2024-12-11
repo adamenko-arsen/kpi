@@ -6,17 +6,17 @@ import os
 class RecordIO:
     recordSize = 128
 
-    def __init__(self, filename):
+    def __init__(self, filename: str):
         self.file = FileMapper.FileMapper(filename, cache_size=1024)
 
-    def Add(self, data):
+    def Add(self, data: str):
         end = self.file.Size()
 
         self.file.WriteMany(end, ZTStrUtils.GetToStrZTPadded(data.encode('ascii'), 128))
 
         return end // self.recordSize
 
-    def Get(self, id_):
+    def Get(self, id_: int):
         if not (id_ <= self.file.Size() // self.recordSize):
             return None
 
@@ -26,7 +26,7 @@ class RecordIO:
         ) \
             .decode('ascii')
 
-    def Set(self, id_, data):
+    def Set(self, id_: int, data: str):
         if not (id_ <= self.file.Size() // self.recordSize):
             return None
 

@@ -1,5 +1,5 @@
 import tkinter as tk
-import IndexIO
+import NewIndexIO as IndexIO
 import RecordIO
 import IntBytesConvert
 
@@ -79,14 +79,14 @@ def get_btn_handler():
         return
 
     key = key_value_entry.get()
-    raw_id_info = idx_io.Get(key.encode('ascii'))
+    pkey = idx_io.Get(key.encode('ascii'))
 
-    if not (raw_id_info != None):
+    if not (pkey != None):
         messages_add_line(f'Немає такого ключа як <{key}>')
         return
 
-    iters = raw_id_info['iters']
-    id_ = IntBytesConvert.BytesToUint(raw_id_info['id'])
+    iters = IndexIO._get_iters_count
+    id_ = IntBytesConvert.BytesToUint(pkey)
 
     messages_add_line(f'По ключу <{key}> було отримано значення <{rec_io.Get(id_)}> за <{iters}> ітерацій')
 
