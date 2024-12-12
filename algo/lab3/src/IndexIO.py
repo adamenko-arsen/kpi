@@ -156,7 +156,7 @@ class IndexIO:
         if len(new_records) != 0:
             return
 
-        if block == self._blocks_count() - 1:
+        if block == self._blocks_count() - 1 and len(new_records) == 0:
             self._pop_block()
             return
 
@@ -282,67 +282,3 @@ class IndexIO:
 
     def _blocks_count(self):
         return self.fm.Size() // self.blockSize
-
-# idx_io = IndexIO('db/index.bin', load_factor=0.7)
-
-
-
-# idx_io._set_block(0, [
-#     {'key': '001'.encode('ascii'), 'pkey': 'aaa'.encode('ascii')},
-#     {'key': '002'.encode('ascii'), 'pkey': 'bbb'.encode('ascii')},
-#     {'key': '003'.encode('ascii'), 'pkey': 'ccc'.encode('ascii')},
-#     {'key': '004'.encode('ascii'), 'pkey': 'ddd'.encode('ascii')},
-# ])
-
-# idx_io._set_block(1, [
-#     {'key': '011'.encode('ascii'), 'pkey': 'eee'.encode('ascii')},
-#     {'key': '012'.encode('ascii'), 'pkey': 'fff'.encode('ascii')},
-#     {'key': '013'.encode('ascii'), 'pkey': 'ggg'.encode('ascii')},
-#     {'key': '014'.encode('ascii'), 'pkey': 'hhh'.encode('ascii')},
-# ])
-
-# idx_io._set_block(2, [
-#     {'key': '021'.encode('ascii'), 'pkey': 'iii'.encode('ascii')},
-#     {'key': '022'.encode('ascii'), 'pkey': 'jjj'.encode('ascii')},
-#     {'key': '023'.encode('ascii'), 'pkey': 'kkk'.encode('ascii')},
-#     {'key': '024'.encode('ascii'), 'pkey': 'lll'.encode('ascii')},
-# ])
-
-# idx_io._set_block(3, [
-#     {'key': '031'.encode('ascii'), 'pkey': 'mmm'.encode('ascii')},
-#     {'key': '032'.encode('ascii'), 'pkey': 'nnn'.encode('ascii')},
-#     {'key': '033'.encode('ascii'), 'pkey': 'ooo'.encode('ascii')},
-#     {'key': '034'.encode('ascii'), 'pkey': 'ppp'.encode('ascii')},
-# ])
-
-# idx_io._set_block(4, [
-#     {'key': '041'.encode('ascii'), 'pkey': 'qqq'.encode('ascii')},
-#     {'key': '042'.encode('ascii'), 'pkey': 'rrr'.encode('ascii')},
-#     {'key': '043'.encode('ascii'), 'pkey': 'sss'.encode('ascii')},
-#     {'key': '044'.encode('ascii'), 'pkey': 'ttt'.encode('ascii')},
-# ])
-
-# idx_io.Add('000'.encode('ascii'), 'xxx'.encode('ascii'))
-# idx_io.Add('002'.encode('ascii'), 'xxx'.encode('ascii'))
-# idx_io.Add('007'.encode('ascii'), 'xxx'.encode('ascii'))
-
-# idx_io.Add('012'.encode('ascii'), 'xxx'.encode('ascii'))
-# idx_io.Add('018'.encode('ascii'), 'xxx'.encode('ascii'))
-
-# idx_io.Add('021'.encode('ascii'), 'xxx'.encode('ascii'))
-# idx_io.Add('027'.encode('ascii'), 'xxx'.encode('ascii'))
-
-
-
-# records = []
-
-# for i in range(64):
-#     records += [{'key': f'{i:0>3}'.encode('ascii'), 'pkey': f'{i:0>2}'.encode('ascii')}]
-
-# idx_io._set_block(0, records)
-
-# idx_io._set_block(1, [{'key': f'099'.encode('ascii'), 'pkey': f'99'.encode('ascii')}])
-
-# idx_io.Add(f'077'.encode('ascii'), f'aa'.encode('ascii'))
-
-# idx_io.Sync()
