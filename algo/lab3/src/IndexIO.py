@@ -32,6 +32,17 @@ class IndexIO:
 
         return records[index]['pkey']
 
+    def GetAll(self):
+        pairs = []
+
+        for bid in range(self._blocks_count()):
+            recs = self._get_block(bid)
+
+            for rec in recs:
+                pairs += [{'key': rec['key'], 'pkey': rec['pkey']}]
+
+        return pairs
+
     def Add(self, key, pkey):
         pkey = ZTStrUtils.GetToStrZTPadded(pkey, self.pkeySize)
 
@@ -154,6 +165,7 @@ class IndexIO:
             new_records += [r]
 
         if len(new_records) != 0:
+            self._set_block(block, new_records)
             return
 
         if block == self._blocks_count() - 1 and len(new_records) == 0:
@@ -180,6 +192,7 @@ class IndexIO:
 
         if len(second_part) == 0:
             self._pop_block()
+            return
 
     def Wipe(self):
         self.fm.WipeData()
