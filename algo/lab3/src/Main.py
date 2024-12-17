@@ -317,7 +317,7 @@ if __name__ == '__main__':
 
     add_10000_btn = tk.Button(
         win_padding,
-        text='Зарахувати 10000 абітурів',
+        text='Додати 10000 пар к/з',
         justify='center',
         command=add_10000_btn_handler
     )

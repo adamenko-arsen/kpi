@@ -132,28 +132,28 @@ values
 	('Ukraine', 'Kyiv',       'Kyiv',     'Shevchenko'),
 	('Ukraine', 'Kriviy rig', 'XYZ',      'Pares'),
 	('Ukraine', 'Kyiv',       'Kyiv',     'Dnepro'),
-	('Ukraine', 'Kriviy rig', 'Peremoga', 'Usa'),
+	('Ukraine', 'Kriviy rig', 'Peregmon', 'Usa'),
 	('Ukraine', 'Kyiv',       'Kyiv',     'Kreshatik'),
-	('Ukraine', 'Kriviy rig', 'Zrada',    'Chani');
+	('Ukraine', 'Kriviy rig', 'Zvavo',    'Chani');
 
 -- military units
 
 insert into distinct_military_unit(name_)
 values
-	('Yellow nazdognav'),
-	('Red diplom'),
-	('Green peremoga');
+	('Tretya Sh B'),
+	('Dronivsk'),
+	('Patrioti');
 
 -- distinct military units
 
 insert into military_unit(distinct_military_unit, name_)
 values
-	(1, 'Azart'),
-	(1, 'Peremoga'),
-	(2, 'Zdacha'),
-	(2, 'Ura'),
-	(3, 'GPT'),
-	(3, 'Auto');
+	(1, 'Takin'),
+	(1, 'Pagamont'),
+	(2, 'Vdacha'),
+	(2, 'Tato'),
+	(3, 'Najkrashi'),
+	(3, 'Kruti');
 
 -- resources relations
 
@@ -231,29 +231,29 @@ values
 
 insert into serviceman(fio, birth_date, rank_, rank_data_id)
 values
-	('Arsen',   '2006-01-01', 'private',       1),
-	('Denys',   '2007-01-01', 'putin',         2),
-	('Loleps',  '2005-01-01', 'putin',         3),
+	('Arsen',   '2006-01-01', 'general',       1),
+	('Denys',   '2007-01-01', 'private',         2),
+	('Loleps',  '2005-01-01', 'private',         3),
 	('Mia',     '2006-01-01', 'private',       4),
 	('Piata',   '2004-01-01', 'flagman',       5),
 	('Danya',   '2008-01-01', 'krutoi paren',  6),
-	('Popov',   '2006-01-01', 'putin',         7),
-	('Vadim',   '2007-01-01', 'private',       8),
+	('Popov',   '2006-01-01', 'private',         7),
+	('Vadim',   '2007-01-01', 'commander',       8),
 	('Andrii',  '2003-01-01', 'flagman',       9),
 	('Olena',   '2002-01-01', 'private',      10),
 	('Vladik',  '2006-01-01', 'private',      11),
 	('Braga',   '2006-01-01', 'krutoi paren', 12),
 	('Borya',   '2007-01-01', 'flagman',      13),
-	('Ilya',    '2008-01-01', 'putin',        14),
-	('Maksik',  '2005-01-01', 'putin',        15),
+	('Ilya',    '2008-01-01', 'private',        14),
+	('Maksik',  '2005-01-01', 'general',        15),
 	('Dmitro',  '2006-01-01', 'private',      16),
 	('Yarik',   '2005-01-01', 'flagman',      17),
-	('Kolya',   '2003-01-01', 'krutoi paren', 18),
+	('Kolya',   '2003-01-01', 'private', 18),
 	('Sasha',   '2006-01-01', 'private',      19),
 	('Derii',   '2005-01-01', 'flagman',      20),
 	('KPI',     '2006-01-01', 'private',      21),
-	('Anas.',   '2003-01-01', 'putin',        22),
-	('FictBot', '2000-01-01', 'krutoi paren', 23);
+	('Anas.',   '2003-01-01', 'private',        22),
+	('FictBot', '2000-01-01', 'flagman', 23);
 
 -- specialities
 
