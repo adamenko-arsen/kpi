@@ -8,7 +8,7 @@ def SepTwoLvls(c1, m1, c2, m2):
 
 def GetDepartmentName():
     c = random.choice
-    return c(DEPARTMENT_FIRST_NAMES) + c(DEPARTMENT_SECOND_NAMES) + ' of ' + c(DEPARTMENT_THIRD_NAMES)
+    return c(DEPARTMENT_FIRST_NAMES) + ' ' + c(DEPARTMENT_SECOND_NAMES) + ' of ' + c(DEPARTMENT_THIRD_NAMES)
 
 def GetDepartmentAddress():
     c = random.choice

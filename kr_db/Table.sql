@@ -2,42 +2,34 @@
 
 create table Department(
     ID_             serial primary key,
-    Name_           varchar(64),
+    Name_           varchar(64) unique,
     Address_        varchar(64),
-    Description_    varchar(128),
-
-    constraint DepartmentUniqueName unique(Name_)
+    Description_    varchar(128)
 );
 
 create table Operator(
     ID_         serial primary key,
-    FIO         varchar(48) not null,
-    Department  int references Department(ID_) not null,
-
-    constraint OperatorUniqueFIO unique(FIO)
+    FIO         varchar(48) not null unique,
+    Department  int references Department(ID_) not null
 );
 
 create table Client(
     ID_         serial primary key,
-    FIO         varchar(48) not null,
-    Phone       varchar(24),
-    Email       varchar(64),
-
-    constraint ClientUniqueFIO unique(FIO),
-    constraint ClientUniquePhone unique(Phone),
-    constraint ClientUniqueEmail unique(Email)
+    FIO         varchar(48) not null unique,
+    Phone       varchar(24) unique,
+    Email       varchar(64) unique
 );
 
 -- Call info
 
 create table Call_(
-    ID_         serial primary key,
-    Client      int references Client(ID_)
+    ID_              serial primary key,
+    Client           int references Client(ID_)
         on delete cascade,
-    Operator    int references Operator(ID_)
+    Operator         int references Operator(ID_)
         on delete cascade,
-    StartDate   date not null,
-    Duration    decimal(7, 1) -- no more than 30 days
+    StartTimestamp   timestamp not null,
+    Duration         decimal(7, 1)
 );
 
 create table CallType(
@@ -54,28 +46,28 @@ create table Feedback(
         on delete cascade,
     Call_           int references Call_(ID_)
         on delete cascade,
-    Rating          decimal(2, 1) not null, -- from 0 to 10
-    Comment         varchar(48),
-
-    constraint FeedbackCheckRating check (Rating between 0 and 10)
+    Rating          decimal(2, 1)
+		not null
+		check (Rating between 0 and 10), -- from 0 to 10
+    Comment         varchar(48)
 );
 
 -- Call requests
 
 create table Request(
-    ID_             serial primary key,
-    Call_           int references Call_(ID_)
+    ID_                  serial primary key,
+    Call_                int references Call_(ID_)
         on delete cascade,
-    RequestDate     date not null,
-    Notes           varchar(72)
+    RequestTimestamp     timestamp not null,
+    Notes                varchar(72)
 );
 
 create table RequestResult(
-    ID_             serial primary key,
-    Request         int references Request(ID_)
+    ID_                   serial primary key,
+    Request               int references Request(ID_)
         on delete cascade,
-    ResolutionDate  date,
-    Result          varchar(64)
+    ResolutionTimestamp   timestamp,
+    Result                varchar(64)
 );
 
 -- Operator working time

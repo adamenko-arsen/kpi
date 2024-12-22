@@ -60,6 +60,7 @@ def Mutate(ind: list[int]) -> tuple[list[int], bool]:
 def LocallyOptimize(ind: list[int]) -> None:
     old_weight = Weight(ind)
 
+    # remove until fitness is not -1
     worst_indexer = len(items_end_worst) - 1
     while not (old_weight < CAPACITY):
         if worst_indexer < 0:
@@ -74,11 +75,13 @@ def LocallyOptimize(ind: list[int]) -> None:
         
         worst_indexer -= 1
 
+    # remove some random items
     for _ in range(random.randint(0, 10)):
         ind[random.randint(0, ITEMS_COUNT - 1)] = 0
 
     old_weight = Weight(ind)
 
+    # append best ones
     appends = 0
     for item in items_from_best:
         if appends > 10:
