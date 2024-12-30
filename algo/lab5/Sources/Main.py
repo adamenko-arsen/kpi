@@ -9,11 +9,11 @@ from typing import Callable, Dict, List
 
 def MakeExperiment(
     *,
-    items: list[Item.Item],
+    items: List[Item.Item],
     mutation_chance: float,
-    crossover: Callable[[Entity.Entity, Entity.Entity], list[Entity.Entity]],
-    local_optimizer: Callable[[Entity.Entity, list[Item.Item], int], Entity.Entity]
-):
+    crossover: Callable[[Entity.Entity, Entity.Entity], List[Entity.Entity]],
+    local_optimizer: Callable[[Entity.Entity, List[Item.Item], int], Entity.Entity]
+) -> List[int]:
     entities = []
 
     for eid in range(Config.ENTITIES_COUNT):
@@ -86,25 +86,49 @@ def main():
 
         results_of_mutations[mutation_chance] = best_values
 
+    best_mutation = max(
+        [
+            {'var': k, 'max': results_of_mutations[k][-1]}
+            for k in results_of_mutations
+        ],
+        key = lambda x: x['max']
+    )['var']
+
     for crossover in Config.CROSSOVERS:
         best_values = MakeExperiment(
             items = items,
-            mutation_chance = Config.MUTATION_CHANCES['0.05'],
+            mutation_chance = Config.MUTATION_CHANCES[best_mutation],
             crossover = Config.CROSSOVERS[crossover],
             local_optimizer = Config.LOCAL_OPTIMIZERS['AddLightest']
         )
 
         results_of_crossovers[crossover] = best_values
 
+    best_crossover = max(
+        [
+            {'var': k, 'max': results_of_crossovers[k][-1]}
+            for k in results_of_crossovers
+        ],
+        key = lambda x: x['max']
+    )['var']
+
     for local_optimizer in Config.LOCAL_OPTIMIZERS:
         best_values = MakeExperiment(
             items = items,
-            mutation_chance = Config.MUTATION_CHANCES['0.05'],
-            crossover = Config.CROSSOVERS['Half'],
+            mutation_chance = Config.MUTATION_CHANCES[best_mutation],
+            crossover = Config.CROSSOVERS[best_crossover],
             local_optimizer = Config.LOCAL_OPTIMIZERS[local_optimizer]
         )
 
         results_of_local_optimizers[local_optimizer] = best_values
+
+    best_local_optimizer = max(
+        [
+            {'var': k, 'max': results_of_local_optimizers[k][-1]}
+            for k in results_of_local_optimizers
+        ],
+        key = lambda x: x['max']
+    )['var']
 
     PrintBestStat('mutation chance', results_of_mutations)
     print()
@@ -112,16 +136,21 @@ def main():
     print()
     PrintBestStat('local optimizer', results_of_local_optimizers)
 
+    print('Best combination of variants of parameters:')
+    print(f'| Mutation:        <{best_mutation}>')
+    print(f'| Crossover:       <{best_crossover}>')
+    print(f'| Local optimizer: <{best_local_optimizer}>')
+
     drawer = Drawer.Drawer()
 
     drawer.AddNewComparison(
         'mutation chance',
         results_of_mutations,
         [
-            'darkpurple',
-            'darkblue',
+            'purple',
+            'navy',
             'darkgreen',
-            'darkyellow',
+            'olive',
             'darkorange',
             'darkred'
         ]
@@ -131,16 +160,16 @@ def main():
         results_of_crossovers,
         [
             'darkred',
-            'darkyellow',
+            'olive',
             'darkgreen',
-            'darkblue'
+            'navy'
         ]
     )
     drawer.AddNewComparison(
         'local optimizer',
         results_of_local_optimizers,
         [
-            'darkblue',
+            'navy',
             'darkgreen'
         ]
     )

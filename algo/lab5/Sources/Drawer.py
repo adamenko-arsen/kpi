@@ -21,20 +21,21 @@ class Drawer:
     def Draw(self):
         comparisons = self.comparisons
 
-        fig, axs = plt.subplots(len(comparisons), 2, figsize=(10, 8))
+        fig, axs = plt.subplots(2, len(comparisons), figsize=(10, 8))
 
         for comp_idx, comp in enumerate(comparisons):
-            ax = axs[comp_idx, 0]
+            ax = axs[0, comp_idx]
 
             for res_idx, res in enumerate(comp['results']):
                 best_values = comp['results'][res]
                 ax.plot(
                     range(1, len(best_values) + 1),
                     best_values,
-                    color = comp['colors'][res_idx]
+                    color = comp['colors'][res_idx],
+                    label = res
                 )
 
-            ax.title(f'Comparison of variations of <{comp["variant"]}>')
+            ax.set_title(f'Comparison of variations of <{comp["variant"]}>')
             ax.set_xlabel('Iterations count')
             ax.set_ylabel('Current best value')
 
@@ -44,4 +45,5 @@ class Drawer:
 
             ax.legend()
 
+        plt.tight_layout()
         plt.show()

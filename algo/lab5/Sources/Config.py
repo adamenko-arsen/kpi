@@ -173,7 +173,7 @@ MUTATION_CHANCES = {
     '0.10': 0.10,
     '0.20': 0.20,
     '0.50': 0.50,
-    '1.00': 0.10
+    '1.00': 0.1
 }
 CROSSOVERS       = {
     'Half':      CrossoverA,

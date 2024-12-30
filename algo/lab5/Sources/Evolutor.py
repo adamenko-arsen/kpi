@@ -6,12 +6,12 @@ import Entity
 import Item
 
 import math
-from typing import Callable, Optional
+from typing import List, Callable, Optional
 from random import choice, randint
 
 class Helper:
     @staticmethod
-    def Weight(entity: Entity.Entity, items: list[Item.Item]) -> int:
+    def Weight(entity: Entity.Entity, items: List[Item.Item]) -> int:
         return sum(
             item.Weight if (entity.Gens[iid] == 1) else 0
 
@@ -19,7 +19,7 @@ class Helper:
         )
 
     @staticmethod
-    def Value(entity: Entity.Entity, items: list[Item.Item]) -> int:
+    def Value(entity: Entity.Entity, items: List[Item.Item]) -> int:
         return sum(
             item.Value if (entity.Gens[iid] == 1) else 0
 
@@ -27,7 +27,7 @@ class Helper:
         )
 
     @staticmethod
-    def Fitness(entity: Entity.Entity, items: list[Item.Item], capacity: int) -> int:
+    def Fitness(entity: Entity.Entity, items: List[Item.Item], capacity: int) -> int:
         return \
             Helper.Value(entity, items) \
             if Helper.Weight(entity, items) <= capacity \
@@ -37,7 +37,7 @@ class Helper:
     def TryGetMutatedAndImprove(
         child_a: Entity.Entity,
         child_b: Entity.Entity,
-        items: list[Item.Item],
+        items: List[Item.Item],
         capacity: float,
         mutate_chance: float
     ) -> Optional[Entity.Entity]:
@@ -91,7 +91,7 @@ class Helper:
     def GetWithBestFitness(
             child_a: Entity.Entity,
             child_b: Entity.Entity,
-            items: list[Item.Item],
+            items: List[Item.Item],
             capacity: int
     ) -> Entity.Entity:
         child_a_fitness = Helper.Fitness(child_a, items, capacity)
@@ -128,10 +128,10 @@ class Evolutor:
         self.entities = []
         self.best_entity = None
 
-    def SetItems(self, items: list[Item.Item]):
+    def SetItems(self, items: List[Item.Item]):
         self.items = items
 
-    def SetEntities(self, entities: list[Entity.Entity]):
+    def SetEntities(self, entities: List[Entity.Entity]):
         self.entities = entities
 
     def SetCapacity(self, capacity: int):
@@ -140,7 +140,7 @@ class Evolutor:
     def SetMutationChance(self, chance: float):
         self.mutation_chance = chance
 
-    def SetCrossover(self, crossover: Callable[[Entity.Entity, list[Item.Item], int], Entity.Entity]):
+    def SetCrossover(self, crossover: Callable[[Entity.Entity, List[Item.Item], int], Entity.Entity]):
         self.crossover = crossover
 
     def SetLocalOptimization(self, local_optimizer: Callable[[Entity.Entity], None]):

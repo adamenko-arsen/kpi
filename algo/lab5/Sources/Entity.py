@@ -3,13 +3,14 @@ if __name__ == '__main__':
     exit(1)
 
 from random import uniform, randint
+from typing import List, Dict
 
 class Entity:
     def __init__(self, *, gens=[]):
         self.gens = gens
 
     @property
-    def Gens(self: list[int]):
+    def Gens(self: List[int]):
         return self.gens
 
     @property
@@ -19,7 +20,7 @@ class Entity:
     def Copy(self) -> 'Entity':
         return Entity(gens = self.gens[:])
 
-    def Mutate(self, chance: float) -> dict:
+    def Mutate(self, chance: float) -> Dict:
         if uniform(0, 1) < chance:
             index = randint(0, self._gens_count() - 1)
             gens = self.gens
