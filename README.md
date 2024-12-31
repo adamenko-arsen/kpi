@@ -1,1 +1,1 @@
-KPI student repository
+The grand repository of works of KPI student
