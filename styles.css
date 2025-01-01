@@ -1,0 +1,54 @@
+@font-face {
+    font-family: 'CMU Serif';
+    src: url('cmu-serif.woff2');
+}
+
+@font-face {
+    font-family: 'Fira Code';
+    src: url('fira.ttf');
+}
+
+body {
+    font-family: 'CMU Serif';
+}
+
+code {
+    font-family: 'Fira Code';
+    font-size: 0.8rem;
+}
+
+h1 {
+    font-size: 1.56rem;
+
+    text-align: center;
+}
+
+main-cite {
+    display: block;
+
+    text-align: center;
+
+    margin-bottom: 2rem;
+}
+
+main-cite-content {
+    font-style: italic;
+}
+
+summary {
+    font-size: 1.36rem;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+details > *:not(summary) {
+    margin-left: 1rem;
+}
+
+p, ol, ul {
+    margin-left: 1.5rem;
+}
+
+h2 {
+    font-size: 1.25rem;
+}
