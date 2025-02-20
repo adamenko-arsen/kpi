@@ -1,0 +1,101 @@
+Turbo Assembler	 Version 4.0	    02/10/25 13:32:52	    Page 1
+lab1\main.asm
+
+
+
+      1				     ; declare a stack segment
+      2	0000			     STSEG segment para	stack "STACK"
+      3
+      4					 ; a space for a stack
+      5	0000  40*(53 54	41 43 4B)	 db 64 dup("STACK")
+      6
+      7	0140			     STSEG ends
+      8
+      9				     ; declare a data segment
+     10	0000			     DSEG segment para public "DATA"
+     11
+     12					 ; A data buffer to be cloned from
+     13	0000  0A 14 1E 28		 Source	db 10, 20, 30, 40
+     14
+     15					 ; A data buffer to be cloned to
+     16	0004  04*(3F)			 Destination db	4 dup("?")
+     17
+     18	0008			     DSEG ends
+     19
+     20				     ; declare a code segment
+     21	0000			     CSEG segment para public "CODE"
+     22
+     23					 ; an entry point
+     24	0000				 MAIN proc far
+     25
+     26					     ; core initialization
+     27					     ; initialize segment registers
+     28					     assume cs:	CSEG, ds: DSEG,	ss: STSEG
+     29
+     30					     ; as it is	a procedure, push all registers	which will be overwritten
+     31	0000  1E			     push ds
+     32	0001  B8 0000			     mov ax, 0
+     33	0004  50			     push ax
+     34
+     35					     ; DS initialization
+     36	0005  B8 0000s			     mov ax, DSEG
+     37	0008  8E D8			     mov ds, ax
+     38
+     39					     ; zeroing of a destination
+     40	000A  C6 06 0004r 00		     mov Destination + 0, 0   ;	store a	byte 0 by an address Destination + 1
+     41	000F  C6 06 0005r 00		     mov Destination + 1, 0
+     42	0014  C6 06 0006r 00		     mov Destination + 2, 0
+     43	0019  C6 06 0007r 00		     mov Destination + 3, 0
+     44
+     45					     ; cloning from a source to	a destination (reversed)
+     46	001E  A0 0000r			     mov al, Source + 0	      ;	take a byte by an address Source + 0 to	a register AL
+     47	0021  A2 0007r			     mov Destination + 3, al  ;	take a register	AL and store a byte by an address	    +
+     48				     Destination + 3
+     49
+     50	0024  A0 0001r			     mov al, Source + 1
+     51	0027  A2 0006r			     mov Destination + 2, al
+     52
+     53	002A  A0 0002r			     mov al, Source + 2
+     54	002D  A2 0005r			     mov Destination + 1, al
+     55
+     56	0030  A0 0003r			     mov al, Source + 3
+     57	0033  A2 0004r			     mov Destination + 0, al
+Turbo Assembler	 Version 4.0	    02/10/25 13:32:52	    Page 2
+lab1\main.asm
+
+
+
+     58
+     59					     ; exit
+     60	0036  CB			     ret
+     61
+     62	0037				 MAIN endp
+     63	0037				 CSEG ends
+     64
+     65				     end MAIN
+Turbo Assembler	 Version 4.0	    02/10/25 13:32:52	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/10/25"
+??FILENAME			  Text	 "main	  "
+??TIME				  Text	 "13:32:52"
+??VERSION			  Number 0400
+@CPU				  Text	 0101H
+@CURSEG				  Text	 CSEG
+@FILENAME			  Text	 MAIN
+@WORDSIZE			  Text	 2
+DESTINATION			  Byte	 DSEG:0004
+MAIN				  Far	 CSEG:0000
+SOURCE				  Byte	 DSEG:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+CSEG				  16  0037 Para	  Public  CODE
+DSEG				  16  0008 Para	  Public  DATA
+STSEG				  16  0140 Para	  Stack	  STACK
+

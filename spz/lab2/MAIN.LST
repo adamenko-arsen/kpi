@@ -1,0 +1,658 @@
+Turbo Assembler	 Version 4.0	    02/19/25 23:24:52	    Page 1
+lab2\main.asm
+
+
+
+      1	0000			     SStack segment para stack "STACK"
+      2	0000  40*(53)			 db 64 dup("S")
+      3	0040			     SStack ends
+      4
+      5	0000			     SData segment para	public "DATA"
+      6
+      7					 ; ------------------------------------------------
+      8
+      9					 ; a new line
+     10	0000  0D 0A 24			 DNewLine db 0Dh, 0Ah, '$'
+     11
+     12					 ; a main prompt
+     13	0003  45 6E 74 65 72 20	61+	 DNumberPrompt db "Enter a number: ", '$'
+     14	      20 6E 75 6D 62 65	72+
+     15	      3A 20 24
+     16
+     17					 ; a result prompt
+     18	0014  0D 0A 54 68 65 20	72+	 DResultPrompt db 0Dh, 0Ah, "The result: ", '$'
+     19	      65 73 75 6C 74 3A	20+
+     20	      24
+     21
+     22					 ; an error message
+     23	0023  0D 0A 48 61 76 65	20+	 DErrorMsg db 0Dh, 0Ah,	"Have been inputed an invalid message",	0Dh, 0Ah, '$'
+     24	      62 65 65 6E 20 69	6E+
+     25	      70 75 74 65 64 20	61+
+     26	      6E 20 69 6E 76 61	6C+
+     27	      69 64 20 6D 65 73	73+
+     28	      61 67 65 0D 0A 24
+     29
+     30					 ; ------------------------------------------------
+     31
+     32					 ; a number got	from the console:
+     33					 ; TL, UL, buffer
+     34	004C  10 4C 10*(49)		 DInputNumber db 16, 'L', 16 dup("I")
+     35
+     36					 ; a raw binary	value of the input number
+     37	005E  01*(004E)			 DNumber dw 1 dup("N")
+     38
+     39					 ; is a	number valid
+     40	0060  01*(56)			 DIsValid db 1 dup("V")
+     41
+     42					 ; a number prepared to	be printed to the console
+     43	0061  10*(4F)			 DOutputNumber db 16 dup("O")
+     44
+     45					 ; ------------------------------------------------
+     46
+     47					 ; a continue prompt
+     48	0071  0D 0A 54 6F 20 63	6F+	 DContPrompt db	0Dh, 0Ah, "To continue (y/N): ", '$'
+     49	      6E 74 69 6E 75 65	20+
+     50	      28 79 2F 4E 29 3A	20+
+     51	      24
+     52
+     53					 ; a continue input
+     54	0087  04 4C 04*(23)		 DContInput db 4, 'L', 4 dup("#")
+     55
+     56					 ; is continue
+     57	008D  01*(46)			 DIsCont db 1 dup("F")
+Turbo Assembler	 Version 4.0	    02/19/25 23:24:52	    Page 2
+lab2\main.asm
+
+
+
+     58
+     59					 ; ------------------------------------------------
+     60
+     61	008E			     SData ends
+     62
+     63	0000			     Code_Seg segment para public "CODE"
+     64
+     65					 ; ------------------------------------------------
+     66
+     67	0000				 Main proc far
+     68					     ; segments	init
+     69					     assume cs:	Code_Seg, ds: SData, ss: SStack
+     70
+     71					     ; data segment init
+     72	0000  B8 0000s			     mov ax, SData
+     73	0003  8E D8			     mov ds, ax
+     74
+     75					     ; an entry	point to a main	loop
+     76	0005  EB 04			     jmp MainStart
+     77
+     78	0007				 MainRestart:
+     79
+     80					     ; print a new line	to walkaround a	feature
+     81	0007  0E E8 0151		     call PNewLine
+     82
+     83	000B				 MainStart:
+     84
+     85	000B				 MainReinput:
+     86					     ; get a number
+     87	000B  0E E8 003A		     call PGetInput
+     88
+     89					     ; parse the inputed number
+     90	000F  0E E8 0049		     call PParse
+     91
+     92					     ; check if	valid
+     93	0013  80 3E 0060r 54		     cmp byte ptr [DIsValid], 'T'
+     94	0018  74 06			     je	MainAfterParse
+     95
+     96					     ; raise an	error and reinput
+     97	001A  0E E8 0132		     call PError
+     98	001E  EB EB			     jmp MainReinput
+     99
+    100	0020				 MainAfterParse:
+    101					     ; modify a	number
+    102	0020  0E E8 0019		     call PCalc
+    103
+    104					     ; stringify a number
+    105	0024  0E E8 00AE		     call PStringify
+    106
+    107					     ; output a	result
+    108	0028  0E E8 0111		     call POutputNumber
+    109
+    110					     ; ask a continuation
+    111	002C  0E E8 0138		     call PIsCont
+    112
+    113					     ; continue	if yes
+    114	0030  80 3E 008Dr 54		     cmp byte ptr ds:[DIsCont],	'T'
+Turbo Assembler	 Version 4.0	    02/19/25 23:24:52	    Page 3
+lab2\main.asm
+
+
+
+    115	0035  74 D0			     je	MainRestart
+    116
+    117					     ; exit
+    118	0037  B4 4C			     mov ah, 4Ch ; syscall type
+    119	0039  B0 00			     mov al, 0	 ; syscall argument
+    120	003B  CD 21			     int 21h	 ; syscall trigger
+    121
+    122	003D				 Main endp
+    123
+    124					 ; ------------------------------------------------
+    125
+    126	003D				 PCalc proc far
+    127					     ; preserve
+    128	003D  50			     push ax
+    129
+    130					     ; load a number
+    131	003E  A1 005Er			     mov ax, ds:[DNumber]
+    132
+    133					     ; make calcs
+    134	0041  05 0043			     add ax, 67
+    135
+    136					     ; store a number
+    137	0044  A3 005Er			     mov ds:[DNumber], ax
+    138
+    139					     ; ret
+    140	0047  58			     pop ax
+    141
+    142	0048  CB			     ret
+    143	0049				 PCalc endp
+    144
+    145					 ; ------------------------------------------------
+    146
+    147	0049				 PGetInput proc	far
+    148					     ; preserve
+    149	0049  50			     push ax
+    150	004A  52			     push dx
+    151
+    152					     ; print a prompt
+    153	004B  BA 0003r			     mov dx, offset DNumberPrompt
+    154	004E  B4 09			     mov ah, 9
+    155	0050  CD 21			     int 21h
+    156
+    157					     ; get a number
+    158	0052  BA 004Cr			     mov dx, offset DInputNumber
+    159	0055  B4 0A			     mov ah, 10
+    160	0057  CD 21			     int 21h
+    161
+    162					     ; ret
+    163	0059  5A			     pop dx
+    164	005A  58			     pop ax
+    165
+    166	005B  CB			     ret
+    167	005C				 PGetInput endp
+    168
+    169					 ; ------------------------------------------------
+    170
+    171	005C				 PParse	proc far
+Turbo Assembler	 Version 4.0	    02/19/25 23:24:52	    Page 4
+lab2\main.asm
+
+
+
+    172					     ; preserve
+    173	005C  50			     push ax
+    174	005D  53			     push bx
+    175	005E  51			     push cx
+    176	005F  52			     push dx
+    177	0060  55			     push bp
+    178	0061  56			     push si
+    179
+    180					     ; registers aliases
+    181					     ; spec
+    182					     LBuffer	   equ bp
+    183					     LIndex	   equ si
+    184					     ; ax
+    185					     LNumber	   equ ax
+    186					     ; bx
+    187					     LChar	   equ bl
+    188					     LLength	   equ bh
+    189					     ; cx
+    190					     LSign	   equ cl
+    191					     ; dx
+    192					     LMul10	   equ dx
+    193					     LExtraL	   equ dl
+    194					     LExtraX	   equ dx
+    195
+    196					     ; result number init
+    197	0062  B8 0000			     mov LNumber, 0
+    198
+    199					     ; reader init
+    200	0065  BD 004Er			     mov LBuffer, offset DInputNumber +	2
+    201	0068  BE 0000			     mov LIndex, 0
+    202
+    203					     ; get length
+    204	006B  8A 3E 004Dr		     mov LLength, ds:[DInputNumber + 1]
+    205
+    206					     ; error: zero length
+    207	006F  80 FF 00			     cmp LLength, 0
+    208	0072  74 56			     je	PParseError
+    209
+    210					     ; default plus sign
+    211	0074  B1 2B			     mov LSign,	'+'
+    212
+    213					     ; get sign
+    214	0076  3E: 8A 1A			     mov LChar,	ds:[LBuffer + LIndex]
+    215
+    216					     ; compare minus sign
+    217	0079  80 FB 2D			     cmp LChar,	'-'
+    218	007C  75 0A			     jne PParseNotSign
+    219					     ; if negative
+    220	007E  B1 2D			     mov LSign,	'-'
+    221	0080  46			     inc LIndex
+    222					     ; then if error
+    223	0081  80 FF 06			     cmp LLength, 1 + 5
+    224	0084  7F 44			     jg	PParseError
+    225	0086  EB 05			     jmp PParsePos
+    226
+    227	0088				 PParseNotSign:
+    228					     ; if positive
+Turbo Assembler	 Version 4.0	    02/19/25 23:24:52	    Page 5
+lab2\main.asm
+
+
+
+    229	0088  80 FF 05			     cmp LLength, 5
+    230	008B  7F 3D			     jg	PParseError
+    231
+    232	008D				 PParsePos:
+    233
+    234	008D				     PParseLoop:
+    235						 ; get char
+    236	008D  3E: 8A 1A				 mov LChar, ds:[LBuffer	+ LIndex]
+    237
+    238						 ; error if char is not	digit
+    239	0090  80 FB 30				 cmp LChar, '0'
+    240	0093  7C 35				 jl PParseError
+    241	0095  80 FB 39				 cmp LChar, '9'
+    242	0098  7F 30				 jg PParseError
+    243
+    244						 ; char	to digit
+    245	009A  80 EB 30				 sub LChar, '0'
+    246
+    247						 ; modify result number
+    248						 ; mul by 10
+    249	009D  BA 000A				 mov LMul10, 10
+    250	00A0  F7 EA				 imul LMul10
+    251
+    252						 ; check overflow
+    253	00A2  70 26				 jo PParseError
+    254
+    255						 ; add next digit
+    256	00A4  BA 0000				 mov LExtraX, 0
+    257	00A7  8A D3				 mov LExtraL, LChar
+    258	00A9  03 C2				 add LNumber, LExtraX
+    259
+    260						 ; check overflow
+    261	00AB  70 1D				 jo PParseError
+    262
+    263						 ; loop
+    264						 ; inc indexer
+    265	00AD  46				 inc LIndex
+    266						 ; compare
+    267	00AE  BA 0000				 mov LExtraX, 0
+    268	00B1  8A D7				 mov LExtraL, LLength
+    269	00B3  3B F2				 cmp LIndex, LExtraX
+    270						 ; try loop
+    271	00B5  7C D6				 jl PParseLoop
+    272
+    273					     ; compare minus sign
+    274	00B7  80 F9 2D			     cmp LSign,	'-'
+    275	00BA  75 04			     jne PParseNotModNumMinus
+    276
+    277					     ; if minus
+    278	00BC  F7 D8			     neg LNumber
+    279					     ; check overflow
+    280	00BE  70 0A			     jo	PParseError
+    281
+    282	00C0				 PParseNotModNumMinus:
+    283	00C0  A3 005Er			     mov ds:[DNumber], LNumber
+    284	00C3  C6 06 0060r 54		     mov DIsValid, 'T'
+    285	00C8  EB 05			     jmp PParseExit
+Turbo Assembler	 Version 4.0	    02/19/25 23:24:52	    Page 6
+lab2\main.asm
+
+
+
+    286
+    287	00CA				 PParseError:
+    288	00CA  C6 06 0060r 46		     mov DIsValid, 'F'
+    289
+    290	00CF				 PParseExit:
+    291					     ; ret
+    292	00CF  5E			     pop si
+    293	00D0  5D			     pop bp
+    294	00D1  5A			     pop dx
+    295	00D2  59			     pop cx
+    296	00D3  5B			     pop bx
+    297	00D4  58			     pop ax
+    298
+    299	00D5  CB			     ret
+    300	00D6				 PParse	endp
+    301
+    302					 ; ------------------------------------------------
+    303
+    304	00D6				 PStringify proc far
+    305					     ; preserve
+    306	00D6  50			     push ax
+    307	00D7  51			     push cx
+    308	00D8  52			     push dx
+    309	00D9  55			     push bp
+    310	00DA  56			     push si
+    311	00DB  57			     push di
+    312
+    313					     ; spec
+    314					     LBuffer	  equ bp
+    315					     LNumberStart equ si
+    316					     LNumberEnd	  equ di
+    317					     ; ax
+    318					     LNumber	  equ ax
+    319					     LRevA	  equ al
+    320					     ; cx
+    321					     LExtra	  equ cx
+    322					     LRevB	  equ cl
+    323					     ; dx
+    324					     LRem	  equ dx
+    325
+    326					     ; pointers
+    327	00DC  BD 0061r			     mov LBuffer, offset DOutputNumber
+    328	00DF  BE 0000			     mov LNumberStart, 0
+    329	00E2  BF 0000			     mov LNumberEnd, 0
+    330
+    331					     ; load a number
+    332	00E5  A1 005Er			     mov LNumber, ds:[DNumber]
+    333
+    334					     ; compare with zero
+    335	00E8  3D 0000			     cmp LNumber, 0
+    336					     ; if zero
+    337	00EB  74 11			     je	PStringifyZero
+    338					     ; if positive
+    339	00ED  7F 1B			     jg	PStringifyNotNeg
+    340					     ; if negative
+    341	00EF  F7 D8			     neg LNumber
+    342	00F1  BE 0001			     mov LNumberStart, 1
+Turbo Assembler	 Version 4.0	    02/19/25 23:24:52	    Page 7
+lab2\main.asm
+
+
+
+    343	00F4  3E: C6 46	00 2D		     mov byte ptr ds:[LBuffer +	0], '-'
+    344	00F9  BF 0001			     mov LNumberEnd, 1
+    345
+    346	00FC  EB 0C			     jmp PStringifyNotNeg
+    347
+    348	00FE				 PStringifyZero:
+    349	00FE  3E: C6 46	00 30		     mov byte ptr ds:[LBuffer +	0], '0'
+    350	0103  3E: C6 46	01 24		     mov byte ptr ds:[LBuffer +	1], '$'
+    351
+    352	0108  EB 2C			     jmp PStringifyExit
+    353
+    354	010A				 PStringifyNotNeg:
+    355
+    356					     ; divisor
+    357	010A  B9 000A			     mov LExtra, 10
+    358
+    359	010D				     PStringifyLoopDump:
+    360						 ; div by 10
+    361						 ; idk why
+    362	010D  33 D2				 xor LRem, LRem
+    363						 ; div
+    364	010F  F7 F1				 div LExtra
+    365
+    366						 ; digit to char
+    367	0111  83 C2 30				 add dx, '0'
+    368
+    369						 ; char	to buffer
+    370	0114  3E: 88 13				 mov ds:[LBuffer + LNumberEnd],	dl
+    371
+    372						 ; loop
+    373	0117  47				 inc LNumberEnd
+    374	0118  3D 0000				 cmp LNumber, 0
+    375	011B  75 F0				 jne PStringifyLoopDump
+    376
+    377					     ; add print terminator
+    378					     ; LNumberEnd is place for new char
+    379	011D  3E: C6 03	24		     mov byte ptr ds:[LBuffer +	LNumberEnd], '$'
+    380
+    381	0121  4F			     dec LNumberEnd
+    382
+    383	0122				     PStringifyLoopRev:
+    384						 ; swap	digits
+    385						 ; load
+    386	0122  3E: 8A 02				 mov LRevA, ds:[LBuffer	+ LNumberStart]
+    387	0125  3E: 8A 0B				 mov LRevB, ds:[LBuffer	+ LNumberEnd]
+    388						 ; store
+    389	0128  3E: 88 0A				 mov ds:[LBuffer + LNumberStart], LRevB
+    390	012B  3E: 88 03				 mov ds:[LBuffer + LNumberEnd],	  LRevA
+    391
+    392						 ; loop
+    393	012E  46				 inc LNumberStart
+    394	012F  4F				 dec LNumberEnd
+    395	0130  3B F7				 cmp LNumberStart, LNumberEnd
+    396	0132  7C EE				 jl PStringifyLoopRev
+    397
+    398	0134  EB 00			     jmp PStringifyExit
+    399
+Turbo Assembler	 Version 4.0	    02/19/25 23:24:52	    Page 8
+lab2\main.asm
+
+
+
+    400	0136				 PStringifyExit:
+    401					     ; ret
+    402	0136  5F			     pop di
+    403	0137  5E			     pop si
+    404	0138  5D			     pop bp
+    405	0139  5A			     pop dx
+    406	013A  59			     pop cx
+    407	013B  58			     pop ax
+    408
+    409	013C  CB			     ret
+    410	013D				 PStringify endp
+    411
+    412					 ; ------------------------------------------------
+    413
+    414	013D				 POutputNumber proc far
+    415					     ; preserve
+    416	013D  50			     push ax
+    417	013E  52			     push dx
+    418
+    419					     ; print a result prompt
+    420	013F  BA 0014r			     mov dx, offset DResultPrompt
+    421	0142  B4 09			     mov ah, 9
+    422	0144  CD 21			     int 21h
+    423
+    424					     ; print a result number
+    425	0146  BA 0061r			     mov dx, offset DOutputNumber
+    426	0149  B4 09			     mov ah, 9
+    427	014B  CD 21			     int 21h
+    428
+    429					     ; ret
+    430	014D  5A			     pop dx
+    431	014E  58			     pop ax
+    432
+    433	014F  CB			     ret
+    434	0150				 POutputNumber endp
+    435
+    436					 ; ------------------------------------------------
+    437
+    438	0150				 PError	proc far
+    439					     ; preserve
+    440	0150  50			     push ax
+    441	0151  52			     push dx
+    442
+    443					     ; print an	error
+    444	0152  BA 0023r			     mov dx, offset DErrorMsg
+    445	0155  B4 09			     mov ah, 9
+    446	0157  CD 21			     int 21h
+    447
+    448					     ; ret
+    449	0159  5A			     pop dx
+    450	015A  58			     pop ax
+    451
+    452	015B  CB			     ret
+    453	015C				 PError	endp
+    454
+    455					 ; ------------------------------------------------
+    456
+Turbo Assembler	 Version 4.0	    02/19/25 23:24:52	    Page 9
+lab2\main.asm
+
+
+
+    457	015C				 PNewLine proc far
+    458					     ; preserve
+    459	015C  50			     push ax
+    460	015D  52			     push dx
+    461
+    462					     ; print an	error
+    463	015E  BA 0000r			     mov dx, offset DNewLine
+    464	0161  B4 09			     mov ah, 9
+    465	0163  CD 21			     int 21h
+    466
+    467					     ; ret
+    468	0165  5A			     pop dx
+    469	0166  58			     pop ax
+    470
+    471	0167  CB			     ret
+    472	0168				 PNewLine endp
+    473
+    474					 ; ------------------------------------------------
+    475
+    476	0168				 PIsCont proc far
+    477					     ; preserve
+    478	0168  50			     push ax
+    479	0169  52			     push dx
+    480
+    481					     ; print a prompt
+    482	016A  BA 0071r			     mov dx, offset DContPrompt
+    483	016D  B4 09			     mov ah, 9
+    484	016F  CD 21			     int 21h
+    485
+    486					     ; get an input
+    487	0171  BA 0087r			     mov dx, offset DContInput
+    488	0174  B4 0A			     mov ah, 10
+    489	0176  CD 21			     int 21h
+    490
+    491					     ; default value
+    492	0178  C6 06 008Dr 46		     mov byte ptr ds:[DIsCont],	'F'
+    493
+    494					     ; compare length
+    495	017D  80 3E 0088r 00		     cmp byte ptr ds:[DContInput + 1], 0
+    496					     ; if char
+    497	0182  75 02			     jne PIsContNotZeroLength
+    498					     ; if no char
+    499	0184  EB 12			     jmp PIsContExit
+    500
+    501	0186				 PIsContNotZeroLength:
+    502					     ; get char
+    503	0186  A0 0089r			     mov al, byte ptr ds:[DContInput + 2]
+    504					     ; if small	y
+    505	0189  3C 79			     cmp al, 'y'
+    506	018B  74 06			     je	PIsContYes
+    507					     ; if big y
+    508	018D  3C 59			     cmp al, 'Y'
+    509	018F  74 02			     je	PIsContYes
+    510					     ; otherwise false
+    511	0191  EB 05			     jmp PIsContExit
+    512
+    513	0193				 PIsContYes:
+Turbo Assembler	 Version 4.0	    02/19/25 23:24:52	    Page 10
+lab2\main.asm
+
+
+
+    514	0193  C6 06 008Dr 54		     mov byte ptr ds:[DIsCont],	'T'
+    515
+    516	0198				 PIsContExit:
+    517					     ; ret
+    518	0198  5A			     pop dx
+    519	0199  58			     pop ax
+    520
+    521	019A  CB			     ret
+    522	019B				 PIsCont endp
+    523
+    524					 ; ------------------------------------------------
+    525
+    526	019B			     Code_Seg ends
+    527				     end Main
+Turbo Assembler	 Version 4.0	    02/19/25 23:24:52	    Page 11
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "02/19/25"
+??FILENAME			  Text	 "main	  "
+??TIME				  Text	 "23:24:52"
+??VERSION			  Number 0400
+@CPU				  Text	 0101H
+@CURSEG				  Text	 CODE_SEG
+@FILENAME			  Text	 MAIN
+@WORDSIZE			  Text	 2
+DCONTINPUT			  Byte	 SDATA:0087
+DCONTPROMPT			  Byte	 SDATA:0071
+DERRORMSG			  Byte	 SDATA:0023
+DINPUTNUMBER			  Byte	 SDATA:004C
+DISCONT				  Byte	 SDATA:008D
+DISVALID			  Byte	 SDATA:0060
+DNEWLINE			  Byte	 SDATA:0000
+DNUMBER				  Word	 SDATA:005E
+DNUMBERPROMPT			  Byte	 SDATA:0003
+DOUTPUTNUMBER			  Byte	 SDATA:0061
+DRESULTPROMPT			  Byte	 SDATA:0014
+LBUFFER				  Alias	 BP
+LCHAR				  Alias	 BL
+LEXTRA				  Alias	 CX
+LEXTRAL				  Alias	 DL
+LEXTRAX				  Alias	 DX
+LINDEX				  Alias	 SI
+LLENGTH				  Alias	 BH
+LMUL10				  Alias	 DX
+LNUMBER				  Alias	 AX
+LNUMBEREND			  Alias	 DI
+LNUMBERSTART			  Alias	 SI
+LREM				  Alias	 DX
+LREVA				  Alias	 AL
+LREVB				  Alias	 CL
+LSIGN				  Alias	 CL
+MAIN				  Far	 CODE_SEG:0000
+MAINAFTERPARSE			  Near	 CODE_SEG:0020
+MAINREINPUT			  Near	 CODE_SEG:000B
+MAINRESTART			  Near	 CODE_SEG:0007
+MAINSTART			  Near	 CODE_SEG:000B
+PCALC				  Far	 CODE_SEG:003D
+PERROR				  Far	 CODE_SEG:0150
+PGETINPUT			  Far	 CODE_SEG:0049
+PISCONT				  Far	 CODE_SEG:0168
+PISCONTEXIT			  Near	 CODE_SEG:0198
+PISCONTNOTZEROLENGTH		  Near	 CODE_SEG:0186
+PISCONTYES			  Near	 CODE_SEG:0193
+PNEWLINE			  Far	 CODE_SEG:015C
+POUTPUTNUMBER			  Far	 CODE_SEG:013D
+PPARSE				  Far	 CODE_SEG:005C
+PPARSEERROR			  Near	 CODE_SEG:00CA
+PPARSEEXIT			  Near	 CODE_SEG:00CF
+PPARSELOOP			  Near	 CODE_SEG:008D
+PPARSENOTMODNUMMINUS		  Near	 CODE_SEG:00C0
+PPARSENOTSIGN			  Near	 CODE_SEG:0088
+Turbo Assembler	 Version 4.0	    02/19/25 23:24:52	    Page 12
+Symbol Table
+
+
+
+PPARSEPOS			  Near	 CODE_SEG:008D
+PSTRINGIFY			  Far	 CODE_SEG:00D6
+PSTRINGIFYEXIT			  Near	 CODE_SEG:0136
+PSTRINGIFYLOOPDUMP		  Near	 CODE_SEG:010D
+PSTRINGIFYLOOPREV		  Near	 CODE_SEG:0122
+PSTRINGIFYNOTNEG		  Near	 CODE_SEG:010A
+PSTRINGIFYZERO			  Near	 CODE_SEG:00FE
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+CODE_SEG			  16  019B Para	  Public  CODE
+SDATA				  16  008E Para	  Public  DATA
+SSTACK				  16  0040 Para	  Stack	  STACK
+
