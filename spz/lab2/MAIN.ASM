@@ -10,25 +10,46 @@ SData segment para public "DATA"
     DNewLine db 0Dh, 0Ah, '$'
 
     ; a main prompt
-    DNumberPrompt db "Enter a number: ", '$'
+    DNumberPrompt db "Enter an integer <x> (-32768..65468): ", '$'
 
     ; a result prompt
-    DResultPrompt db 0Dh, 0Ah, "The result: ", '$'
+    DResultPrompt db 0Dh, 0Ah, "The result (<x> + 67): ", '$'
 
-    ; an error message
-    DErrorMsg db 0Dh, 0Ah, "Have been inputed an invalid message", 0Dh, 0Ah, '$'
+    ; error messages
+    DErrorFormatMsg   db 0Dh, 0Ah, "Cannot parse an input as an integer", 0Dh, 0Ah, '$'
+    DErrorLengthMsg   db 0Dh, 0Ah, "The input is too long", 0Dh, 0Ah, '$'
+    DErrorOverflowMsg db 0Dh, 0Ah, "Occured an overflow error during parsing", 0Dh, 0Ah, '$'
+    DErrorRangeMsg    db 0Dh, 0Ah, "The number is not in the pre-defined range", 0Dh, 0Ah, '$'
 
     ; ------------------------------------------------
 
     ; a number got from the console:
-    ; TL, UL, buffer
+    ;
+    ; -32768 = 6 + newline + 9 bytes angry user correction = 16
+    ; 65535  = 5 + newline + 9 bytes angry user correction = 15
+    ;
     DInputNumber db 16, 'L', 16 dup("I")
 
+    ; ------------------------------------------------
+
+    ; the input number's signness
+    DNumberSignness db 1 dup("U")
+
     ; a raw binary value of the input number
-    DNumber dw 1 dup("N")
+    DNumber dw 1 dup("NN")
+
+    ; the error of parsing
+    DParseErrorType db 1 dup("_")
 
     ; is a number valid
     DIsValid db 1 dup("V")
+
+    ; ------------------------------------------------
+
+    ; is a number valid
+    DIsInRange db 1 dup("R")
+
+    ; ------------------------------------------------
 
     ; a number prepared to be printed to the console
     DOutputNumber db 16 dup("O")
@@ -78,12 +99,42 @@ Code_Seg segment para public "CODE"
         call PParse
 
         ; check if valid
-        cmp byte ptr [DIsValid], 'T'
-        je MainAfterParse
+        cmp byte ptr ds:[DIsValid], 'T'
+        jne MainInputParseError
 
-        ; raise an error and reinput
-        call PError
-        jmp MainReinput
+        ; check allowed range
+        call PIsInputInRange
+        cmp byte ptr ds:[DIsInRange], 'T'
+        jne MainInputRangeError
+
+        ; it is success
+        jmp MainAfterParse
+
+        MainInputParseError:
+            cmp byte ptr ds:[DParseErrorType], 'F'
+            je MainInputParseErrorFormat
+
+            cmp byte ptr ds:[DParseErrorType], 'L'
+            je MainInputParseErrorLength
+
+            cmp byte ptr ds:[DParseErrorType], 'O'
+            je MainInputParseErrorOverflow
+
+            MainInputParseErrorFormat:
+                call PErrorFormat
+                jmp MainReinput
+            
+            MainInputParseErrorLength:
+                call PErrorLength
+                jmp MainReinput
+            
+            MainInputParseErrorOverflow:
+                call PErrorOverflow
+                jmp MainReinput
+
+        MainInputRangeError:
+            call PErrorRange
+            jmp MainReinput
 
     MainAfterParse:
         ; modify a number
@@ -95,7 +146,7 @@ Code_Seg segment para public "CODE"
         ; output a result
         call POutputNumber
 
-        ; ask a continuation
+        ; ask about a continuation
         call PIsCont
 
         ; continue if yes
@@ -103,9 +154,10 @@ Code_Seg segment para public "CODE"
         je MainRestart
 
         ; exit
-        mov ah, 4Ch ; syscall type
-        mov al, 0   ; syscall argument
-        int 21h     ; syscall trigger
+        ; syscall exit(0)
+        mov ah, 4Ch
+        mov al, 0 
+        int 21h
 
     Main endp
 
@@ -118,8 +170,39 @@ Code_Seg segment para public "CODE"
         ; load a number
         mov ax, ds:[DNumber]
 
-        ; make calcs
-        add ax, 67
+        ; unsigned
+        cmp byte ptr ds:[DNumberSignness], 'U'
+        je PCalcUnsigned
+
+        ; signed
+        cmp byte ptr ds:[DNumberSignness], 'S'
+        je PCalcSigned
+
+        ; signed
+        PCalcSigned:
+            ; if the signed negative number is...
+            cmp ax, -67
+            ; ... low enough
+            jl  PCalcSignedPreserve
+            ; ... great enough
+            jge PCalcSignedSwapSignness
+
+            PCalcSignedPreserve:
+                add ax, 67
+                jmp PCalcExit
+
+            PCalcSignedSwapSignness:
+                add ax, 67
+                mov ds:[DNumberSignness], 'U'
+                jmp PCalcExit
+
+        ; unsigned
+        PCalcUnsigned:
+            add ax, 67
+            jmp PCalcExit
+
+        ; exit
+        PCalcExit:
 
         ; store a number
         mov ds:[DNumber], ax
@@ -179,112 +262,194 @@ Code_Seg segment para public "CODE"
         ; dx
         LMul10        equ dx
         LExtraL       equ dl
-        LExtraX       equ dx
+        LExtra        equ dx
 
-        ; result number init
+        ; initialization
         mov LNumber, 0
-
-        ; reader init
-        mov LBuffer, offset DInputNumber + 2
+        mov LBuffer, offset ds:DInputNumber + 2
+        mov LLength, byte ptr ds:[DInputNumber + 1]
         mov LIndex, 0
 
-        ; get length
-        mov LLength, ds:[DInputNumber + 1]
+        ; if first char is...
+        cmp byte ptr ds:[LBuffer], '-'
+        ; ... minus
+        je PParseNeg
 
-        ; error: zero length
-        cmp LLength, 0
-        je PParseError
-
-        ; default plus sign
-        mov LSign, '+'
-
-        ; get sign
-        mov LChar, ds:[LBuffer + LIndex]
-
-        ; compare minus sign
-        cmp LChar, '-'
-        jne PParseNotSign
-        ; if negative
-        mov LSign, '-'
-        inc LIndex
-        ; then if error
-        cmp LLength, 1 + 5
-        jg PParseError
         jmp PParsePos
 
-    PParseNotSign:
-        ; if positive
-        cmp LLength, 5
-        jg PParseError
+            ; negative
+            PParseNeg:
+                ; check length...
+                cmp byte ptr ds:[DInputNumber + 1], 6
+                ; ... if too long
 
-    PParsePos:
+                jle PParseNeg_WA
+                jmp PParseErrorLength
+                PParseNeg_WA:
 
-        PParseLoop:
-            ; get char
-            mov LChar, ds:[LBuffer + LIndex]
+                ; check length...
+                cmp byte ptr ds:[DInputNumber + 1], 2
+                ; ... if too short (no digits)
+                jl PParseErrorFormat
 
-            ; error if char is not digit
-            cmp LChar, '0'
-            jl PParseError
-            cmp LChar, '9'
-            jg PParseError
+                mov LSign, '-'
+                inc LBuffer
+                dec LLength
 
-            ; char to digit
-            sub LChar, '0'
+                jmp PParseAfterSign
 
-            ; modify result number
-            ; mul by 10
-            mov LMul10, 10
-            imul LMul10
+            ; positive
+            PParsePos:
+                ; check length...
+                cmp byte ptr ds:[DInputNumber + 1], 5
+                ; ... if too long
+                jg PParseErrorLength
 
-            ; check overflow
-            jo PParseError
+                ; check length...
+                cmp byte ptr ds:[DInputNumber + 1], 1
+                ; ... if too short (no digits)
+                jl PParseErrorFormat
 
-            ; add next digit
-            mov LExtraX, 0
-            mov LExtraL, LChar
-            add LNumber, LExtraX
+                mov LSign, '+'
 
-            ; check overflow
-            jo PParseError
+                jmp PParseAfterSign
 
-            ; loop
-            ; inc indexer
-            inc LIndex
-            ; compare
-            mov LExtraX, 0
-            mov LExtraL, LLength
-            cmp LIndex, LExtraX
-            ; try loop
-            jl PParseLoop
+            ; SWITCH CASE EXIT
+            PParseAfterSign:
 
-        ; compare minus sign
+        ; WHILE LOOP
+            PParseDigitLoop_Cond:
+                ; COND
+
+                ; if...
+                mov LExtra, 0
+                mov LExtraL, LLength
+                cmp LIndex, LExtra
+                ; ... index < length
+                jl PParseDigitLoop_Body
+
+                ; EXIT LOOP
+                jmp PParseDigitLoop_Exit
+
+            ; LOOP BODY
+            PParseDigitLoop_Body:
+
+                ; read character
+                mov LChar, ds:[LBuffer + LIndex]
+
+                ; error if the char is not a digit
+                cmp LChar, '0'
+                jl PParseErrorFormat
+                cmp LChar, '9'
+                jg PParseErrorFormat
+
+                ; char to digit
+                sub LChar, '0'
+
+                ; multiply by 10 the result
+                mov LMul10, 10
+                mul LMul10
+
+                jc PParseErrorOverflow
+
+                ; add the digit to the result
+                mov LExtra, 0
+                mov LExtraL, LChar
+                add LNumber, LExtra
+
+                jc PParseErrorOverflow
+
+                ; AFTER ITERATION LOGIC
+                inc LIndex
+
+                ; TRY
+                jmp PParseDigitLoop_Cond
+
+            ; END WHILE
+            PParseDigitLoop_Exit:
+
+        ; check the sign ...
         cmp LSign, '-'
-        jne PParseNotModNumMinus
+        ; ... if negative
+        je PParseNegateNumber_Body
 
-        ; if minus
-        neg LNumber
-        ; check overflow
-        jo PParseError
+        jmp PParseNegateNumber_Exit
 
-    PParseNotModNumMinus:
-        mov ds:[DNumber], LNumber
-        mov DIsValid, 'T'
-        jmp PParseExit
+            ; BODY
+            PParseNegateNumber_Body:
 
-    PParseError:
-        mov DIsValid, 'F'
+                ; idk how should i describe this
+                cmp LNumber, 32768
+                jbe PParseNegateNumber_Body_L
 
-    PParseExit:
-        ; ret
-        pop si
-        pop bp
-        pop dx
-        pop cx
-        pop bx
-        pop ax
+                jmp PParseErrorOverflow
 
-        ret
+                PParseNegateNumber_Body_L:
+                    neg LNumber
+
+                jmp PParseNegateNumber_Exit
+
+            ; IF EXIT
+            PParseNegateNumber_Exit:
+
+        ; if the sign is ...
+        ; ... plus
+        cmp LSign, '-'
+        je PParseFinalSigned
+
+        ; if the sign is ...
+        cmp LSign, '+'
+        ; ... minus
+        je PParseFinalUnsigned
+
+            ; signed
+            PParseFinalSigned:
+                mov ds:[DNumberSignness], 'S'
+                jmp PParseBeforeFinalSigness
+
+            ; unsigned:
+            PParseFinalUnsigned:
+                mov ds:[DNumberSignness], 'U'
+                jmp PParseBeforeFinalSigness
+
+            ; SWITCH CASE EXIT
+            PParseBeforeFinalSigness:
+                jmp PParseSuccess
+
+        ; ---- raise statuses ----
+        
+        PParseErrorFormat:
+            mov byte ptr ds:[DIsValid], 'F'
+            mov byte ptr ds:[DParseErrorType], 'F'
+            jmp PParseExit
+        
+        PParseErrorLength:
+            mov byte ptr ds:[DIsValid], 'F'
+            mov byte ptr ds:[DParseErrorType], 'L'
+            jmp PParseExit
+
+        PParseErrorOverflow:
+            mov byte ptr ds:[DIsValid], 'F'
+            mov byte ptr ds:[DParseErrorType], 'O'
+            jmp PParseExit
+
+        PParseSuccess:
+            mov ds:[DNumber], LNumber
+            mov byte ptr ds:[DIsValid], 'T'
+            jmp PParseExit
+
+        ; ---- exit ----
+
+        PParseExit:
+            ; ret
+            pop si
+            pop bp
+            pop dx
+            pop cx
+            pop bx
+            pop ax
+
+            ret
     PParse endp
 
     ; ------------------------------------------------
@@ -292,6 +457,7 @@ Code_Seg segment para public "CODE"
     PStringify proc far
         ; preserve
         push ax
+        push bx
         push cx
         push dx
         push bp
@@ -304,86 +470,136 @@ Code_Seg segment para public "CODE"
         LNumberEnd   equ di
         ; ax
         LNumber      equ ax
+        ; bx
         LRevA        equ al
+        LRevB        equ ah
         ; cx
+        LExtraL      equ cl
         LExtra       equ cx
-        LRevB        equ cl
+        LDiv10       equ cx
         ; dx
         LRem         equ dx
+        LDivFix      equ dx
 
         ; pointers
         mov LBuffer, offset DOutputNumber
         mov LNumberStart, 0
         mov LNumberEnd, 0
 
-        ; load a number
+        ; load the number
         mov LNumber, ds:[DNumber]
 
-        ; compare with zero
+        ; if the number is...
         cmp LNumber, 0
-        ; if zero
-        je PStringifyZero
-        ; if positive
-        jg PStringifyNotNeg
-        ; if negative
-        neg LNumber
-        mov LNumberStart, 1
-        mov byte ptr ds:[LBuffer + 0], '-'
-        mov LNumberEnd, 1
+        ; ... zero
+        je PStringify_ZN_Zero
 
-        jmp PStringifyNotNeg
+        jmp PStringify_ZN_NotZero
 
-    PStringifyZero:
-        mov byte ptr ds:[LBuffer + 0], '0'
-        mov byte ptr ds:[LBuffer + 1], '$'
+        PStringify_ZN_Zero:
+            mov byte ptr ds:[LBuffer + 0], '0'
+            mov byte ptr ds:[LBuffer + 1], '$'
 
-        jmp PStringifyExit
+            jmp PStringify_ZN_Exit
 
-    PStringifyNotNeg:
+        PStringify_ZN_NotZero:
+            ; check if the signness is signed...
+            ; check if the number is negative...
+                cmp ds:[DNumberSignness], 'S'
 
-        ; divisor
-        mov LExtra, 10
+                je PStringify_N_Signed
+                jmp PStringify_N_Exit
+                PStringify_N_Signed:
 
-        PStringifyLoopDump:
-            ; div by 10
-            ; idk why
-            xor LRem, LRem
-            ; div
-            div LExtra
+                cmp LNumber, 0
 
-            ; digit to char
-            add dx, '0'
+                jl PStringify_S_Neg
+                jmp PStringify_N_Exit
+                ; yes
+                PStringify_S_Neg:
+                    neg LNumber
+                    mov byte ptr ds:[LBuffer + 0], '-'
+                    mov LNumberStart, 1
 
-            ; char to buffer
-            mov ds:[LBuffer + LNumberEnd], dl
+                    jmp PStringify_N_Exit
 
-            ; loop
-            inc LNumberEnd
-            cmp LNumber, 0
-            jne PStringifyLoopDump
+            ; no
+            PStringify_N_Exit:
+                mov LNumberEnd, LNumberStart
 
-        ; add print terminator
-        ; LNumberEnd is place for new char
-        mov byte ptr ds:[LBuffer + LNumberEnd], '$'
+                ; STRINGIFY IN REVERSE NOTATION
 
-        dec LNumberEnd
+                PStringify_Str_Cond:
 
-        PStringifyLoopRev:
-            ; swap digits
-            ; load
-            mov LRevA, ds:[LBuffer + LNumberStart]
-            mov LRevB, ds:[LBuffer + LNumberEnd]
-            ; store
-            mov ds:[LBuffer + LNumberStart], LRevB 
-            mov ds:[LBuffer + LNumberEnd],   LRevA
+                        ; because number is already threated as unsigned and signed comparison can break this code
 
-            ; loop
-            inc LNumberStart
-            dec LNumberEnd
-            cmp LNumberStart, LNumberEnd
-            jl PStringifyLoopRev
+                        ; if number > 0
+                        cmp LNumber, 0
+                        ja PStringify_Str_Body
 
-        jmp PStringifyExit
+                        jmp PStringify_Str_Exit
+
+                    PStringify_Str_Body:
+
+                        ; divide the number by 10
+                        mov LDivFix, 0
+                        mov LDiv10, 10
+                        div LDiv10
+
+                        ; acquire digit
+                        mov LExtra, LRem
+
+                        ; digit to char
+                        add LExtraL, '0'
+
+                        ; output
+                        mov ds:[LBuffer + LNumberEnd], LExtraL
+
+                        ; increment string indexer
+                        inc LNumberEnd
+
+                        jmp PStringify_Str_Cond
+
+                    PStringify_Str_Exit:
+
+                ; add end terminator (works because here LNumberEnd is the index of a new char can be added to the string)
+                mov byte ptr ds:[LBuffer + LNumberEnd], '$'
+
+                ; head on end of string
+                dec LNumberEnd
+
+                ; REVERSE STRING
+
+                PStringify_Rev_Cond:
+
+                        ; if start < end
+                        cmp LNumberStart, LNumberEnd
+                        jl PStringify_Rev_Body
+
+                        jmp PStringify_Rev_Exit
+
+                    PStringify_Rev_Body:
+
+                        ; acquire two chars
+                        mov LRevA, ds:[LBuffer + LNumberStart]
+                        mov LRevB, ds:[LBuffer + LNumberEnd  ]
+
+                        ; store reversedly
+                        mov byte ptr ds:[LBuffer + LNumberStart], LRevB
+                        mov byte ptr ds:[LBuffer + LNumberEnd  ], LRevA
+
+                        ; make indexers closer
+                        inc LNumberStart
+                        dec LNumberEnd
+
+                        jmp PStringify_Rev_Cond
+
+                    PStringify_Rev_Exit:
+
+                jmp PStringify_ZN_Exit
+
+        PStringify_ZN_Exit:
+            ; jmp PStringifyExit
 
     PStringifyExit:
         ; ret
@@ -392,10 +608,80 @@ Code_Seg segment para public "CODE"
         pop bp
         pop dx
         pop cx
+        pop bx
         pop ax
 
         ret
     PStringify endp
+
+    ; ------------------------------------------------
+
+    PIsInputInRange proc far
+        ; preserve
+        push ax
+        push bx
+
+        ; ax
+        LNumber equ ax
+        ; bx
+        LSN     equ bl
+
+        ; load the integer's value
+        mov LNumber, ds:[DNumber]
+
+        ; load the integer's signess
+        mov LSN, ds:[DNumberSignness]
+
+        ; default status
+        mov byte ptr ds:[DIsInRange], 'F'
+
+        ; SWITCH CASE
+        cmp LSN, 'S'
+        je PIsInputInRange_S_Signed
+
+        cmp LSN, 'U'
+        je PIsInputInRange_S_Unsigned
+
+        jmp PIsInputInRange_S_Exit
+
+            PIsInputInRange_S_Signed:
+                cmp LNumber, -32768
+                jge PIsInputInRange_S_Signed_If
+
+                jmp PIsInputInRange_S_Signed_Exit
+
+                    PIsInputInRange_S_Signed_If:
+                        mov byte ptr ds:[DIsInRange], 'T'
+
+                        jmp PIsInputInRange_S_Signed_Exit
+
+                    PIsInputInRange_S_Signed_Exit:
+
+                jmp PIsInputInRange_S_Exit
+
+            PIsInputInRange_S_Unsigned:
+                cmp LNumber, 65468
+                jbe PIsInputInRange_S_Unsigned_If
+
+                jmp PIsInputInRange_S_Unsigned_Exit
+
+                    PIsInputInRange_S_Unsigned_If:
+                        mov byte ptr ds:[DIsInRange], 'T'
+
+                        jmp PIsInputInRange_S_Unsigned_Exit
+
+                    PIsInputInRange_S_Unsigned_Exit:
+
+                jmp PIsInputInRange_S_Exit
+
+            PIsInputInRange_S_Exit:
+
+        ; ret
+        pop bx
+        pop ax
+
+        ret
+    PIsInputInRange endp
 
     ; ------------------------------------------------
 
@@ -423,13 +709,13 @@ Code_Seg segment para public "CODE"
 
     ; ------------------------------------------------
 
-    PError proc far
+    PErrorRange proc far
         ; preserve
         push ax
         push dx
 
         ; print an error
-        mov dx, offset DErrorMsg
+        mov dx, offset DErrorRangeMsg
         mov ah, 9
         int 21h
 
@@ -438,7 +724,64 @@ Code_Seg segment para public "CODE"
         pop ax
 
         ret
-    PError endp
+    PErrorRange endp
+
+    ; ------------------------------------------------
+
+    PErrorFormat proc far
+        ; preserve
+        push ax
+        push dx
+
+        ; print an error
+        mov dx, offset DErrorFormatMsg
+        mov ah, 9
+        int 21h
+
+        ; ret
+        pop dx
+        pop ax
+
+        ret
+    PErrorFormat endp
+
+    ; ------------------------------------------------
+
+    PErrorLength proc far
+        ; preserve
+        push ax
+        push dx
+
+        ; print an error
+        mov dx, offset DErrorLengthMsg
+        mov ah, 9
+        int 21h
+
+        ; ret
+        pop dx
+        pop ax
+
+        ret
+    PErrorLength endp
+
+    ; ------------------------------------------------
+
+    PErrorOverflow proc far
+        ; preserve
+        push ax
+        push dx
+
+        ; print an error
+        mov dx, offset DErrorOverflowMsg
+        mov ah, 9
+        int 21h
+
+        ; ret
+        pop dx
+        pop ax
+
+        ret
+    PErrorOverflow endp
 
     ; ------------------------------------------------
 

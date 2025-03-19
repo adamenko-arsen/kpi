@@ -2,8 +2,8 @@
  Start  Stop   Length Name               Class
 
  00000H 0003FH 00040H SSTACK             STACK
- 00040H 000CDH 0008EH SDATA              DATA
- 000D0H 0026AH 0019BH CODE_SEG           CODE
+ 00040H 00166H 00127H SDATA              DATA
+ 00170H 0043CH 002CDH CODE_SEG           CODE
 
   Address         Publics by Name
 
@@ -11,5 +11,5 @@
   Address         Publics by Value
 
 
-Program entry point at 000D:0000
+Program entry point at 0017:0000
 
