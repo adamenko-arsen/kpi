@@ -1,10 +1,14 @@
-# editor
+#[misc]
 .vscode
 
-# risky
+#[subjects]
+adis
 algo1
 algo2
+# algo3
+# db
 dkm
+dotnet
 kpi1
 kpi2
 ma1
@@ -13,3 +17,5 @@ oksim
 op1
 op2
 pt
+# spz
+# web
