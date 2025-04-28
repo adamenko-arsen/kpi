@@ -1,0 +1,1540 @@
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 1
+lab3\main.asm
+
+
+
+      1	0000			     S_Stack segment para stack	"STACK"
+      2	0000  80*(53)			 db 128	dup("S")
+      3	0080			     S_Stack ends
+      4
+      5	0000			     S_Data segment para public	"DATA"
+      6
+      7					 ; ------------------------------------------------
+      8
+      9					 ; greeting
+     10	0000  20 20 20 5F 5F 5F	5F+	 D_Greeting db		 "   ____    _		  ____	   _________ "
+     11	      20 20 20 20 5F 20	20+
+     12	      20 20 20 20 20 20	20+
+     13	      20 20 20 5F 5F 5F	5F+
+     14	      20 20 20 20 20 5F	5F+
+     15	      5F 5F 5F 5F 5F 5F	5F+
+     16	      20
+     17	002B  0D 0A 20 20 2F 20	20+		    db 0Dh, 0Ah, "  /	    / \	  |	 /		  _/ "
+     18	      20 20 20 20 20 2F	20+
+     19	      5C 20 20 20 7C 20	20+
+     20	      20 20 20 20 2F 20	20+
+     21	      20 20 20 20 20 20	20+
+     22	      20 20 20 20 20 20	20+
+     23	      5F 2F 20
+     24	0058  0D 0A 20 7C 20 20	20+		    db 0Dh, 0Ah, " |	   |   |  |	|		_/   "
+     25	      20 20 20 20 7C 20	20+
+     26	      20 7C 20 20 7C 20	20+
+     27	      20 20 20 7C 20 20	20+
+     28	      20 20 20 20 20 20	20+
+     29	      20 20 20 20 20 5F	2F+
+     30	      20 20 20
+     31	0085  0D 0A 20 7C 20 20	20+		    db 0Dh, 0Ah, " |	   /---\  |	|      ---    _/     "
+     32	      20 20 20 20 2F 2D	2D+
+     33	      2D 5C 20 20 7C 20	20+
+     34	      20 20 20 7C 20 20	20+
+     35	      20 20 20 2D 2D 2D	20+
+     36	      20 20 20 5F 2F 20	20+
+     37	      20 20 20
+     38	00B2  0D 0A 20 7C 20 20	20+		    db 0Dh, 0Ah, " |	  |	| |	|	    _/	     "
+     39	      20 20 20 7C 20 20	20+
+     40	      20 20 7C 20 7C 20	20+
+     41	      20 20 20 7C 20 20	20+
+     42	      20 20 20 20 20 20	20+
+     43	      20 5F 2F 20 20 20	20+
+     44	      20 20 20
+     45	00DF  0D 0A 20 20 5C 5F	5F+		    db 0Dh, 0Ah, "  \____ |	| '____	 \____	   /________ "
+     46	      5F 5F 20 7C 20 20	20+
+     47	      20 20 7C 20 27 5F	5F+
+     48	      5F 5F 20 20 5C 5F	5F+
+     49	      5F 5F 20 20 20 20	20+
+     50	      2F 5F 5F 5F 5F 5F	5F+
+     51	      5F 5F 20
+     52	010C  0D 0A 20 20 20 20	20+		    db 0Dh, 0Ah, "					     "
+     53	      20 20 20 20 20 20	20+
+     54	      20 20 20 20 20 20	20+
+     55	      20 20 20 20 20 20	20+
+     56	      20 20 20 20 20 20	20+
+     57	      20 20 20 20 20 20	20+
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 2
+lab3\main.asm
+
+
+
+     58	      20 20 20
+     59	0139  0D 0A 2B 2D 2D 2D	2D+		    db 0Dh, 0Ah, "+-----------------------------------------+"
+     60	      2D 2D 2D 2D 2D 2D	2D+
+     61	      2D 2D 2D 2D 2D 2D	2D+
+     62	      2D 2D 2D 2D 2D 2D	2D+
+     63	      2D 2D 2D 2D 2D 2D	2D+
+     64	      2D 2D 2D 2D 2D 2D	2D+
+     65	      2D 2D 2B
+     66	0166  0D 0A 7C 20 49 20	50+		    db 0Dh, 0Ah, "| I P	- 3 5	A d a m	e n k o	  A r s	e n |"
+     67	      20 2D 20 33 20 35	20+
+     68	      20 20 41 20 64 20	61+
+     69	      20 6D 20 65 20 6E	20+
+     70	      6B 20 6F 20 20 20	41+
+     71	      20 72 20 73 20 65	20+
+     72	      6E 20 7C
+     73	0193  0D 0A 2B 2D 2D 2D	2D+		    db 0Dh, 0Ah, "+-----------------------------------------+"
+     74	      2D 2D 2D 2D 2D 2D	2D+
+     75	      2D 2D 2D 2D 2D 2D	2D+
+     76	      2D 2D 2D 2D 2D 2D	2D+
+     77	      2D 2D 2D 2D 2D 2D	2D+
+     78	      2D 2D 2D 2D 2D 2D	2D+
+     79	      2D 2D 2B
+     80	01C0  0D 0A 20 20 20 20	20+		    db 0Dh, 0Ah, "		 --			     "
+     81	      20 20 20 20 20 20	20+
+     82	      20 20 20 2D 2D 20	20+
+     83	      20 20 20 20 20 20	20+
+     84	      20 20 20 20 20 20	20+
+     85	      20 20 20 20 20 20	20+
+     86	      20 20 20
+     87	01ED  0D 0A 20 20 20 20	20+		    db 0Dh, 0Ah, "		{ x = -5, y < 0: 8x^2/y	     "
+     88	      20 20 20 20 20 20	20+
+     89	      20 20 7B 20 78 20	3D+
+     90	      20 2D 35 2C 20 79	20+
+     91	      3C 20 30 3A 20 38	78+
+     92	      5E 32 2F 79 20 20	20+
+     93	      20 20 20
+     94	021A  0D 0A 20 20 20 20	20+		    db 0Dh, 0Ah, "	   Z = {  x >  3  y > 0: 6x	     "
+     95	      20 20 20 20 5A 20	3D+
+     96	      20 7B 20 20 78 20	3E+
+     97	      20 20 33 20 20 79	20+
+     98	      3E 20 30 3A 20 36	78+
+     99	      20 20 20 20 20 20	20+
+    100	      20 20 20
+    101	0247  0D 0A 20 20 20 20	20+		    db 0Dh, 0Ah, "		{ otherwise:	 0	     "
+    102	      20 20 20 20 20 20	20+
+    103	      20 20 7B 20 6F 74	68+
+    104	      65 72 77 69 73 65	3A+
+    105	      20 20 20 20 20 30	20+
+    106	      20 20 20 20 20 20	20+
+    107	      20 20 20
+    108	0274  0D 0A 20 20 20 20	20+		    db 0Dh, 0Ah, "		 --			     "
+    109	      20 20 20 20 20 20	20+
+    110	      20 20 20 2D 2D 20	20+
+    111	      20 20 20 20 20 20	20+
+    112	      20 20 20 20 20 20	20+
+    113	      20 20 20 20 20 20	20+
+    114	      20 20 20
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 3
+lab3\main.asm
+
+
+
+    115	02A1  0D 0A 20 20 20 20	20+		    db 0Dh, 0Ah, "					     "
+    116	      20 20 20 20 20 20	20+
+    117	      20 20 20 20 20 20	20+
+    118	      20 20 20 20 20 20	20+
+    119	      20 20 20 20 20 20	20+
+    120	      20 20 20 20 20 20	20+
+    121	      20 20 20
+    122	02CE  0D 0A 20 20 57 41	52+		    db 0Dh, 0Ah, "  WARNING: follow the	calculator's tips    "
+    123	      4E 49 4E 47 3A 20	66+
+    124	      6F 6C 6C 6F 77 20	74+
+    125	      68 65 20 63 61 6C	63+
+    126	      75 6C 61 74 6F 72	27+
+    127	      73 20 74 69 70 73	20+
+    128	      20 20 20
+    129	02FB  0D 0A 20 20 6F 74	68+		    db 0Dh, 0Ah, "  otherwise you will be punished severely! "
+    130	      65 72 77 69 73 65	20+
+    131	      79 6F 75 20 77 69	6C+
+    132	      6C 20 62 65 20 70	75+
+    133	      6E 69 73 68 65 64	20+
+    134	      73 65 76 65 72 65	6C+
+    135	      79 21 20
+    136	0328  0D 0A 20 20 20 20	20+		    db 0Dh, 0Ah, "					     "
+    137	      20 20 20 20 20 20	20+
+    138	      20 20 20 20 20 20	20+
+    139	      20 20 20 20 20 20	20+
+    140	      20 20 20 20 20 20	20+
+    141	      20 20 20 20 20 20	20+
+    142	      20 20 20
+    143	0355  0D 0A 24				    db 0Dh, 0Ah, '$'
+    144
+    145					 ; a new line
+    146	0358  0D 0A 24			 D_NewLine db 0Dh, 0Ah,	'$'
+    147
+    148					 ; number prompts
+    149					 ; D_PromptX db	"X (-	64 .. +10922): ", '$'
+    150					 ; D_PromptY db	"Y (-32768 .. +65535): ", '$'
+    151	035B  58 3A 20 24		 D_PromptX db "X: ", '$'
+    152	035F  59 3A 20 24		 D_PromptY db "Y: ", '$'
+    153
+    154					 ; numbers
+    155	0363  00004978			 D_X dd	"Ix"
+    156	0367  00004979			 D_Y dd	"Iy"
+    157
+    158					 ; P_Input
+    159	036B  5072			 P_Input_I_Prompt  dw "Pr"
+    160	036D  5074			 P_Input_IW_Ptr	   dw "Pt"
+    161					 ; P_Input_I_LoBound dd	"Lo"
+    162					 ; P_Input_I_HiBound dd	"Hi"
+    163
+    164	036F  0C ?? 0C*(2D)		 P_Input_M_Buffer db 12, ?, 12 dup("-")
+    165
+    166					 ; P_Parse
+    167	037D  5074			 P_Parse_I_Ptr dw "Pt"
+    168	037F  4C65			 P_Parse_I_Len dw "Le"
+    169	0381  00004E75			 P_Parse_O_Num dd "Nu"
+    170	0385  45			 P_Parse_O_Err db "E"
+    171
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 4
+lab3\main.asm
+
+
+
+    172	0386  4E			 P_Parse_M_IsNeg   db "N"
+    173
+    174					 ; P_Calc
+    175	0387  00005878			 P_Calc_I_X	dd "Xx"
+    176	038B  00005979			 P_Calc_I_Y	dd "Yy"
+    177	038F  00005A7A			 P_Calc_O_ZInt	dd "Zz"
+    178	0393  4D6D			 P_Calc_O_ZMod	dw "Mm"
+    179	0395  4464			 P_Calc_O_ZDiv	dw "Dd"
+    180	0397  53 69			 P_Calc_O_ZSign	db "Si"
+    181	0399  45			 P_Calc_O_Err	db "E"
+    182
+    183					 ; P_OutZ
+    184	039A  0000496E			 P_OutZ_I_NumInt dd "In"
+    185	039E  5265			 P_OutZ_I_NumRem dw "Re"
+    186	03A0  4469			 P_OutZ_I_NumDiv dw "Di"
+    187
+    188					 ; P_PrintInt
+    189	03A2  00004464			 P_PrintInt_I_Num dd "Dd"
+    190
+    191	03A6  5031			 P_PrintInt_M_AbsX    dw "P1"
+    192	03A8  5032			 P_PrintInt_M_Diver   dw "P2"
+    193	03AA  5033			 P_PrintInt_M_AbsXTmp dw "P3"
+    194	03AC  43 24			 P_PrintInt_M_Putc    db 'C', '$'
+    195
+    196					 ; P_Cont
+    197	03AE  3F			 P_Cont_O_Yes db "?"
+    198
+    199	03AF  05 ?? 05*(2D)		 P_Cont_M_Buffer db 5, ?, 5 dup("-")
+    200
+    201					 ; P_FracSimple
+    202	03B6  4631			 P_FracSimple_I_X dw "F1"
+    203	03B8  4632			 P_FracSimple_I_Y dw "F2"
+    204
+    205	03BA  4633			 P_FracSimple_O_X dw "F3"
+    206	03BC  4634			 P_FracSimple_O_Y dw "F4"
+    207
+    208	03BE  4635			 P_FracSimple_M_Big   dw "F5"
+    209	03C0  4636			 P_FracSimple_M_Small dw "F6"
+    210
+    211					 ; input number	error messages
+    212	03C2  54 68 65 20 69 6E	70+	 D_InputErrFmt	 db "The input line is misformatted", 0Dh, 0Ah,	0Dh, 0Ah, '$'
+    213	      75 74 20 6C 69 6E	65+
+    214	      20 69 73 20 6D 69	73+
+    215	      66 6F 72 6D 61 74	74+
+    216	      65 64 0D 0A 0D 0A	24
+    217	03E5  41 6E 20 6F 76 65	72+	 D_InputErrOF	 db "An	overflow error has been	occured", 0Dh, 0Ah, 0Dh, 0Ah, '$'
+    218	      66 6C 6F 77 20 65	72+
+    219	      72 6F 72 20 68 61	73+
+    220	      20 62 65 65 6E 20	6F+
+    221	      63 63 75 72 65 64	0D+
+    222	      0A 0D 0A 24
+    223	040C  54 68 65 20 72 61	6E+	 D_InputErrRange db "The range of the number is	invalid", 0Dh, 0Ah, 0Dh, 0Ah, '$'
+    224	      67 65 20 6F 66 20	74+
+    225	      68 65 20 6E 75 6D	62+
+    226	      65 72 20 69 73 20	69+
+    227	      6E 76 61 6C 69 64	0D+
+    228	      0A 0D 0A 24
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 5
+lab3\main.asm
+
+
+
+    229
+    230					 ; calculation error messages
+    231	0433  43 61 6C 75 6C 63	61+	 D_CalcProgress	db "Calulcating	the result...",	0Dh, 0Ah, '$'
+    232	      74 69 6E 67 20 74	68+
+    233	      65 20 72 65 73 75	6C+
+    234	      74 2E 2E 2E 0D 0A	24
+    235	044F  41 6E 20 6F 76 65	72+	 D_CalcErrOF	db "An overflow	error has been occured", 0Dh, 0Ah, 0Dh,	0Ah, '$'
+    236	      66 6C 6F 77 20 65	72+
+    237	      72 6F 72 20 68 61	73+
+    238	      20 62 65 65 6E 20	6F+
+    239	      63 63 75 72 65 64	0D+
+    240	      0A 0D 0A 24
+    241	0476  41 20 64 69 76 69	73+	 D_CalcErrDiv0	db "A division by zero has been	occured", 0Dh, 0Ah, 0Dh, 0Ah, '$'
+    242	      69 6F 6E 20 62 79	20+
+    243	      7A 65 72 6F 20 68	61+
+    244	      73 20 62 65 65 6E	20+
+    245	      6F 63 63 75 72 65	64+
+    246	      0D 0A 0D 0A 24
+    247
+    248					 ; output number prompt	part a
+    249	049E  5A 3A 20 24		 D_OutputZPartA	db "Z: ", '$'
+    250	04A2  5B 24			 D_OutputZPartB	db "[",	'$'
+    251	04A4  2F 24			 D_OutputZPartC	db "/",	'$'
+    252	04A6  5D 24			 D_OutputZPartD	db "]",	'$'
+    253
+    254					 ; continue
+    255	04A8  54 6F 20 63 6F 6E	74+	 D_PromptCont db "To continue (y/N)? ",	'$'
+    256	      69 6E 75 65 20 28	79+
+    257	      2F 4E 29 3F 20 24
+    258	04BC  45 78 69 74 69 6E	67+	 D_Exiting    db "Exiting...", '$'
+    259	      2E 2E 2E 24
+    260	04C7  52 65 73 74 61 72	74+	 D_Restarting db "Restarting...", 0Dh, 0Ah, 0Dh, 0Ah, '$'
+    261	      69 6E 67 2E 2E 2E	0D+
+    262	      0A 0D 0A 24
+    263
+    264					 ; ------------------------------------------------
+    265
+    266	04D9			     S_Data ends
+    267
+    268	0000			     S_Code segment para public	"CODE"
+    269
+    270					 ; ------------------------------------------------
+    271
+    272	0000				 Main proc far
+    273					     ; segments	init
+    274					     assume cs:	S_Code,	ds: S_Data, ss:	S_Stack
+    275
+    276					     ; data segment init
+    277	0000  B8 0000s			     mov ax, S_Data
+    278	0003  8E D8			     mov ds, ax
+    279
+    280					     ; greeting
+    281	0005  BA 0000r			     mov dx, offset D_Greeting
+    282	0008  B4 09			     mov ah, 9
+    283	000A  CD 21			     int 21h
+    284
+    285	000C				     Main_Restart:
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 6
+lab3\main.asm
+
+
+
+    286	000C				     Main_CalcErrRetype:
+    287
+    288						 ; input X
+    289	000C  C7 06 036Br 035Br			 mov ds:[P_Input_I_Prompt], offset D_PromptX
+    290	0012  C7 06 036Dr 0363r			 mov ds:[P_Input_IW_Ptr], offset D_X
+    291						 ; mov word ptr	ds:[P_Input_I_LoBound +	0], -64
+    292						 ; mov word ptr	ds:[P_Input_I_LoBound +	2], 0ffffh
+    293						 ; mov word ptr	ds:[P_Input_I_HiBound +	0], 10922
+    294						 ; mov word ptr	ds:[P_Input_I_HiBound +	2], 0000h
+    295	0018  0E E8 0178			 call P_Input
+    296
+    297						 ; input Y
+    298	001C  C7 06 036Br 035Fr			 mov ds:[P_Input_I_Prompt], offset D_PromptY
+    299	0022  C7 06 036Dr 0367r			 mov ds:[P_Input_IW_Ptr], offset D_Y
+    300						 ; mov word ptr	ds:[P_Input_I_LoBound +	0], -32768
+    301						 ; mov word ptr	ds:[P_Input_I_LoBound +	2], 0ffffh
+    302						 ; mov word ptr	ds:[P_Input_I_HiBound +	0], 65535
+    303						 ; mov word ptr	ds:[P_Input_I_HiBound +	2], 0000h
+    304	0028  0E E8 0168			 call P_Input
+    305
+    306						 ; calc	in progress
+    307	002C  BA 0433r				 mov dx, offset	D_CalcProgress
+    308	002F  B4 09				 mov ah, 9
+    309	0031  CD 21				 int 21h
+    310
+    311						 ; --------( calc )--------
+    312						 ; X
+    313	0033  A1 0363r				 mov ax, word ptr ds:[D_X + 0]
+    314	0036  8B 1E 0365r			 mov bx, word ptr ds:[D_X + 2]
+    315	003A  A3 0387r				 mov word ptr ds:[P_Calc_I_X + 0], ax
+    316	003D  89 1E 0389r			 mov word ptr ds:[P_Calc_I_X + 2], bx
+    317						 ; Y
+    318	0041  A1 0367r				 mov ax, word ptr ds:[D_Y + 0]
+    319	0044  8B 1E 0369r			 mov bx, word ptr ds:[D_Y + 2]
+    320	0048  A3 038Br				 mov word ptr ds:[P_Calc_I_Y + 0], ax
+    321	004B  89 1E 038Dr			 mov word ptr ds:[P_Calc_I_Y + 2], bx
+    322						 ; call
+    323	004F  0E E8 01AC			 call P_Calc
+    324
+    325						 ; --------( calc error	)--------
+    326	0053  80 3E 0399r 4F			 cmp byte ptr ds:[P_Calc_O_Err], 'O'
+    327	0058  74 09				 je Main_L_CalcErrOF
+    328
+    329	005A  80 3E 0399r 44			 cmp byte ptr ds:[P_Calc_O_Err], 'D'
+    330	005F  74 0B				 je Main_L_CalcErrDiv0
+    331
+    332	0061  EB 12				 jmp Main_L_NoCalcError
+    333
+    334					     ; --------------------------------
+    335
+    336	0063				     Main_L_CalcErrOF:
+    337
+    338	0063  BA 044Fr				 mov dx, offset	D_CalcErrOF
+    339	0066  B4 09				 mov ah, 9
+    340	0068  CD 21				 int 21h
+    341
+    342	006A  EB A0				 jmp Main_CalcErrRetype
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 7
+lab3\main.asm
+
+
+
+    343
+    344	006C				     Main_L_CalcErrDiv0:
+    345
+    346	006C  BA 0476r				 mov dx, offset	D_CalcErrDiv0
+    347	006F  B4 09				 mov ah, 9
+    348	0071  CD 21				 int 21h
+    349
+    350	0073  EB 97				 jmp Main_CalcErrRetype
+    351
+    352					     ; --------------------------------
+    353
+    354	0075				     Main_L_NoCalcError:
+    355
+    356					     ; --------( simplifying fraction )--------
+    357					     ; in X
+    358	0075  A1 0393r			     mov ax, word ptr ds:[P_Calc_O_ZMod]
+    359	0078  A3 03B6r			     mov word ptr ds:[P_FracSimple_I_X], ax
+    360					     ; in Y
+    361	007B  A1 0395r			     mov ax, word ptr ds:[P_Calc_O_ZDiv]
+    362	007E  A3 03B8r			     mov word ptr ds:[P_FracSimple_I_Y], ax
+    363					     ; call
+    364	0081  0E E8 0338		     call P_FracSimple
+    365					     ; out X
+    366	0085  A1 03BAr			     mov ax, word ptr ds:[P_FracSimple_O_X]
+    367	0088  A3 0393r			     mov word ptr ds:[P_Calc_O_ZMod], ax
+    368					     ; out Y
+    369	008B  A1 03BCr			     mov ax, word ptr ds:[P_FracSimple_O_Y]
+    370	008E  A3 0395r			     mov word ptr ds:[P_Calc_O_ZDiv], ax
+    371
+    372					     ; --------( output	)--------
+    373					     ; int
+    374	0091  A1 038Fr			     mov ax, word ptr ds:[P_Calc_O_ZInt	+ 0]
+    375	0094  8B 1E 0391r		     mov bx, word ptr ds:[P_Calc_O_ZInt	+ 2]
+    376	0098  A3 039Ar			     mov word ptr ds:[P_OutZ_I_NumInt +	0], ax
+    377	009B  89 1E 039Cr		     mov word ptr ds:[P_OutZ_I_NumInt +	2], bx
+    378					     ; rem
+    379	009F  A1 0393r			     mov ax, word ptr ds:[P_Calc_O_ZMod]
+    380	00A2  A3 039Er			     mov word ptr ds:[P_OutZ_I_NumRem],	ax
+    381					     ; div
+    382	00A5  A1 0395r			     mov ax, word ptr ds:[P_Calc_O_ZDiv]
+    383	00A8  A3 03A0r			     mov word ptr ds:[P_OutZ_I_NumDiv],	ax
+    384					     ; call
+    385	00AB  0E E8 037E		     call P_OutZ
+    386
+    387					     ; --------( continue )--------
+    388	00AF  0E E8 001E		     call P_Cont
+    389
+    390	00B3  80 3E 03AEr 31		     cmp byte ptr ds:[P_Cont_O_Yes], '1'
+    391	00B8  75 0A			     jne Main_L_fyhrujeejehgt
+    392						 ; restarting
+    393	00BA  BA 04C7r				 mov dx, offset	D_Restarting
+    394	00BD  B4 09				 mov ah, 9
+    395	00BF  CD 21				 int 21h
+    396
+    397	00C1  E9 FF48				 jmp Main_Restart
+    398	00C4				     Main_L_fyhrujeejehgt:
+    399
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 8
+lab3\main.asm
+
+
+
+    400					     ; exiting
+    401	00C4  BA 04BCr			     mov dx, offset D_Exiting
+    402	00C7  B4 09			     mov ah, 9
+    403	00C9  CD 21			     int 21h
+    404
+    405					     ; exit(0)
+    406	00CB  B4 4C			     mov ah, 4Ch
+    407	00CD  B0 00			     mov al, 0
+    408	00CF  CD 21			     int 21h
+    409	00D1				 Main endp
+    410
+    411					 ; ------------------------------------------------
+    412
+    413	00D1				 P_Cont	proc far
+    414					     ; preserve
+    415	00D1  50			     push ax
+    416	00D2  52			     push dx
+    417
+    418					     ; prompt
+    419	00D3  BA 04A8r			     mov dx, offset D_PromptCont
+    420	00D6  B4 09			     mov ah, 9
+    421	00D8  CD 21			     int 21h
+    422
+    423					     ; input
+    424	00DA  BA 03AFr			     mov dx, offset P_Cont_M_Buffer
+    425	00DD  B4 0A			     mov ah, 10
+    426	00DF  CD 21			     int 21h
+    427
+    428	00E1  0E E8 03D9		     call P_NewLine
+    429
+    430					     ; if first	char is	not y or Y then	tell to	exit
+    431	00E5  C6 06 03AEr 30		     mov byte ptr ds:[P_Cont_O_Yes], '0'
+    432
+    433	00EA  B8 0000			     mov ax, 0
+    434	00ED  A0 03B1r			     mov al, ds:[P_Cont_M_Buffer + 2 + 0]
+    435	00F0  3C 79			     cmp al, 'y'
+    436	00F2  74 06			     je	P_Cont_L_htfrjdueehn
+    437	00F4  3C 59			     cmp al, 'Y'
+    438	00F6  74 02			     je	P_Cont_L_hyfrdeujehyv
+    439
+    440	00F8  EB 05				 jmp P_Cont_L_hnvfjmshcngbtr
+    441
+    442	00FA					 P_Cont_L_htfrjdueehn:
+    443	00FA					 P_Cont_L_hyfrdeujehyv:
+    444
+    445	00FA  C6 06 03AEr 31			 mov byte ptr ds:[P_Cont_O_Yes], '1'
+    446
+    447	00FF					 P_Cont_L_hnvfjmshcngbtr:
+    448
+    449					     ; ret
+    450	00FF  5A			     pop dx
+    451	0100  58			     pop ax
+    452
+    453	0101  CB			     ret
+    454	0102				 P_Cont	endp
+    455
+    456					 ; ------------------------------------------------
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 9
+lab3\main.asm
+
+
+
+    457
+    458	0102				 P_Parse proc far
+    459					     ; preserve
+    460	0102  50			     push ax
+    461	0103  53			     push bx
+    462	0104  51			     push cx
+    463	0105  52			     push dx
+    464
+    465					     ; ptr
+    466	0106  8B 1E 037Dr		     mov bx, ds:[P_Parse_I_Ptr]
+    467
+    468					     ; iter end
+    469	010A  8B FB			     mov di, bx
+    470	010C  03 3E 037Fr		     add di, ds:[P_Parse_I_Len]
+    471
+    472					     ; is negative
+    473	0110  C6 06 0386r 30		     mov ds:[P_Parse_M_IsNeg], '0'
+    474
+    475	0115  80 3F 2D			     cmp byte ptr ds:[bx], '-'
+    476	0118  75 11			     jne P_Parse_L_PrePos
+    477
+    478	011A  C6 06 0386r 31			 mov ds:[P_Parse_M_IsNeg], '1'
+    479	011F  43				 inc bx
+    480
+    481						 ; check length
+    482	0120  8B 0E 037Fr			 mov cx, ds:[P_Parse_I_Len]
+    483	0124  83 F9 02				 cmp cx, 2
+    484	0127  7C 58				 jl P_Parse_L_ErrFmt
+    485
+    486	0129  EB 09				 jmp P_Parse_L_PreNeg
+    487
+    488	012B				     P_Parse_L_PrePos:
+    489
+    490						 ; check length
+    491	012B  8B 0E 037Fr			 mov cx, ds:[P_Parse_I_Len]
+    492	012F  83 F9 01				 cmp cx, 1
+    493	0132  7C 4D				 jl P_Parse_L_ErrFmt
+    494
+    495	0134				     P_Parse_L_PreNeg:
+    496
+    497					     ; zero result number
+    498	0134  B8 0000			     mov ax, 0
+    499
+    500					     ; digit loop
+    501	0137				     P_Parse_L_LoopC:
+    502
+    503	0137  3B DF				 cmp bx, di
+    504	0139  7D 20				 jge P_Parse_L_LoopE
+    505
+    506						 ; ================
+    507
+    508						 ; get char digit
+    509	013B  B9 0000				 mov cx, 0
+    510	013E  8A 0F				 mov cl, ds:[bx]
+    511
+    512						 ; check char digit
+    513	0140  80 F9 30				 cmp cl, '0'
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 10
+lab3\main.asm
+
+
+
+    514	0143  7C 3C				 jl P_Parse_L_ErrFmt
+    515	0145  80 F9 39				 cmp cl, '9'
+    516	0148  7F 37				 jg P_Parse_L_ErrFmt
+    517
+    518						 ; char	to digit
+    519	014A  80 E9 30				 sub cl, '0'
+    520
+    521						 ; mul by 10
+    522	014D  BA 000A				 mov dx, 10
+    523	0150  F7 E2				 mul dx
+    524	0152  72 34				 jc P_Parse_L_ErrOF
+    525
+    526						 ; add digit
+    527	0154  03 C1				 add ax, cx
+    528	0156  72 30				 jc P_Parse_L_ErrOF
+    529
+    530						 ; ================
+    531
+    532	0158  43				 inc bx
+    533
+    534	0159  EB DC				 jmp P_Parse_L_LoopC
+    535
+    536	015B				     P_Parse_L_LoopE:
+    537
+    538					     ; write to	highest	16 bits
+    539	015B  B9 0000			     mov cx, 0000h
+    540	015E  89 0E 0383r		     mov word ptr ds:[P_Parse_O_Num + 2], cx
+    541
+    542					     ; if negative
+    543	0162  80 3E 0386r 31		     cmp ds:[P_Parse_M_IsNeg], '1'
+    544	0167  75 0E			     jne P_Parse_L_PostNotNeg
+    545
+    546	0169  3D 8000				 cmp ax, 32768
+    547	016C  77 1A				 ja P_Parse_L_ErrOF
+    548
+    549	016E  F7 D8				 neg ax
+    550
+    551						 ; if negative then highest 16 bit
+    552	0170  B9 FFFF				 mov cx, 0ffffh
+    553	0173  89 0E 0383r			 mov word ptr ds:[P_Parse_O_Num	+ 2], cx
+    554
+    555	0177				     P_Parse_L_PostNotNeg:
+    556
+    557					     ; lowest 16 bit
+    558	0177  A3 0381r			     mov word ptr ds:[P_Parse_O_Num], ax
+    559	017A  C6 06 0385r 2B		     mov byte ptr ds:[P_Parse_O_Err], '+'
+    560
+    561	017F  EB 0E			     jmp P_Parse_L_Exit
+    562
+    563	0181				     P_Parse_L_ErrFmt:
+    564	0181  C6 06 0385r 46			 mov byte ptr ds:[P_Parse_O_Err], 'F'
+    565	0186  EB 07				 jmp P_Parse_L_Exit
+    566
+    567	0188				     P_Parse_L_ErrOF:
+    568	0188  C6 06 0385r 4F			 mov byte ptr ds:[P_Parse_O_Err], 'O'
+    569	018D  EB 00				 jmp P_Parse_L_Exit
+    570
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 11
+lab3\main.asm
+
+
+
+    571	018F				     P_Parse_L_Exit:
+    572
+    573					     ; ret
+    574	018F  5A			     pop dx
+    575	0190  59			     pop cx
+    576	0191  5B			     pop bx
+    577	0192  58			     pop ax
+    578
+    579	0193  CB			     ret
+    580	0194				 P_Parse endp
+    581
+    582					 ; ------------------------------------------------
+    583
+    584	0194				 P_Input proc far
+    585					     ; preserve
+    586	0194  50			     push ax
+    587	0195  53			     push bx
+    588	0196  51			     push cx
+    589	0197  52			     push dx
+    590
+    591	0198				     P_Input_L_Retype:
+    592						 ; prompt
+    593	0198  8B 16 036Br			 mov dx, ds:[P_Input_I_Prompt]
+    594	019C  B4 09				 mov ah, 9
+    595	019E  CD 21				 int 21h
+    596
+    597						 ; input
+    598	01A0  BA 036Fr				 mov dx, offset	P_Input_M_Buffer
+    599	01A3  B4 0A				 mov ah, 10
+    600	01A5  CD 21				 int 21h
+    601
+    602	01A7  0E E8 0313			 call P_NewLine
+    603
+    604						 ; ----( parse )----
+    605						 ; len
+    606	01AB  B8 0000				 mov ax, 0
+    607	01AE  A0 0370r				 mov al, ds:[P_Input_M_Buffer +	1]
+    608	01B1  A3 037Fr				 mov ds:[P_Parse_I_Len], ax
+    609						 ; ptr
+    610	01B4  B8 0371r				 mov ax, offset	P_Input_M_Buffer + 2
+    611	01B7  A3 037Dr				 mov ds:[P_Parse_I_Ptr], ax
+    612						 ; call
+    613	01BA  0E E8 FF44			 call P_Parse
+    614
+    615						 ; format error
+    616	01BE  80 3E 0385r 46			 cmp ds:[P_Parse_O_Err], 'F'
+    617	01C3  74 09				 je P_Input_L_ErrFmt
+    618
+    619						 ; overflow
+    620	01C5  80 3E 0385r 4F			 cmp ds:[P_Parse_O_Err], 'O'
+    621	01CA  74 0B				 je P_Input_L_ErrOF
+    622
+    623						 ; ; ----( check range )----
+    624						 ; mov ax, word	ptr ds:[P_Parse_O_Num +	0]
+    625						 ; mov bx, word	ptr ds:[P_Parse_O_Num +	2]
+    626
+    627						 ; ; ========
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 12
+lab3\main.asm
+
+
+
+    628
+    629						 ; mov cx, word	ptr ds:[P_Input_I_LoBound + 0]
+    630						 ; mov dx, word	ptr ds:[P_Input_I_LoBound + 2]
+    631
+    632						 ; cmp bx, dx
+    633						 ; jb P_Input_L_SkipLoBound
+    634
+    635						 ; cmp ax, cx
+    636						 ; jl P_Input_L_ErrRange
+    637
+    638						 ; P_Input_L_SkipLoBound:
+    639
+    640						 ; mov cx, word	ptr ds:[P_Input_I_HiBound + 0]
+    641						 ; mov dx, word	ptr ds:[P_Input_I_HiBound + 2]
+    642
+    643						 ; cmp dx, bx
+    644						 ; jb P_Input_L_Exit
+    645
+    646						 ; cmp cx, ax
+    647						 ; jb P_Input_L_ErrRange
+    648
+    649						 ; ; ----------------
+    650
+    651	01CC  EB 1B				 jmp P_Input_L_Exit
+    652
+    653	01CE				     P_Input_L_ErrFmt:
+    654	01CE  BA 03C2r				 mov dx, offset	D_InputErrFmt
+    655	01D1  B4 09				 mov ah, 9
+    656	01D3  CD 21				 int 21h
+    657
+    658	01D5  EB C1				 jmp P_Input_L_Retype
+    659
+    660	01D7				     P_Input_L_ErrOF:
+    661	01D7  BA 03E5r				 mov dx, offset	D_InputErrOF
+    662	01DA  B4 09				 mov ah, 9
+    663	01DC  CD 21				 int 21h
+    664
+    665	01DE  EB B8				 jmp P_Input_L_Retype
+    666
+    667	01E0				     P_Input_L_ErrRange:
+    668	01E0  BA 040Cr				 mov dx, offset	D_InputErrRange
+    669	01E3  B4 09				 mov ah, 9
+    670	01E5  CD 21				 int 21h
+    671
+    672	01E7  EB AF				 jmp P_Input_L_Retype
+    673
+    674	01E9				     P_Input_L_Exit:
+    675
+    676					     ; return value
+    677	01E9  8B 1E 036Dr		     mov bx, ds:[P_Input_IW_Ptr]
+    678					     ; low
+    679	01ED  8B 0E 0381r		     mov cx, word ptr ds:[P_Parse_O_num]
+    680	01F1  89 0F			     mov ds:[bx], cx
+    681					     ; high
+    682	01F3  8B 0E 0383r		     mov cx, word ptr ds:[P_Parse_O_num	+ 2]
+    683	01F7  89 4F 02			     mov ds:[bx	+ 2], cx
+    684
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 13
+lab3\main.asm
+
+
+
+    685					     ; ret
+    686	01FA  5A			     pop dx
+    687	01FB  59			     pop cx
+    688	01FC  5B			     pop bx
+    689	01FD  58			     pop ax
+    690
+    691	01FE  CB			     ret
+    692	01FF				 P_Input endp
+    693
+    694					 ; ------------------------------------------------
+    695
+    696	01FF				 P_Calc	proc far
+    697					     ; preserve
+    698	01FF  50			     push ax
+    699	0200  53			     push bx
+    700	0201  51			     push cx
+    701	0202  52			     push dx
+    702
+    703					     ; branch picking
+    704
+    705					     R_XL_C equ	ax
+    706					     R_YL_C equ	bx
+    707					     R_XH_C equ	cx
+    708					     R_YH_C equ	dx
+    709
+    710	0203  A1 0387r			     mov R_XL_C, word ptr ds:[P_Calc_I_X + 0]
+    711	0206  8B 0E 0389r		     mov R_XH_C, word ptr ds:[P_Calc_I_X + 2]
+    712	020A  8B 1E 038Br		     mov R_YL_C, word ptr ds:[P_Calc_I_Y + 0]
+    713	020E  8B 16 038Dr		     mov R_YH_C, word ptr ds:[P_Calc_I_Y + 2]
+    714
+    715					     ; ================================
+    716
+    717					     ; x is neg
+    718	0212  83 F9 FF			     cmp R_XH_C, 0ffffh
+    719	0215  75 79			     jne P_Calc_L_Br2
+    720					     ; x = -5
+    721	0217  3D FFFB			     cmp R_XL_C, -5
+    722	021A  75 74			     jne P_Calc_L_Br2
+    723					     ; y is neg
+    724	021C  83 FA FF			     cmp R_YH_C, 0ffffh
+    725	021F  75 6F			     jne P_Calc_L_Br2
+    726					     ; y < 0
+    727	0221  83 FB 00			     cmp R_YL_C, 0
+    728	0224  7D 6A			     jge P_Calc_L_Br2
+    729
+    730						 ; ----------------( x = -5, y < 0: 8x^2/y )----------------
+    731
+    732	0226  A1 0387r				 mov ax, word ptr ds:[P_Calc_I_X + 0]
+    733	0229  8B 0E 0389r			 mov cx, word ptr ds:[P_Calc_I_X + 2]
+    734
+    735						 ; ----( X overflow detection and x = |x| )----
+    736	022D  83 F9 00				 cmp cx, 0000h
+    737	0230  75 0A				 jne P_Calc_L_Br1_PrepXPosWall
+    738
+    739	0232  3D 005A				     cmp ax, 90
+    740
+    741	0235  76 03				     jbe P_Calc_L_tmp_hfrhejihsd
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 14
+lab3\main.asm
+
+
+
+    742	0237  E9 00DB					 jmp P_Calc_L_ErrOF
+    743	023A					     P_Calc_L_tmp_hfrhejihsd:
+    744
+    745	023A  EB 0A				     jmp P_Calc_L_Br1_PrepXNegWall
+    746
+    747	023C					 P_Calc_L_Br1_PrepXPosWall:
+    748
+    749	023C  3D FFC0				     cmp ax, -64
+    750
+    751	023F  7D 03				     jge P_Calc_L_hfrjwiswfrtt
+    752	0241  E9 00D1					 jmp P_Calc_L_ErrOF
+    753	0244					     P_Calc_L_hfrjwiswfrtt:
+    754
+    755	0244  F7 D8				     neg ax
+    756
+    757	0246					 P_Calc_L_Br1_PrepXNegWall:
+    758						 ; ----------------
+    759
+    760	0246  8B 1E 038Br			 mov bx, word ptr ds:[P_Calc_I_Y + 0]
+    761	024A  8B 0E 038Dr			 mov cx, word ptr ds:[P_Calc_I_Y + 2]
+    762
+    763						 ; x^2:	x *= x (unsigned)
+    764	024E  F7 E0				 mul ax
+    765						 ; 8x^2: x *= 8	(unsigned)
+    766	0250  BA 0008				 mov dx, 8
+    767	0253  F7 E2				 mul dx
+    768
+    769						 ; ----( division )----
+    770						 ; x is	pos, so	highest	16 bit is 0000h
+    771	0255  BA 0000				 mov dx, 0000h
+    772
+    773	0258  83 F9 00				 cmp cx, 0000h
+    774	025B  75 0B				 jne P_Calc_L_Br1_PrepYPosWall
+    775
+    776	025D  F7 F3				     div bx
+    777
+    778	025F  B9 0000				     mov cx, 0000h
+    779	0262  89 0E 0391r			     mov word ptr ds:[P_Calc_O_ZInt + 2], cx
+    780
+    781	0266  EB 09				     jmp P_Calc_L_Br1_PrepYNegWall
+    782
+    783	0268					 P_Calc_L_Br1_PrepYPosWall:
+    784
+    785	0268  F7 FB				     idiv bx
+    786
+    787	026A  B9 FFFF				     mov cx, 0ffffh
+    788	026D  89 0E 0391r			     mov word ptr ds:[P_Calc_O_ZInt + 2], cx
+    789
+    790	0271					 P_Calc_L_Br1_PrepYNegWall:
+    791
+    792	0271  A3 038Fr				 mov word ptr ds:[P_Calc_O_ZInt	+ 0], ax
+    793						 ; ----------------
+    794
+    795						 ; rem
+    796	0274  8B C2				 mov ax, dx
+    797	0276  A3 0393r				 mov ds:[P_Calc_O_ZMod], ax
+    798
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 15
+lab3\main.asm
+
+
+
+    799						 ; div
+    800	0279  8B C3				 mov ax, bx
+    801	027B  8B 1E 038Dr			 mov bx, word ptr ds:[P_Calc_I_Y + 2]
+    802
+    803	027F  83 FB FF				 cmp bx, 0ffffh
+    804	0282  75 02				 jne P_Calc_L_Br1_PostYNegWall
+    805
+    806	0284  F7 D8				     neg ax
+    807
+    808	0286					 P_Calc_L_Br1_PostYNegWall:
+    809
+    810	0286  A3 0395r				 mov ds:[P_Calc_O_ZDiv], ax
+    811
+    812	0289  C6 06 0397r 2D			 mov ds:[P_Calc_O_ZSign], '-'
+    813
+    814						 ; --------------------------------
+    815
+    816	028E  EB 7E				 jmp P_Calc_L_Ok
+    817
+    818	0290				     P_Calc_L_Br2:
+    819
+    820					     ; x is pos
+    821	0290  83 F9 00			     cmp R_XH_C, 0000h
+    822	0293  75 5A			     jne P_Calc_L_Br3
+    823					     ; x > 3
+    824	0295  3D 0003			     cmp R_XL_C, 3
+    825	0298  76 55			     jbe P_Calc_L_Br3
+    826					     ; y is pos
+    827	029A  83 FA 00			     cmp R_YH_C, 0000h
+    828	029D  75 50			     jne P_Calc_L_Br3
+    829					     ; y > 0
+    830	029F  83 FB 00			     cmp R_YL_C, 0
+    831	02A2  76 4B			     jbe P_Calc_L_Br3
+    832
+    833						 ; ----------------( x > 3, y >	0: 6x )----------------
+    834
+    835	02A4  A1 0387r				 mov ax, word ptr ds:[P_Calc_I_X + 0]
+    836	02A7  8B 0E 0389r			 mov cx, word ptr ds:[P_Calc_I_X + 2]
+    837
+    838	02AB  BB 0006				 mov bx, 6
+    839
+    840	02AE  83 F9 00				 cmp cx, 0000h
+    841	02B1  75 18				 jne P_Calc_L_Br2_PosWall
+    842
+    843	02B3  F7 E3				     mul bx
+    844	02B5  70 5E				     jo	P_Calc_L_ErrOF
+    845
+    846	02B7  8B D8				     mov bx, ax
+    847	02B9  89 1E 038Fr			     mov word ptr ds:[P_Calc_O_ZInt + 0], bx
+    848
+    849	02BD  BB 0000				     mov bx, 0000h
+    850	02C0  89 1E 0391r			     mov word ptr ds:[P_Calc_O_ZInt + 2], bx
+    851
+    852	02C4  C6 06 0397r 2B			     mov ds:[P_Calc_O_ZSign], '+'
+    853
+    854	02C9  EB 16				     jmp P_Calc_L_Br2_NegWall
+    855
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 16
+lab3\main.asm
+
+
+
+    856	02CB					 P_Calc_L_Br2_PosWall:
+    857
+    858	02CB  F7 EB				     imul bx
+    859	02CD  70 46				     jo	P_Calc_L_ErrOF
+    860
+    861	02CF  8B D8				     mov bx, ax
+    862	02D1  89 1E 038Fr			     mov word ptr ds:[P_Calc_O_ZInt + 0], bx
+    863
+    864	02D5  BB FFFF				     mov bx, 0ffffh
+    865	02D8  89 1E 0391r			     mov word ptr ds:[P_Calc_O_ZInt + 2], bx
+    866
+    867	02DC  C6 06 0397r 2D			     mov ds:[P_Calc_O_ZSign], '-'
+    868
+    869	02E1					 P_Calc_L_Br2_NegWall:
+    870
+    871	02E1  B8 0000				 mov ax, 0
+    872	02E4  A3 0393r				 mov ds:[P_Calc_O_ZMod], ax
+    873
+    874	02E7  B8 0000				 mov ax, 0
+    875	02EA  A3 0395r				 mov ds:[P_Calc_O_ZDiv], ax
+    876
+    877						 ; --------------------------------
+    878
+    879	02ED  EB 1F				 jmp P_Calc_L_Ok
+    880
+    881	02EF				     P_Calc_L_Br3:
+    882
+    883						 ; ----------------( otherwise:	1 )----------------
+    884
+    885	02EF  B8 0001				 mov ax, 1
+    886	02F2  A3 038Fr				 mov word ptr ds:[P_Calc_O_ZInt	+ 0], ax
+    887
+    888	02F5  B8 0000				 mov ax, 0000h
+    889	02F8  A3 0391r				 mov word ptr ds:[P_Calc_O_ZInt	+ 2], ax
+    890
+    891	02FB  B8 0000				 mov ax, 0
+    892	02FE  A3 0393r				 mov word ptr ds:[P_Calc_O_ZMod], ax
+    893
+    894	0301  B8 0000				 mov ax, 0
+    895	0304  A3 0395r				 mov word ptr ds:[P_Calc_O_ZDiv], ax
+    896
+    897	0307  C6 06 0397r 2B			 mov ds:[P_Calc_O_ZSign], '+'
+    898
+    899						 ; --------------------------------
+    900
+    901	030C  EB 00				 jmp P_Calc_L_Ok
+    902
+    903					     ; ================================
+    904
+    905	030E				     P_Calc_L_Ok:
+    906	030E  C6 06 0399r 2B			 mov byte ptr ds:[P_Calc_O_Err], '+'
+    907	0313  EB 0E				 jmp P_Calc_L_Exit
+    908
+    909	0315				     P_Calc_L_ErrOF:
+    910	0315  C6 06 0399r 4F			 mov byte ptr ds:[P_Calc_O_Err], 'O'
+    911	031A  EB 07				 jmp P_Calc_L_Exit
+    912
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 17
+lab3\main.asm
+
+
+
+    913	031C				     P_Calc_L_ErrDiv0:
+    914	031C  C6 06 0399r 44			 mov byte ptr ds:[P_Calc_O_Err], 'D'
+    915	0321  EB 00				 jmp P_Calc_L_Exit
+    916
+    917	0323				     P_Calc_L_Exit:
+    918
+    919					     ; ret
+    920	0323  5A			     pop dx
+    921	0324  59			     pop cx
+    922	0325  5B			     pop bx
+    923	0326  58			     pop ax
+    924
+    925	0327  CB			     ret
+    926	0328				 P_Calc	endp
+    927
+    928					 ; ------------------------------------------------
+    929
+    930	0328				 P_PrintInt proc far
+    931					     ; preserve
+    932	0328  50			     push ax
+    933	0329  53			     push bx
+    934	032A  51			     push cx
+    935	032B  52			     push dx
+    936
+    937					     ; --------------------------------
+    938
+    939	032C  A1 03A2r			     mov ax, word ptr ds:[P_PrintInt_I_Num + 0]
+    940
+    941	032F  8B 1E 03A4r		     mov bx, word ptr ds:[P_PrintInt_I_Num + 2]
+    942	0333  83 FB FF			     cmp bx, 0ffffh
+    943	0336  75 13			     jne P_PrintInt_L_PreNegWall
+    944
+    945						 ; x = |x|
+    946	0338  F7 D8				 neg ax
+    947
+    948						 ; [x] = x
+    949	033A  A3 03A6r				 mov ds:[P_PrintInt_M_AbsX], ax
+    950
+    951						 ; putc('-')
+    952	033D  C6 06 03ACr 2D			 mov ds:[P_PrintInt_M_Putc], '-'
+    953	0342  BA 03ACr				 mov dx, offset	P_PrintInt_M_Putc
+    954	0345  B4 09				 mov ah, 9
+    955	0347  CD 21				 int 21h
+    956
+    957	0349  EB 03				 jmp P_PrintInt_L_PrePosWall
+    958
+    959	034B				     P_PrintInt_L_PreNegWall:
+    960
+    961						 ; [x] = x
+    962	034B  A3 03A6r				 mov ds:[P_PrintInt_M_AbsX], ax
+    963
+    964	034E				     P_PrintInt_L_PrePosWall:
+    965
+    966					     ; --------------------------------
+    967
+    968					     ; diver
+    969	034E  C7 06 03A8r 0001		     mov ds:[P_PrintInt_M_Diver], 1
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 18
+lab3\main.asm
+
+
+
+    970					     ; abs x tmp
+    971	0354  A1 03A6r			     mov ax, word ptr ds:[P_PrintInt_M_AbsX]
+    972	0357  A3 03AAr			     mov ds:[P_PrintInt_M_AbsXTmp], ax
+    973
+    974	035A				     P_PrintInt_L_GetDiv_LC:
+    975
+    976	035A  A1 03AAr				 mov ax, ds:[P_PrintInt_M_AbsXTmp]
+    977	035D  3D 000A				 cmp ax, 10
+    978	0360  72 1B				 jb P_PrintInt_L_GetDiv_E
+    979
+    980						 ; ----------------
+    981
+    982	0362  A1 03A8r				 mov ax, ds:[P_PrintInt_M_Diver]
+    983	0365  BB 000A				 mov bx, 10
+    984	0368  F7 E3				 mul bx
+    985	036A  A3 03A8r				 mov ds:[P_PrintInt_M_Diver], ax
+    986
+    987	036D  A1 03AAr				 mov ax, ds:[P_PrintInt_M_AbsXTmp]
+    988	0370  BA 0000				 mov dx, 0
+    989	0373  BB 000A				 mov bx, 10
+    990	0376  F7 F3				 div bx
+    991	0378  A3 03AAr				 mov ds:[P_PrintInt_M_AbsXTmp],	ax
+    992
+    993						 ; ----------------
+    994
+    995	037B  EB DD				 jmp P_PrintInt_L_GetDiv_LC
+    996
+    997	037D				     P_PrintInt_L_GetDiv_E:
+    998
+    999					     ; --------------------------------
+   1000
+   1001	037D				     P_PrintInt_L_Loop_C:
+   1002
+   1003						 ; ----------------
+   1004
+   1005						 ; i = [x]
+   1006	037D  A1 03A6r				 mov ax, ds:[P_PrintInt_M_AbsX]
+   1007	0380  BA 0000				 mov dx, 0
+   1008						 ; d = [d]
+   1009	0383  8B 1E 03A8r			 mov bx, ds:[P_PrintInt_M_Diver]
+   1010						 ; i /=	d
+   1011	0387  BA 0000				 mov dx, 0
+   1012	038A  F7 F3				 div bx
+   1013						 ; bx =	10
+   1014	038C  BB 000A				 mov bx, 10
+   1015						 ; _, r	= div(i, 10)
+   1016	038F  BA 0000				 mov dx, 0
+   1017	0392  F7 F3				 div bx
+   1018						 ; c = tochar(r)
+   1019	0394  83 C2 30				 add dx, '0'
+   1020						 ; putc(c)
+   1021	0397  88 16 03ACr			 mov ds:[P_PrintInt_M_Putc], dl
+   1022	039B  BA 03ACr				 mov dx, offset	P_PrintInt_M_Putc
+   1023	039E  B4 09				 mov ah, 9
+   1024	03A0  CD 21				 int 21h
+   1025
+   1026	03A2  A1 03A8r				 mov ax, ds:[P_PrintInt_M_Diver]
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 19
+lab3\main.asm
+
+
+
+   1027	03A5  BA 0000				 mov dx, 0
+   1028	03A8  BB 000A				 mov bx, 10
+   1029	03AB  F7 F3				 div bx
+   1030	03AD  A3 03A8r				 mov ds:[P_PrintInt_M_Diver], ax
+   1031
+   1032						 ; ----------------
+   1033
+   1034	03B0  A1 03A8r				 mov ax, ds:[P_PrintInt_M_Diver]
+   1035	03B3  3D 0001				 cmp ax, 1
+   1036	03B6  73 C5				 jae P_PrintInt_L_Loop_C
+   1037
+   1038					     ; --------------------------------
+   1039
+   1040					     ; ret
+   1041	03B8  5A			     pop dx
+   1042	03B9  59			     pop cx
+   1043	03BA  5B			     pop bx
+   1044	03BB  58			     pop ax
+   1045
+   1046	03BC  CB			     ret
+   1047	03BD				 P_PrintInt endp
+   1048
+   1049					 ; ------------------------------------------------
+   1050
+   1051	03BD				 P_FracSimple proc far
+   1052					     ; preserve
+   1053	03BD  50			     push ax
+   1054	03BE  53			     push bx
+   1055	03BF  51			     push cx
+   1056	03C0  52			     push dx
+   1057
+   1058	03C1  A1 03B6r			     mov ax, word ptr ds:[P_FracSimple_I_X]
+   1059	03C4  8B 1E 03B8r		     mov bx, word ptr ds:[P_FracSimple_I_Y]
+   1060	03C8  3B C3			     cmp ax, bx
+   1061	03CA  73 0B			     jae P_FracSimple_L_thfrjeksjhr
+   1062	03CC  A3 03C0r				 mov word ptr ds:[P_FracSimple_M_Small], ax
+   1063	03CF  89 1E 03BEr			 mov word ptr ds:[P_FracSimple_M_Big],	 bx
+   1064	03D3  8B C8				 mov cx, ax
+   1065	03D5  EB 09				 jmp P_FracSimple_L_hntjrkedhtbhd
+   1066	03D7				     P_FracSimple_L_thfrjeksjhr:
+   1067	03D7  89 1E 03C0r			 mov word ptr ds:[P_FracSimple_M_Small], bx
+   1068	03DB  A3 03BEr				 mov word ptr ds:[P_FracSimple_M_Big],	 ax
+   1069	03DE  8B CB				 mov cx, bx
+   1070	03E0				     P_FracSimple_L_hntjrkedhtbhd:
+   1071
+   1072	03E0  83 F9 00			     cmp cx, 0
+   1073	03E3  75 0E			     jne P_FracSimple_L_thrjkiedhgthre
+   1074	03E5  A1 03B6r				 mov ax, word ptr ds:[P_FracSimple_I_X]
+   1075	03E8  A3 03BAr				 mov word ptr ds:[P_FracSimple_O_X], ax
+   1076
+   1077	03EB  A1 03B8r				 mov ax, word ptr ds:[P_FracSimple_I_Y]
+   1078	03EE  A3 03BCr				 mov word ptr ds:[P_FracSimple_O_Y], ax
+   1079
+   1080	03F1  EB 35				 jmp P_FracSimple_L_Exit
+   1081	03F3				     P_FracSimple_L_thrjkiedhgthre:
+   1082
+   1083					     ; cx is divider
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 20
+lab3\main.asm
+
+
+
+   1084	03F3				     P_FracSimple_L_Loop_C:
+   1085
+   1086						 ; ----------------
+   1087
+   1088						 ; big
+   1089	03F3  A1 03BEr				 mov ax, word ptr ds:[P_FracSimple_M_Big]
+   1090	03F6  BA 0000				 mov dx, 0
+   1091						 ; small
+   1092	03F9  8B 1E 03C0r			 mov bx, word ptr ds:[P_FracSimple_M_Small]
+   1093						 ; div
+   1094	03FD  F7 F3				 div bx
+   1095						 ; if rem
+   1096	03FF  83 FA 00				 cmp dx, 0
+   1097	0402  75 02				 jne P_FracSimple_L_jrenhbhjkyhjtrmedk
+   1098						     ; = 0
+   1099	0404  EB 0C				     jmp P_FracSimple_L_DivSuccess
+   1100
+   1101	0406					 P_FracSimple_L_jrenhbhjkyhjtrmedk:
+   1102						     ; != 0
+   1103	0406  2B C3				     sub ax, bx
+   1104
+   1105						     ; l, s = s, l % s
+   1106	0408  89 16 03C0r			     mov word ptr ds:[P_FracSimple_M_Small], dx
+   1107	040C  89 1E 03BEr			     mov word ptr ds:[P_FracSimple_M_Big],   bx
+   1108
+   1109						 ; ----------------
+   1110
+   1111	0410  EB E1				 jmp P_FracSimple_L_Loop_C
+   1112
+   1113	0412				     P_FracSimple_L_DivSuccess:
+   1114
+   1115	0412  A1 03B6r				 mov ax, word ptr ds:[P_FracSimple_I_X]
+   1116	0415  BA 0000				 mov dx, 0
+   1117	0418  F7 F3				 div bx
+   1118	041A  A3 03BAr				 mov word ptr ds:[P_FracSimple_O_X], ax
+   1119
+   1120	041D  A1 03B8r				 mov ax, word ptr ds:[P_FracSimple_I_Y]
+   1121	0420  BA 0000				 mov dx, 0
+   1122	0423  F7 F3				 div bx
+   1123	0425  A3 03BCr				 mov word ptr ds:[P_FracSimple_O_Y], ax
+   1124
+   1125	0428				     P_FracSimple_L_Exit:
+   1126
+   1127					     ; ret
+   1128	0428  5A			     pop dx
+   1129	0429  59			     pop cx
+   1130	042A  5B			     pop bx
+   1131	042B  58			     pop ax
+   1132
+   1133	042C  CB			     ret
+   1134	042D				 P_FracSimple endp
+   1135
+   1136					 ; ------------------------------------------------
+   1137
+   1138	042D				 P_OutZ	proc far
+   1139					     ; preserve
+   1140	042D  50			     push ax ; push bx
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 21
+lab3\main.asm
+
+
+
+   1141	042E  52			     push dx
+   1142
+   1143					     ; prompt
+   1144	042F  BA 049Er			     mov dx, offset D_OutputZPartA
+   1145	0432  B4 09			     mov ah, 9
+   1146	0434  CD 21			     int 21h
+   1147
+   1148					     ; --------------------------------
+   1149
+   1150	0436  83 3E 039Ar 00		     cmp word ptr ds:[P_OutZ_I_NumInt +	0], 0
+   1151	043B  75 09			     jne P_OutZ_L_hrjmehnnrjhtnnrj
+   1152	043D  83 3E 039Er 00		     cmp word ptr ds:[P_OutZ_I_NumRem],	0
+   1153	0442  74 02			     je	P_OutZ_L_fyhrudeynrvtgvyrhu
+   1154
+   1155	0444  EB 14			     jmp P_OutZ_L_gyhgumeeuiwdedhn
+   1156
+   1157	0446				     P_OutZ_L_hrjmehnnrjhtnnrj:
+   1158	0446				     P_OutZ_L_fyhrudeynrvtgvyrhu:
+   1159
+   1160						 ; --------( print int )--------
+   1161						 ; num
+   1162	0446  A1 039Ar				 mov ax, word ptr ds:[P_OutZ_I_NumInt +	0]
+   1163	0449  8B 1E 039Cr			 mov bx, word ptr ds:[P_OutZ_I_NumInt +	2]
+   1164	044D  A3 03A2r				 mov word ptr ds:[P_PrintInt_I_Num + 0], ax
+   1165	0450  89 1E 03A4r			 mov word ptr ds:[P_PrintInt_I_Num + 2], bx
+   1166						 ; call
+   1167	0454  0E E8 FED0			 call P_PrintInt
+   1168
+   1169	0458  EB 13				 jmp P_OutZ_L_tthnvcrjejhgbvhrjde
+   1170
+   1171	045A				     P_OutZ_L_gyhgumeeuiwdedhn:
+   1172
+   1173	045A  80 3E 0397r 2D			 cmp byte ptr ds:[P_Calc_O_ZSign], '-'
+   1174	045F  75 0C				 jne P_OutZ_L_tthnvcrjejhgbvhrjde
+   1175
+   1176						 ; putc('-')
+   1177	0461  C6 06 03ACr 2D			 mov ds:[P_PrintInt_M_Putc], '-'
+   1178	0466  BA 03ACr				 mov dx, offset	P_PrintInt_M_Putc
+   1179	0469  B4 09				 mov ah, 9
+   1180	046B  CD 21				 int 21h
+   1181
+   1182	046D				     P_OutZ_L_tthnvcrjejhgbvhrjde:
+   1183
+   1184					     ; --------------------------------
+   1185
+   1186					     ; if mod is not zero
+   1187	046D  83 3E 039Er 00		     cmp ds:[P_OutZ_I_NumRem], 0
+   1188	0472  74 43			     je	P_OutZ_L_RemZero
+   1189
+   1190						 ; if zero
+   1191	0474  83 3E 039Ar 00			 cmp word ptr ds:[P_OutZ_I_NumInt + 0],	0
+   1192	0479  74 07				 je P_OutZ_L_hferbdsmdmfhjv
+   1193						     ; prompt
+   1194	047B  BA 04A2r				     mov dx, offset D_OutputZPartB
+   1195	047E  B4 09				     mov ah, 9
+   1196	0480  CD 21				     int 21h
+   1197	0482					 P_OutZ_L_hferbdsmdmfhjv:
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 22
+lab3\main.asm
+
+
+
+   1198
+   1199						 ; --------------------------------
+   1200
+   1201						 ; --------( print int )--------
+   1202						 ; num
+   1203	0482  A1 039Er				 mov ax, ds:[P_OutZ_I_NumRem]
+   1204	0485  A3 03A2r				 mov word ptr ds:[P_PrintInt_I_Num + 0], ax
+   1205	0488  C7 06 03A4r 0000			 mov word ptr ds:[P_PrintInt_I_Num + 2], 0000h
+   1206						 ; call
+   1207	048E  0E E8 FE96			 call P_PrintInt
+   1208
+   1209						 ; --------------------------------
+   1210
+   1211						 ; prompt
+   1212	0492  BA 04A4r				 mov dx, offset	D_OutputZPartC
+   1213	0495  B4 09				 mov ah, 9
+   1214	0497  CD 21				 int 21h
+   1215
+   1216						 ; --------------------------------
+   1217
+   1218						 ; --------( print int )-------
+   1219						 ; num
+   1220	0499  A1 03A0r				 mov ax, ds:[P_OutZ_I_NumDiv]
+   1221	049C  A3 03A2r				 mov word ptr ds:[P_PrintInt_I_Num + 0], ax
+   1222	049F  C7 06 03A4r 0000			 mov word ptr ds:[P_PrintInt_I_Num + 2], 0000h
+   1223						 ; call
+   1224	04A5  0E E8 FE7F			 call P_PrintInt
+   1225
+   1226						 ; --------------------------------
+   1227
+   1228						 ; if zero
+   1229	04A9  83 3E 039Ar 00			 cmp word ptr ds:[P_OutZ_I_NumInt + 0],	0
+   1230	04AE  74 07				 je P_OutZ_L_hfrjdhbcndjedf
+   1231						     ; prompt
+   1232	04B0  BA 04A6r				     mov dx, offset D_OutputZPartD
+   1233	04B3  B4 09				     mov ah, 9
+   1234	04B5  CD 21				     int 21h
+   1235	04B7					 P_OutZ_L_hfrjdhbcndjedf:
+   1236
+   1237	04B7				     P_OutZ_L_RemZero:
+   1238
+   1239					     ; --------------------------------
+   1240
+   1241	04B7  0E E8 0003		     call P_NewLine
+   1242
+   1243					     ; ret
+   1244	04BB  5A			     pop dx ; pop bx
+   1245	04BC  58			     pop ax
+   1246
+   1247	04BD  CB			     ret
+   1248	04BE				 P_OutZ	endp
+   1249
+   1250					 ; ------------------------------------------------
+   1251
+   1252	04BE				 P_NewLine proc	far
+   1253					     ; preserve
+   1254	04BE  50			     push ax
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 23
+lab3\main.asm
+
+
+
+   1255	04BF  52			     push dx
+   1256
+   1257					     ; print an	error
+   1258	04C0  BA 0358r			     mov dx, offset D_NewLine
+   1259	04C3  B4 09			     mov ah, 9
+   1260	04C5  CD 21			     int 21h
+   1261
+   1262					     ; ret
+   1263	04C7  5A			     pop dx
+   1264	04C8  58			     pop ax
+   1265
+   1266	04C9  CB			     ret
+   1267	04CA				 P_NewLine endp
+   1268
+   1269					 ; ------------------------------------------------
+   1270
+   1271	04CA			     S_Code ends
+   1272				     end Main
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 24
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "04/28/25"
+??FILENAME			  Text	 "main	  "
+??TIME				  Text	 "12:16:10"
+??VERSION			  Number 0400
+@CPU				  Text	 0101H
+@CURSEG				  Text	 S_CODE
+@FILENAME			  Text	 MAIN
+@WORDSIZE			  Text	 2
+D_CALCERRDIV0			  Byte	 S_DATA:0476
+D_CALCERROF			  Byte	 S_DATA:044F
+D_CALCPROGRESS			  Byte	 S_DATA:0433
+D_EXITING			  Byte	 S_DATA:04BC
+D_GREETING			  Byte	 S_DATA:0000
+D_INPUTERRFMT			  Byte	 S_DATA:03C2
+D_INPUTERROF			  Byte	 S_DATA:03E5
+D_INPUTERRRANGE			  Byte	 S_DATA:040C
+D_NEWLINE			  Byte	 S_DATA:0358
+D_OUTPUTZPARTA			  Byte	 S_DATA:049E
+D_OUTPUTZPARTB			  Byte	 S_DATA:04A2
+D_OUTPUTZPARTC			  Byte	 S_DATA:04A4
+D_OUTPUTZPARTD			  Byte	 S_DATA:04A6
+D_PROMPTCONT			  Byte	 S_DATA:04A8
+D_PROMPTX			  Byte	 S_DATA:035B
+D_PROMPTY			  Byte	 S_DATA:035F
+D_RESTARTING			  Byte	 S_DATA:04C7
+D_X				  Dword	 S_DATA:0363
+D_Y				  Dword	 S_DATA:0367
+MAIN				  Far	 S_CODE:0000
+MAIN_CALCERRRETYPE		  Near	 S_CODE:000C
+MAIN_L_CALCERRDIV0		  Near	 S_CODE:006C
+MAIN_L_CALCERROF		  Near	 S_CODE:0063
+MAIN_L_FYHRUJEEJEHGT		  Near	 S_CODE:00C4
+MAIN_L_NOCALCERROR		  Near	 S_CODE:0075
+MAIN_RESTART			  Near	 S_CODE:000C
+P_CALC				  Far	 S_CODE:01FF
+P_CALC_I_X			  Dword	 S_DATA:0387
+P_CALC_I_Y			  Dword	 S_DATA:038B
+P_CALC_L_BR1_POSTYNEGWALL	  Near	 S_CODE:0286
+P_CALC_L_BR1_PREPXNEGWALL	  Near	 S_CODE:0246
+P_CALC_L_BR1_PREPXPOSWALL	  Near	 S_CODE:023C
+P_CALC_L_BR1_PREPYNEGWALL	  Near	 S_CODE:0271
+P_CALC_L_BR1_PREPYPOSWALL	  Near	 S_CODE:0268
+P_CALC_L_BR2			  Near	 S_CODE:0290
+P_CALC_L_BR2_NEGWALL		  Near	 S_CODE:02E1
+P_CALC_L_BR2_POSWALL		  Near	 S_CODE:02CB
+P_CALC_L_BR3			  Near	 S_CODE:02EF
+P_CALC_L_ERRDIV0		  Near	 S_CODE:031C
+P_CALC_L_ERROF			  Near	 S_CODE:0315
+P_CALC_L_EXIT			  Near	 S_CODE:0323
+P_CALC_L_HFRJWISWFRTT		  Near	 S_CODE:0244
+P_CALC_L_OK			  Near	 S_CODE:030E
+P_CALC_L_TMP_HFRHEJIHSD		  Near	 S_CODE:023A
+P_CALC_O_ERR			  Byte	 S_DATA:0399
+P_CALC_O_ZDIV			  Word	 S_DATA:0395
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 25
+Symbol Table
+
+
+
+P_CALC_O_ZINT			  Dword	 S_DATA:038F
+P_CALC_O_ZMOD			  Word	 S_DATA:0393
+P_CALC_O_ZSIGN			  Byte	 S_DATA:0397
+P_CONT				  Far	 S_CODE:00D1
+P_CONT_L_HNVFJMSHCNGBTR		  Near	 S_CODE:00FF
+P_CONT_L_HTFRJDUEEHN		  Near	 S_CODE:00FA
+P_CONT_L_HYFRDEUJEHYV		  Near	 S_CODE:00FA
+P_CONT_M_BUFFER			  Byte	 S_DATA:03AF
+P_CONT_O_YES			  Byte	 S_DATA:03AE
+P_FRACSIMPLE			  Far	 S_CODE:03BD
+P_FRACSIMPLE_I_X		  Word	 S_DATA:03B6
+P_FRACSIMPLE_I_Y		  Word	 S_DATA:03B8
+P_FRACSIMPLE_L_DIVSUCCESS	  Near	 S_CODE:0412
+P_FRACSIMPLE_L_EXIT		  Near	 S_CODE:0428
+P_FRACSIMPLE_L_HNTJRKEDHTBHD	  Near	 S_CODE:03E0
+P_FRACSIMPLE_L_JRENHBHJKYHJTRMED  Near	 S_CODE:0406
+K
+P_FRACSIMPLE_L_LOOP_C		  Near	 S_CODE:03F3
+P_FRACSIMPLE_L_THFRJEKSJHR	  Near	 S_CODE:03D7
+P_FRACSIMPLE_L_THRJKIEDHGTHRE	  Near	 S_CODE:03F3
+P_FRACSIMPLE_M_BIG		  Word	 S_DATA:03BE
+P_FRACSIMPLE_M_SMALL		  Word	 S_DATA:03C0
+P_FRACSIMPLE_O_X		  Word	 S_DATA:03BA
+P_FRACSIMPLE_O_Y		  Word	 S_DATA:03BC
+P_INPUT				  Far	 S_CODE:0194
+P_INPUT_IW_PTR			  Word	 S_DATA:036D
+P_INPUT_I_PROMPT		  Word	 S_DATA:036B
+P_INPUT_L_ERRFMT		  Near	 S_CODE:01CE
+P_INPUT_L_ERROF			  Near	 S_CODE:01D7
+P_INPUT_L_ERRRANGE		  Near	 S_CODE:01E0
+P_INPUT_L_EXIT			  Near	 S_CODE:01E9
+P_INPUT_L_RETYPE		  Near	 S_CODE:0198
+P_INPUT_M_BUFFER		  Byte	 S_DATA:036F
+P_NEWLINE			  Far	 S_CODE:04BE
+P_OUTZ				  Far	 S_CODE:042D
+P_OUTZ_I_NUMDIV			  Word	 S_DATA:03A0
+P_OUTZ_I_NUMINT			  Dword	 S_DATA:039A
+P_OUTZ_I_NUMREM			  Word	 S_DATA:039E
+P_OUTZ_L_FYHRUDEYNRVTGVYRHU	  Near	 S_CODE:0446
+P_OUTZ_L_GYHGUMEEUIWDEDHN	  Near	 S_CODE:045A
+P_OUTZ_L_HFERBDSMDMFHJV		  Near	 S_CODE:0482
+P_OUTZ_L_HFRJDHBCNDJEDF		  Near	 S_CODE:04B7
+P_OUTZ_L_HRJMEHNNRJHTNNRJ	  Near	 S_CODE:0446
+P_OUTZ_L_REMZERO		  Near	 S_CODE:04B7
+P_OUTZ_L_TTHNVCRJEJHGBVHRJDE	  Near	 S_CODE:046D
+P_PARSE				  Far	 S_CODE:0102
+P_PARSE_I_LEN			  Word	 S_DATA:037F
+P_PARSE_I_PTR			  Word	 S_DATA:037D
+P_PARSE_L_ERRFMT		  Near	 S_CODE:0181
+P_PARSE_L_ERROF			  Near	 S_CODE:0188
+P_PARSE_L_EXIT			  Near	 S_CODE:018F
+P_PARSE_L_LOOPC			  Near	 S_CODE:0137
+P_PARSE_L_LOOPE			  Near	 S_CODE:015B
+P_PARSE_L_POSTNOTNEG		  Near	 S_CODE:0177
+P_PARSE_L_PRENEG		  Near	 S_CODE:0134
+P_PARSE_L_PREPOS		  Near	 S_CODE:012B
+P_PARSE_M_ISNEG			  Byte	 S_DATA:0386
+Turbo Assembler	 Version 4.0	    04/28/25 12:16:10	    Page 26
+Symbol Table
+
+
+
+P_PARSE_O_ERR			  Byte	 S_DATA:0385
+P_PARSE_O_NUM			  Dword	 S_DATA:0381
+P_PRINTINT			  Far	 S_CODE:0328
+P_PRINTINT_I_NUM		  Dword	 S_DATA:03A2
+P_PRINTINT_L_GETDIV_E		  Near	 S_CODE:037D
+P_PRINTINT_L_GETDIV_LC		  Near	 S_CODE:035A
+P_PRINTINT_L_LOOP_C		  Near	 S_CODE:037D
+P_PRINTINT_L_PRENEGWALL		  Near	 S_CODE:034B
+P_PRINTINT_L_PREPOSWALL		  Near	 S_CODE:034E
+P_PRINTINT_M_ABSX		  Word	 S_DATA:03A6
+P_PRINTINT_M_ABSXTMP		  Word	 S_DATA:03AA
+P_PRINTINT_M_DIVER		  Word	 S_DATA:03A8
+P_PRINTINT_M_PUTC		  Byte	 S_DATA:03AC
+R_XH_C				  Alias	 CX
+R_XL_C				  Alias	 AX
+R_YH_C				  Alias	 DX
+R_YL_C				  Alias	 BX
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+S_CODE				  16  04CA Para	  Public  CODE
+S_DATA				  16  04D9 Para	  Public  DATA
+S_STACK				  16  0080 Para	  Stack	  STACK
+
