@@ -44,6 +44,7 @@ S_Data segment para public 'DATA'
     D_Array             dd 20 dup('AA')
     D_ArrCapacity       db ?
     D_Sum               dd 'SS'
+    D_Sum_Err           db 'E'
     D_Max               dd 'MM'
 
     D_ArrPrompt         db 'Input the capacity of a new array (1..20): ', '$'
@@ -51,6 +52,8 @@ S_Data segment para public 'DATA'
     D_Out_Sum           db 'The sum of the array: ', '$'
     D_Out_Max           db 'The max of the array: ', '$'
     D_Out_Sorted        db 'The view of the sorted array:', 0Dh, 0Ah, '$'
+
+    D_Out_Sum_ErrOF     db 'overflow', '$'
 
     D_GInt_ErrOF        db 'An overflow error is occured while parsing the number', 0Dh, 0Ah, 0Dh, 0Ah, '$'
     D_GInt_ErrRng       db 'The number is not in the range', 0Dh, 0Ah, 0Dh, 0Ah, '$'
@@ -183,12 +186,29 @@ S_Code segment para public 'CODE'
 
             call TaskSum
 
-            push dword ptr [D_Sum]
-            call FmtInt
+            cmp byte ptr [D_Sum_Err], 'O'
+            je Main_Sum_ErrOF
 
-            mov ah, 9
-            lea dx, [FmtInt_Result]
-            int 21h
+            jmp Main_Sum_Ok
+
+            Main_Sum_ErrOF:
+                mov ah, 9
+                lea dx, [D_Out_Sum_ErrOF]
+                int 21h
+
+                jmp Main_Sum_Exit
+
+            Main_Sum_Ok:
+                push dword ptr [D_Sum]
+                call FmtInt
+
+                mov ah, 9
+                lea dx, [FmtInt_Result]
+                int 21h
+
+                jmp Main_Sum_Exit
+            
+            Main_Sum_Exit:
 
             call NewLine
 
@@ -310,7 +330,22 @@ S_Code segment para public 'CODE'
 
         TaskSum_Loop_E:
 
-        mov [D_Sum], eax
+        cmp eax, -32768
+        jl TaskSum_ErrOF
+
+        cmp eax, 65535
+        jg TaskSum_ErrOF
+
+        TaskSum_Ok:
+            mov byte ptr [D_Sum_Err], '+'
+            mov [D_Sum], eax
+            jmp TaskSum_Exit
+
+        TaskSum_ErrOF:
+            mov byte ptr [D_Sum_Err], 'O'
+            jmp TaskSum_Exit
+
+        TaskSum_Exit:
 
         ; ret
         pop di
