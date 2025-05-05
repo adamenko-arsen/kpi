@@ -21,76 +21,93 @@
 ; push *dummy: push space for return value before call
 ;
 
+;
+; debugx\debug.exe
+;
+; q  - quit
+; rx - 32bit regs
+; r  - alu registers
+; rn - fpu registers
+; t  - next step
+;
+
 .model tiny
 assume cs: S_Code, ds: S_Data, es: S_Data, ss: S_Stack
 
 S_Stack segment para stack 'STACK'
-    db 128 dup('STACK')
+    db 128 dup(?)
 S_Stack ends
 
 S_Data segment para public 'DATA'
-    D_Logo              db 0Dh, 0Ah, '     mm                                    '
-                        db 0Dh, 0Ah, '     ##    m mm   m mm   mmm   m   m   mmm '
-                        db 0Dh, 0Ah, '    #  #   #"  "  #"  " "   #  "m m"  #   "'
-                        db 0Dh, 0Ah, '    #mm#   #      #     m"""#   #m#    """m'
-                        db 0Dh, 0Ah, '   #    #  #      #     "mm"#   "#    "mmm"'
-                        db 0Dh, 0Ah, '                               ""          '
+    ; --------( printable data )--------
+
+    D_Logo              db 0Dh, 0Ah, 9, 9, '     mm                                    '
+                        db 0Dh, 0Ah, 9, 9, '     ##    m mm   m mm   mmm   m   m   mmm '
+                        db 0Dh, 0Ah, 9, 9, '    #  #   #"  "  #"  " "   #  "m m"  #   "'
+                        db 0Dh, 0Ah, 9, 9, '    #mm#   #      #     m"""#   #m#    """m'
+                        db 0Dh, 0Ah, 9, 9, '   #    #  #      #     "mm"#   "#    "mmm"'
+                        db 0Dh, 0Ah, 9, 9, '                               ""          '
                         db 0Dh, 0Ah
-                        db 0Dh, 0Ah, '   I P - 3 5   A d a m e n k o   A r s e n '
+                        db 0Dh, 0Ah, 9, 9, '   I P - 3 5   A d a m e n k o   A r s e n '
                         db 0Dh, 0Ah
                         db 0Dh, 0Ah
                         db '$'
 
-    D_Array             dd 20 dup('AA')
+    D_Array             dd 20 dup(?)
     D_ArrCapacity       db ?
-    D_Sum               dd 'SS'
-    D_Sum_Err           db 'E'
-    D_Max               dd 'MM'
+    D_Sum               dd ?
+    D_Sum_Err           db ?
+    D_Max               dd ?
 
     D_ArrPrompt         db 'Input the capacity of a new array (1..20): ', '$'
 
     D_Out_Sum           db 'The sum of the array: ', '$'
+    D_Out_Sum_ErrOF     db 'overflow', '$'
     D_Out_Max           db 'The max of the array: ', '$'
     D_Out_Sorted        db 'The view of the sorted array:', 0Dh, 0Ah, '$'
-
-    D_Out_Sum_ErrOF     db 'overflow', '$'
 
     D_GInt_ErrOF        db 'An overflow error is occured while parsing the number', 0Dh, 0Ah, 0Dh, 0Ah, '$'
     D_GInt_ErrRng       db 'The number is not in the range', 0Dh, 0Ah, 0Dh, 0Ah, '$'
     D_GInt_ErrFmt       db 'The input is misformatted', 0Dh, 0Ah, 0Dh, 0Ah, '$'
 
-    D_ArrElem_Prefix    db '#', '$'
-    D_ArrElem_Postfix   db ' (-32768..+65535): ', '$'
-    D_ArrElem_PostfixB  db ': ', '$'
-    D_ArrElem_InBuf     db 32 dup('$')
+    D_ArrElem_Prefix    db '[', '$'
+    D_ArrElem_PostfixA  db '] (-32768..+65535): ', '$'
+    D_ArrElem_PostfixB  db ']: ', '$'
+    D_ArrElem_InBuf     db 32 dup(?)
 
     D_NewLine           db 0Dh, 0Ah, '$'
 
     D_ContPrompt        db 'To continue (y/N)? ', '$'
 
-    FmtInt_Result       db 16 dup('$')
+    ; --------( global vars for procedures i/o )--------
 
-    InputInt_Buffer     db 7, ?, 7 dup('I')
-    AskCont_Buffer      db 2, ?, 2 dup('C')
+    FmtInt_Result       db 16 dup(?)
 
-    D_PushPopDummyValue dd ?
+    ; --------( procedures internal variables )--------
+
+    InputInt_Buffer     db 7, ?, 7 dup(?)
+    AskCont_Buffer      db 2, ?, 2 dup(?)
+
+    ; --------------------------------
 S_Data ends
 
 S_Code segment para public 'CODE'
     .386
+
     Main proc far
-        ; segment init
+        ; --------( init segments )--------
         mov ax, S_Data
         mov ds, ax
         mov es, ax
 
-        ; greeting
+        ; --------( greeting )--------
         mov ah, 9
         lea dx, D_Logo
         int 21h
 
+        ; --------( main loop )--------
         Main_Restart:
-            ; ask array capacity
+            ; --------( ask array capacity )--------
             lea ax, D_ArrPrompt
             push ax
             mov eax, 1
@@ -98,25 +115,25 @@ S_Code segment para public 'CODE'
             mov eax, 20
             push eax
             call InputInt
-            pop dword ptr [D_PushPopDummyValue]
-            pop word ptr [D_PushPopDummyValue]
+            add sp, 6
             pop eax
 
-            ; init array
+            ; --------( init array )--------
             mov [D_ArrCapacity], al
 
-            ; elements loop
+            ; --------( elements loop init )--------
             lea ebx, D_Array
 
             mov esi, 0
             mov di, ax
 
+            ; --------(elements loop )--------
             Main_FillLoop_L:
 
                 cmp si, di
                 jae Main_FillLoop_E
 
-                ; ----------------
+                ; --------( make prompt )--------
 
                 mov eax, 0
                 mov ax, si
@@ -133,7 +150,7 @@ S_Code segment para public 'CODE'
                 lea ax, D_ArrElem_Prefix
                 push ax
                 call Strcat
-                pop dword ptr [D_PushPopDummyValue]
+                add sp, 4
                 pop ax
 
                 push ax
@@ -142,23 +159,23 @@ S_Code segment para public 'CODE'
                 lea ax, FmtInt_Result
                 push ax
                 call Strcat
-                pop dword ptr [D_PushPopDummyValue]
+                add sp, 4
                 pop ax
 
                 push ax
                 lea ax, D_ArrElem_InBuf
                 push ax
-                lea ax, D_ArrElem_Postfix
+                lea ax, D_ArrElem_PostfixA
                 push ax
                 call Strcat
-                pop dword ptr [D_PushPopDummyValue]
+                add sp, 4
                 pop ax
 
                 lea bx, D_ArrElem_InBuf
                 add bx, ax
                 mov byte ptr [bx], '$'
 
-                ; input element
+                ; --------( input element )--------
                 lea ax, D_ArrElem_InBuf
                 push ax
                 mov eax, -32768
@@ -166,10 +183,10 @@ S_Code segment para public 'CODE'
                 mov eax, 65535
                 push eax
                 call InputInt
-                pop dword ptr [D_PushPopDummyValue]
-                pop word ptr [D_PushPopDummyValue]
+                add sp, 6
                 pop eax
 
+                ; --------( store element )--------
                 mov D_Array[4*esi], eax
 
                 inc si
@@ -179,7 +196,7 @@ S_Code segment para public 'CODE'
 
             call NewLine
 
-            ; sum
+            ; --------( sum )--------
             mov ah, 9
             lea dx, [D_Out_Sum]
             int 21h
@@ -212,7 +229,7 @@ S_Code segment para public 'CODE'
 
             call NewLine
 
-            ; max
+            ; --------( max )--------
             mov ah, 9
             lea dx, [D_Out_Max]
             int 21h
@@ -228,14 +245,14 @@ S_Code segment para public 'CODE'
 
             call NewLine
 
-            ; sort
+            ; --------( sort )--------
             mov ah, 9
             lea dx, [D_Out_Sorted]
             int 21h
 
             call TaskSort
 
-            ; sort loop
+            ; --------( sort loop )--------
             mov esi, 0
 
             mov ax, 0
@@ -282,7 +299,7 @@ S_Code segment para public 'CODE'
 
             call NewLine
 
-            ; ask continuation
+            ; --------( ask continuation )--------
             add sp, -2
             call AskCont
             pop ax
@@ -290,21 +307,21 @@ S_Code segment para public 'CODE'
             cmp ax, 1
         je Main_Restart
 
-        ; exit
+        ; --------( exit )--------
         mov ah, 4Ch
         mov al, 0
         int 21h
     Main endp
 
     TaskSum proc far
-        ; preserve
+        ; --------( preserve )--------
         push eax
         push bx
         push ecx
         push si
         push di
 
-        ; init
+        ; --------( init )--------
         mov esi, 0
 
         mov bx, 0
@@ -315,26 +332,28 @@ S_Code segment para public 'CODE'
 
         lea ebx, [D_Array]
 
-        ; loop
+        ; --------( loop )--------
         TaskSum_Loop_L:
 
             cmp si, di
             jae TaskSum_Loop_E
 
-            mov ecx, ebx[4*esi]
-            add eax, ecx
+            add eax, ebx[4*esi]
 
             inc si
-
             jmp TaskSum_Loop_L
 
         TaskSum_Loop_E:
+
+        ; --------( check range )--------
 
         cmp eax, -32768
         jl TaskSum_ErrOF
 
         cmp eax, 65535
         jg TaskSum_ErrOF
+
+        ; --------( statuses )--------
 
         TaskSum_Ok:
             mov byte ptr [D_Sum_Err], '+'
@@ -345,9 +364,10 @@ S_Code segment para public 'CODE'
             mov byte ptr [D_Sum_Err], 'O'
             jmp TaskSum_Exit
 
+        ; --------( ok )--------
         TaskSum_Exit:
 
-        ; ret
+        ; --------( ret )--------
         pop di
         pop si
         pop ecx
@@ -358,14 +378,14 @@ S_Code segment para public 'CODE'
     TaskSum endp
 
     TaskMax proc far
-        ; preserve
+        ; --------( preserve )--------
         push eax
         push ebx
         push ecx
         push si
         push di
 
-        ; init
+        ; --------( init )--------
         mov esi, 0
 
         mov bx, 0
@@ -376,12 +396,13 @@ S_Code segment para public 'CODE'
 
         lea ebx, [D_Array]
 
-        ; loop
+        ; --------( loop )--------
         TaskMax_Loop_L:
 
             cmp si, di
             jae TaskMax_Loop_E
 
+            ; --------( try update max )--------
             mov ecx, ebx[4*esi]
             cmp ecx, eax
             jle TaskMax_jfdehuj
@@ -396,7 +417,7 @@ S_Code segment para public 'CODE'
 
         mov [D_Max], eax
 
-        ; ret
+        ; --------( ret )--------
         pop di
         pop si
         pop ecx
@@ -407,14 +428,14 @@ S_Code segment para public 'CODE'
     TaskMax endp
 
     TaskSort proc far
-        ; preserve
+        ; --------( preserve )--------
         push eax
         push ebx
         push ecx
         push si
         push di
 
-        ; init
+        ; --------( init )--------
         mov esi, 0
 
         mov bx, 0
@@ -424,7 +445,7 @@ S_Code segment para public 'CODE'
 
         lea ebx, [D_Array]
 
-        ; loops
+        ; --------( loops )--------
         TaskSort_LoopA_L:
 
             cmp di, 1
@@ -464,7 +485,7 @@ S_Code segment para public 'CODE'
 
         TaskSort_LoopA_E:
 
-        ; ret
+        ; --------( ret )--------
         pop di
         pop si
         pop ecx
@@ -475,23 +496,25 @@ S_Code segment para public 'CODE'
     TaskSort endp
 
     InputInt proc far
+        ; --------( stack map )--------
+
         ; arg: [prm] [min      ] [max      ]
         ; ret: [value    ]
         ; map: --2-- --2-- --2-- --2-- --2--
         ; extra: 6 = eax + bp
         ; i/o offset: +16
 
-        ; preserve
+        ; --------( preserve )--------
         push bp
         mov bp, sp
 
         push eax
         push dx
 
-        ; --------(input)--------
-
+        ; --------( input )--------
         InputInt_Retype:
 
+            ; --------( prompt number )--------
             mov ah, 9
             mov dx, [bp + 16 - 2]
             int 21h
@@ -502,8 +525,7 @@ S_Code segment para public 'CODE'
 
             call NewLine
 
-            ; --------(parse)--------
-
+            ; --------( parse )--------
             lea ax, [InputInt_Buffer + 2]
             push ax
             mov ax, 0
@@ -514,8 +536,7 @@ S_Code segment para public 'CODE'
             pop dx
             pop eax
 
-            ; --------(check)--------
-
+            ; --------( check )--------
             cmp dx, 'O'
             je InputInt_ErrOF
             cmp dx, 'F'
@@ -529,8 +550,7 @@ S_Code segment para public 'CODE'
 
             jmp InputInt_Ok
 
-        ; --------(errors)--------
-
+        ; --------( errors )--------
         InputInt_ErrOF:
             mov ah, 9
             lea dx, [D_GInt_ErrOF]
@@ -552,13 +572,12 @@ S_Code segment para public 'CODE'
 
             jmp InputInt_Retype
 
-        ; ----------------
-
+        ; --------( ok )--------
         InputInt_Ok:
 
         mov [bp + 16 - 4], eax
 
-        ; ret
+        ; --------( ret )--------
         pop dx
         pop eax
 
@@ -567,6 +586,8 @@ S_Code segment para public 'CODE'
     InputInt endp
 
     Parse proc far
+        ; --------( stack map )--------
+
         ; arg: [buf] [len]
         ; ret: [num      ] [err]
         ; map: --2-- --2-- --2--
@@ -576,11 +597,11 @@ S_Code segment para public 'CODE'
         ; var: [sgn] [err]
         ; map: --1-- --2--
 
-        ; preserve
+        ; --------( preserve )--------
         push bp
         mov bp, sp
 
-        push dword ptr [D_PushPopDummyValue]
+        add sp, -4
 
         push eax
         push bx
@@ -588,13 +609,13 @@ S_Code segment para public 'CODE'
         push si
         push di
 
-        ; --------(init ptr + len + num)--------
+        ; --------( init ptr + len + num )--------
 
         mov eax, 0
         mov bx, [bp + 12 - 2]
         mov di, [bp + 12 - 4]
 
-        ; --------(sign check)--------
+        ; --------( sign check )--------
 
         cmp byte ptr [bx], '-'
         jne Parse_vtgfh
@@ -619,19 +640,19 @@ S_Code segment para public 'CODE'
             ja Parse_ErrOF
         Parse_gntnhd:
 
-        ; --------(loop)--------
+        ; --------( loop )--------
 
         Parse_Loop_L:
 
             cmp si, di
             jae Parse_Loop_E
 
-            ; --------(mul)--------
+            ; --------( mul )--------
 
             mov edx, 10
             mul edx
 
-            ; --------(char)--------
+            ; --------( char )--------
 
             mov edx, 0
             mov dl, [bx + si]
@@ -643,11 +664,11 @@ S_Code segment para public 'CODE'
 
             sub dl, '0'
 
-            ; --------(add)--------
+            ; --------( add )--------
 
             add eax, edx
 
-            ; --------(inc)--------
+            ; --------( inc )--------
 
             inc si
 
@@ -655,18 +676,18 @@ S_Code segment para public 'CODE'
 
         Parse_Loop_E:
 
-        ; --------(setting sign)--------
+        ; --------( setting sign )--------
 
         cmp byte ptr [bp - 1], '-'
         jne Parse_dhhedr
             neg eax
         Parse_dhhedr:
 
-        ; --------(pre-exit)--------
+        ; --------( ok )--------
 
         jmp Parse_Ok
 
-        ; --------(exit)--------
+        ; --------( statuses )--------
 
         Parse_Ok:
             mov byte ptr [bp - 2], '+'
@@ -679,29 +700,35 @@ S_Code segment para public 'CODE'
         Parse_ErrFmt:
             mov byte ptr [bp - 2], 'F'
             jmp Parse_Exit
+        
+        ; --------( exit )--------
 
         Parse_Exit:
 
+        ; --------( return number )--------
         mov [bp + 12 - 4], eax
 
+        ; --------( return status )--------
         mov ax, 0
         mov al, [bp - 2]
         mov [bp + 12 - 6], ax
 
-        ; ret
+        ; --------( ret )--------
         pop di
         pop si
         pop edx
         pop bx
         pop eax
 
-        pop dword ptr [D_PushPopDummyValue]
+        add sp, 4
         
         pop bp
         ret
     Parse endp
 
     FmtInt proc far
+        ; --------( stack map )--------
+
         ; arg: [num      ]
         ; ret:
         ; map: --2-- --2--
@@ -711,7 +738,7 @@ S_Code segment para public 'CODE'
         ; var: [tmp num  ] [div      ]
         ; map: --2-- --2-- --2-- --2--
 
-        ; preserve
+        ; --------( preserve )--------
         push bp
         mov bp, sp
 
@@ -720,6 +747,7 @@ S_Code segment para public 'CODE'
         push edx
         push di
 
+        ; --------( make num abs + check sign + print minus )--------
         mov di, 0
         mov eax, [bp + 10 - 4]
         cmp eax, 0
@@ -732,12 +760,13 @@ S_Code segment para public 'CODE'
 
         mov [bp + 10 - 4], eax
 
-        ; loop diver
+        ; --------( init diver + tmp num )--------
         mov dword ptr [bp - 4], eax
         mov dword ptr [bp - 8], 1
 
         mov ecx, 10
 
+        ; --------( seek diver )--------
         FmtInt_LoopA_L:
 
             cmp dword ptr [bp - 4], 10
@@ -756,7 +785,7 @@ S_Code segment para public 'CODE'
 
         FmtInt_LoopA_E:
 
-        ; loop str
+        ; --------( loop serializing )--------
         mov eax, [bp + 10 - 4]
         mov [bp - 4], eax
 
@@ -765,18 +794,19 @@ S_Code segment para public 'CODE'
             cmp dword ptr [bp - 8], 0
             je FmtInt_LoopB_E
 
-            ; div by diver
+            ; --------( div by diver )--------
             mov eax, [bp - 4]
             mov ecx, [bp - 8]
             mov edx, 0
             div ecx
+            ; --------( save number except highest digit )--------
             mov [bp - 4], edx
 
-            ; digit to char
+            ; --------( digit to char )--------
             add al, '0'
             mov [FmtInt_Result + di], al
 
-            ; div divider
+            ; --------( div divider )--------
             mov eax, [bp - 8]
             mov edx, 0
             mov ecx, 10
@@ -789,10 +819,10 @@ S_Code segment para public 'CODE'
 
         FmtInt_LoopB_E:
 
-        ; add $
+        ; --------( terminate string )--------
         mov byte ptr [FmtInt_Result + di], '$'
 
-        ; ret
+        ; --------( ret )--------
         pop di
         pop edx
         pop ecx
@@ -803,13 +833,15 @@ S_Code segment para public 'CODE'
     FmtInt endp
 
     Strcat proc far
+        ; --------( stack info )--------
+
         ; arg: [bgn] [dst] [src]
         ; ret: [nps]
         ; map: --2-- --2-- --2--
         ; extra: 6 = eax + bp
         ; i/o offset: +12
 
-        ; preserve
+        ; --------( preserve )--------
         push bp
         mov bp, sp
 
@@ -818,10 +850,11 @@ S_Code segment para public 'CODE'
         push si
         push di
 
-        ; init indexers
+        ; --------( init indexers )--------
         mov di, [bp + 12 - 2]
         mov si, 0
 
+        ; --------( cat dst with src )--------
         Strcat_AppendDstLoop_L:
 
             mov bx, [bp + 12 - 6]
@@ -840,9 +873,10 @@ S_Code segment para public 'CODE'
 
         Strcat_AppendDstLoop_E:
 
+        ; --------( return place for $ or next concat )--------
         mov [bp + 12 - 2], di
 
-        ; ret
+        ; --------( ret )--------
         pop di
         pop si
         pop bx
@@ -854,15 +888,16 @@ S_Code segment para public 'CODE'
     Strcat endp
 
     NewLine proc far
-        ; preserve
+        ; --------( preserve )--------
         push ax
         push dx
 
+        ; --------( new line )--------
         mov ah, 9
         lea dx, D_NewLine
         int 21h
 
-        ; ret
+        ; --------( ret )--------
         pop dx
         pop ax
 
@@ -870,32 +905,34 @@ S_Code segment para public 'CODE'
     NewLine endp
 
     AskCont proc far
+        ; --------( stack info )--------
+
         ; arg:
         ; ret: [num]
         ; map: --2--
         ; extra: 6 = eax + bp
         ; i/o offset: +8
 
-        ; preserve
+        ; --------( preserve )--------
         push bp
         mov bp, sp
 
         push ax
         push dx
 
-        ; prompt
+        ; --------( prompt )--------
         mov ah, 9
         lea dx, D_ContPrompt
         int 21h
 
-        ; input
+        ; --------( input )--------
         mov ah, 10
         lea dx, AskCont_Buffer
         int 21h
 
         call NewLine
 
-        ; get response
+        ; --------( get response )--------
         mov al, [AskCont_Buffer + 2]
         mov dx, 0
 
@@ -913,7 +950,7 @@ S_Code segment para public 'CODE'
 
         mov [bp + 8 - 2], dx
 
-        ; ret
+        ; --------( ret )--------
         pop dx
         pop ax
 
