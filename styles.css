@@ -35,6 +35,19 @@ main-cite-content {
     font-style: italic;
 }
 
+plan-img {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+
+plan-img img {
+    width: min(80vw, 48em);
+}
+
 summary {
     font-size: 1.36rem;
     font-weight: bold;
